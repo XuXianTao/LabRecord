@@ -32,4 +32,13 @@ return [
     'taglib_begin' => '{',
     // 标签库标签结束标记
     'taglib_end'   => '}',
+
+    //路径添加
+    'tpl_replace_string' => [
+    '__ROOT__' => Request::root(),
+    '__STATIC__'=>Request::root() .'/static',
+    ],
+    //模板布局
+    'layout_on'     =>  true,
+    'layout_name'   =>  'layout/common',
 ];

@@ -13,6 +13,8 @@ Route::get('think', function () {
     return 'hello,ThinkPHP5!';
 });
 
+Route::rule('admin','index/login/loginAdmin');
+
 Route::get('hello/:name', 'index/hello');
 
 return [
