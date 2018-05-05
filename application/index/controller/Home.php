@@ -1,7 +1,9 @@
 <?php
 namespace app\index\controller;
 
-class Home
+use think\Controller;
+
+class Home extends Controller
 {
 	public function homeStu()
 	{
@@ -16,5 +18,14 @@ class Home
 	public function homeTeacher()
 	{
 		return view();
+	}
+
+	public function logout_stu()
+	{
+		$this->redirect('/');
+	}
+	public function logout_admin()
+	{
+		$this->redirect('/admin');
 	}
 }
