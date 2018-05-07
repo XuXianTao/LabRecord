@@ -1,12 +1,56 @@
 <div class="container login">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
-			<form class="input-group" method="post" action="{:Url('check_stu')}">
+			<form class="input-group" method="post">
 				<input name="stu_id" type="text" class="form-control" placeholder="请输入学号...">
 				<span class="input-group-btn">
-					<button class="btn btn-info  btn-secondary" type="submit">登录</button>
+					<button class="btn btn-info  btn-secondary" id="login_stu" type="button">登录</button>
 				</span>
 			</form>
+			<div class="alert alert-danger alert-exist" role="alert" style="display:none">
+			  <strong>错误：</strong> <span class="alert-link">学号不能为空</span>
+			</div>
+			<div class="alert alert-danger alert-id" role="alert" style="display:none">
+			  <strong>错误：</strong> <span class="alert-link">学号不存在</span>
+			</div>
+
 		</div>
 	</div>
 </div>
+<script>
+  $(document).ready(function() {
+	  $('#login_stu').click(function() {
+		  $(".alert-exist").css('display','none');
+	  	//学号为空
+		  if ($("input").val()=="") {
+	    	$(".alert-id").css('display','none');
+		    $(".alert-exist").css('display','block');
+		    return ;
+		  }
+		  //判断是否有该学号
+		  $(".alert-exist").css('display','none');
+	    $.post({
+	    	url:'{:Url("check_stu")}',
+	    	data: {'stu_id':$("input").val()},
+	    	success:function(data) {
+	    		switch(data){
+	    			case '学号不存在':
+	    			  $(".alert-id").css('display','block');
+	    			  break;
+	    			default:
+	    			  $(".alert-exist").css('display','none');
+	    			  $(".alert-id").css('display','none');
+	    			  window.location.href="{:Url('Home/homeStu')}";
+	    		}
+
+	    	},
+	    	error:function() {
+	    		console.log('error');
+	    	}
+	    })
+	  }
+	  )
+
+  }
+  )
+</script>
