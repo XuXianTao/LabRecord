@@ -1,0 +1,61 @@
+<div class="signup container">
+  <form class="form signup-form" id="signup_teacher">
+    <h3>教师信息注册</h3>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="ta_id">职工号</label>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="id" id="ta_id" placeholder="请输入职工号">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="name">姓名</label>
+      <div class="col-md-3">
+        <input type="text" class="form-control" name="name" id="name" placeholder="请输入姓名">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="type">身份</label>
+      <div class="col-md-3">
+        <select class="form-control" id="type" name="type">
+          <option value="1">实验室仪器管理老师</option>
+          <option value="2">教学老师</option>
+        </select>
+      </div>
+    </div>
+    <div class="signup-form-btn">
+      <button type="button" class="btn btn-primary" onclick="signup_teacher()">注册</button>
+      <a class="btn btn-link" href="/admin">返回</a>
+    </div>
+  </form>
+</div>
+<script>
+function signup_teacher() {
+  var formDataTeacher = $("#signup_teacher").serialize();
+  var can_post2 = true;
+  $('#signup_teacher').find(".form-control").each(function() {
+    if ($(this).val() === '') {
+      $(this).parent().parent('.form-group').addClass('has-error');
+      can_post2 = false;
+    }
+  })
+  if (can_post2) {
+    console.log('post')
+    $.ajax({
+      type: "post",
+      url: "{:Url('Signup/insert_teacher')}", //数据传输的控制器方法
+      data: formDataTeacher, //这里data传递过去的是序列化以后的字符串
+      success: function(data) {
+        console.log(data);
+        window.location.href = '/admin?id=' + $("#signup_teacher").find("input[name='id']").val();
+      },
+      error: function() {
+        console.log('error');
+        alert('注册失败');
+      }
+    });
+  } else {
+    console.log('can\'t post')
+    return;
+  }
+}
+</script>

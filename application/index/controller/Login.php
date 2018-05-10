@@ -19,10 +19,11 @@ class Login extends Controller
   //判断学生登录
 	public function check_stu($stu_id)
 	{
-		$id = db('stu')
-		  ->where("id = $stu_id")
+		$stu = db('stu')
+		  ->where('id',$stu_id)
 		  ->find();
-		if (!$id) return json('学号不存在');
+		if (!$stu) return json('学号不存在');
+		session('user',$stu);
 		return json('Home/homeStu');
 	}
   //判断管理成员登录-TA、仪器管理老师、任课老师
@@ -30,22 +31,25 @@ class Login extends Controller
 	{
 		switch ($who) {
 			case 'lab_teacher':
-			  $id = db('man')
-			  ->where("id = $admin_id and typ =0")
+			  $id = db('teacher')
+			  ->where("id = $admin_id and type =1")
 			  ->find();
 			  if (!$id) return json('学号不存在');
+				session('user',$id);
 			  return json('Home/homeLabTeacher');
 			case 'edu_teacher':
-			  $id = db('man')
-			  ->where("id = $admin_id and typ =1")
+			  $id = db('teacher')
+			  ->where("id = $admin_id and type =2")
 			  ->find();
 			  if (!$id) return json('学号不存在');
+				session('user',$id);
 			  return json('Home/homeEduTeacher');
 			case 'ta':
-				$id = db('man')
-			  ->where("id = $admin_id and typ =2")
+				$id = db('ta')
+			  ->where("id = $admin_id")
 			  ->find();
 			  if (!$id) return json('学号不存在');
+				session('user',$id);
 			  return json('Home/homeTa');
 		}
 	}

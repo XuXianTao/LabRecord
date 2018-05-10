@@ -1,45 +1,67 @@
 drop database if exists `LabRecord`;
 create database `LabRecord` character set utf8;
 use `LabRecord`;
+
+# 当前周数，星期几
+create table the_date(
+    id            int not null primary key,
+    week          int not null default 1,
+    day           int not null default 1,
+    start_date    int
+) engine=InnoDB;
+use `LabRecord`;
+insert into the_date(id,week) values (1,1);
 # IP、座位号映像
 create table ip (
     ip            varchar(80) not null primary key,  # ip地址
-    cla           varchar(80) not null,              # 课室号
+    room          varchar(80) not null,              # 课室号
     num           varchar(80) not null               # 桌号
 ) engine=InnoDB;
 
+# 课程
+create table course (
+    id            int not null primary key auto_increment,
+                                                     # 课程id
+    name          varchar(80) not null,              # 课程名称
+    cla           varchar(80) not null,              # 课室号
+    tea_id        int not null,                      # 老师id
+    sch_time_start time not null,                    # 上课时间
+    sch_time_end   time not null,                    # 下课时间
+    sch_year      varchar(80),                       # 学年
+    sch_term      int,                               # 学期
+    sch_day       int                                # 工作日
+) auto_increment=1 engine=InnoDB;
 # 学生
 create table stu (
     id            int not null,                      # 学号
-    nam           varchar(80) not null,              # 名字
-    cla           varchar(80),                       # 课室
-    tea_id        int not null,                      # 上课教师职工号
-    sch_year      varchar(80) not null,              # 学年
-    sch_term      int not null,                      # 学期
-    sch_day       int not null,                      # 上课日，1一，2二...
-    sch_tim       varchar(80) not null,              # 上课时段
-    primary key(id,sch_year,sch_term,sch_day,sch_tim)
+    name          varchar(80) not null,              # 名字
+    course_id     int not null,                      # 课程id
+    primary key(id,course_id)
 ) engine=InnoDB;
 
-# 管理、教师、助理
-create table admin (
-    typ           int not null,                      # 类型，0管理，1教师，2助理
-    id            int not null,                      # 职工号/学号
-    nam           varchar(80) not null,              # 名字
-    cla           varchar(80),                       # 课室
+# TA实验室助理
+create table ta (
+    id            int not null primary key,          # 学号
+    name          varchar(80) not null,              # 姓名
     sch_year      varchar(80),                       # 学年
     sch_term      int,                               # 学期
-    sch_day       int,                               # 工作日，1一，2二
-    sch_tim       varchar(80),                       # 工作时段
-    primary key(typ,id,sch_year,sch_term,cla,sch_day,sch_tim)
+    sch_time      varchar(80)                        # 具体时间-仅用作描述
+) engine=InnoDB;
+# 管理老师、上课老师
+create table teacher (
+    type          int not null,                      # 类型，0管理，1管理老师，2上课老师
+    id            int not null,                      # 职工号
+    name          varchar(80) not null,              # 名字
+    primary key(type,id)
 ) engine=InnoDB;
 
 #签到表-stu
 create table sign_stu (
     id            int not null,                      # 学号
+    name          varchar(80) not null,
     sign_in       datetime,                          # 签到/登入时间
     sign_out      datetime,                          # 登出时间
-    statu         boolean,                           # 缺勤？
+    statu         varchar(80),                       # 缺勤？
     week          int not null,                      # 签到周数
     day           int not null                       # 签到天数
 ) engine=InnoDB;
@@ -47,12 +69,13 @@ create table sign_stu (
 #签到表-ta
 create table sign_ta (
     id            int not null,                      # 学号
+    name          varchar(80) not null,
     sign_in       datetime,                          # 签到/登入时间
     sign_out      datetime,                          # 登出时间
-    statu         boolean,                           # 缺勤？
+    statu         varchar(80),                       # 缺勤？
     week          int not null,                      # 签到周数
     day           int not null,                      # 签到天数
-    duty_time     datetime                           # 当天执勤时长
+    duty_time     int default 0                      # 当天执勤时长
 ) engine=InnoDB;
 
 #问卷or小测

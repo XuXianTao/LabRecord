@@ -1,1 +1,100 @@
-<table>ta助教信息</table>
+<div class="container">
+    <table class="table table-hover" id="table-ta">
+    </table>
+    <div id="info_ta"></div>
+</div>
+<script>
+
+var tableBox_ta = $('#table-ta');
+var render_time = 0;
+$(document).ready(function() {
+    tableBox_ta.bootstrapTable({
+        height: 650,
+        striped: true, // 隔行变色
+        method: 'post',
+        url: "{:Url('Table/table_ta')}",
+        dataType: 'json',
+        search: true, // 启用搜索框
+        showHeader: true,
+        pagination: true, //在表格底部显示分页工具栏
+        onlyInfoPagination: true,
+        pageSize: 1000,
+        columns: [{
+                field: 'id',
+                title: '学号',
+                sortable: true,
+                align: 'center',
+            },
+            {
+                field: 'name',
+                title: '姓名',
+                sortable: true,
+                align: 'center',
+            },
+            {
+                field: 'sign_in',
+                title: '登入时间',
+                sortable: true,
+                align: 'center',
+            },
+            {
+                field: 'sign_out',
+                title: '登出时间',
+                sortable: true,
+                align: 'center',
+            },
+            {
+            	  field: 'duty_time',
+            	  title: '工作总时长',
+            	  sortable: true,
+            	  align: 'center',
+            },
+            {
+                field: 'statu',
+                title: '签到状态',
+                sortable: true,
+                align: 'right',
+                formatter: actionFormatter_ta,
+
+            }
+        ],
+    });
+});
+$(document).click(function() {
+    tableBox_ta.bootstrapTable('resetView');
+})
+
+function actionFormatter_ta(value, row, index) {
+    var statu = value;
+    var id = row['id'];
+    var result = value + " ";
+    if (statu != "已签到" && statu!="已补签")
+        result += "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"edit_ta('" + id + "','append','"+index+"')\" title='补签'><span>补签</span></a>";
+    if (statu != "已签到" && statu!="已请假")
+        result += "<a href='javascript:;' class='btn btn-info table-btn ' onclick=\"edit_ta('" + id + "','leave','"+index+"')\" title='请假'><span>请假</span></a>";
+    if (statu != "已签到" && statu!="缺勤")
+        result += "<a href='javascript:;' class='btn btn-danger table-btn' onclick=\"edit_ta('" + id + "','absence','"+index+"')\" title='缺勤'><span>缺勤</span></a>";
+    return result;
+}
+function edit_ta(id, opera, index) {
+    var opera_value;
+    switch (opera) {
+        case 'append': opera_value = "已补签";break;
+        case 'leave': opera_value = "已请假";break;
+        case 'absence': opera_value = "缺勤";break;
+        default: opera_value = 'error';break;
+    }
+    $.post({
+        url:'{:Url("Table/edit_ta")}',
+        data: {'id':id, 'opera':opera},
+        success: function(data) {
+            $("#info_ta").html(id+'状态修改成功');
+            console.log(data);
+            tableBox_ta.bootstrapTable('updateCell',{index,field:'statu',value:opera_value});
+        },
+        error: function() {
+            $("#info_ta").html(id+'状态修改失败');
+        }
+    })
+}
+</script>

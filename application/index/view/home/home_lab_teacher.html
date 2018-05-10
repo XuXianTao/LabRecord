@@ -21,23 +21,23 @@
 	<div class="tab-content home-content">
 		<div role="tabpanel" class="tab-pane active">
 		  <div class="home-content-sign">
-		  	欢迎{老师}使用<br/>{the nth week}
+		  	欢迎<strong>{$Think.session.user.nam}</strong>使用<br/>
 		    实验室反馈系统
 		  </div>
+		  <p>
+		  	第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
+		  </p>
 		</div>
 
 		<div role="tabpanel" class="tab-pane" id="excp">
-		  故障处理
 		  {include file="tables/excp_class"/}
 	  </div>
 
 		<div role="tabpanel" class="tab-pane" id="edu">
-		  故障统计
 		  {include file="tables/excp_statistics"/}
 		</div>
 
 		<div role="tabpanel" class="tab-pane" id="tas">
-			助教名单如下：
 			{include file="tables/tas_list"/}
 		</div>
 

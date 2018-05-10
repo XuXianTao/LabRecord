@@ -22,7 +22,9 @@
 	  $('#login_stu').click(function() {
 		  $(".alert-exist").css('display','none');
 	  	//学号为空
-		  if ($("input").val()=="") {
+		  if ($("input[name='stu_id']").val()=="") {
+	    	console.log('2333');
+	    	$('.input-group').addClass('has-error');
 	    	$(".alert-id").css('display','none');
 		    $(".alert-exist").css('display','block');
 		    return ;
@@ -31,8 +33,9 @@
 		  $(".alert-exist").css('display','none');
 	    $.post({
 	    	url:'{:Url("check_stu")}',
-	    	data: {'stu_id':$("input").val()},
+	    	data: {'stu_id':$("input[name='stu_id']").val()},
 	    	success:function(data) {
+	    		console.log(data);
 	    		switch(data){
 	    			case '学号不存在':
 	    			  $(".alert-id").css('display','block');
@@ -42,7 +45,6 @@
 	    			  $(".alert-id").css('display','none');
 	    			  window.location.href="{:Url('Home/homeStu')}";
 	    		}
-
 	    	},
 	    	error:function() {
 	    		console.log('error');
@@ -50,7 +52,6 @@
 	    })
 	  }
 	  )
-
   }
   )
 </script>

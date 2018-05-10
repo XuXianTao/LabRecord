@@ -1,0 +1,70 @@
+<div class="signup container">
+  <form class="form signup-form" id="signup_ta">
+    <h3>助理信息注册</h3>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="ta_id">学号</label>
+      <div class="col-md-2">
+        <input type="number" class="form-control" name="id" id="ta_id" placeholder="请输入学号">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="name">姓名</label>
+      <div class="col-md-3">
+        <input type="text" class="form-control" name="name" id="name" placeholder="请输入姓名">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="sch_year">工作学年</label>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="sch_year" id="sch_year" placeholder="请输入工作时候的学年">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="sch_term">工作学期</label>
+      <div class="col-md-3">
+        <input type="number" class="form-control" name="sch_term" id="sch_term" placeholder="请输入工作时候的学期">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-2 form-control-label" for="sch_time">(工作时间)</label>
+      <div class="col-md-6">
+        <textarea type="number" class="form-control" name="sch_time" id="sch_time" placeholder="请输入工作时间(仅用做描述)"></textarea>
+      </div>
+    </div>
+    <div class="signup-form-btn">
+      <button class="btn btn-primary" type="button" onclick="signup_ta()">注册</button>
+      <a class="btn btn-link" href="/admin">返回</a>
+    </div>
+  </form>
+</div>
+<script>
+function signup_ta() {
+  var formDataTa = $("#signup_ta").serialize();
+  var can_post = true;
+  $('#signup_ta').find(".form-control").not('textarea').each(function() {
+    if ($(this).val() === '') {
+      $(this).parent().parent('.form-group').addClass('has-error');
+      can_post = false;
+    }
+  })
+  if (can_post) {
+    console.log('post')
+    $.ajax({
+      type: "post",
+      url: "{:Url('Signup/insert_ta')}", //数据传输的控制器方法
+      data: formDataTa, //这里data传递过去的是序列化以后的字符串
+      success: function(data) {
+        console.log(data);
+        window.location.href='/admin?id='+$("#signup_ta").find("input[name='id']").val();
+      },
+      error: function() {
+        console.log('error');
+        alert('注册失败');
+      }
+    });
+  } else {
+    console.log('can\'t post')
+    return;
+  }
+}
+</script>

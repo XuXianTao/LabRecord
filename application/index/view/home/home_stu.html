@@ -14,9 +14,14 @@
 	  </div>
 	</nav>
 	<div class="tab-content home-content">
-		<div role="tabpanel" class="tab-pane active home-content-sign">  {学生}签到成功<br/>{the nth week}
-			{上节课你忘了关xx仪器}
+		<div role="tabpanel" class="tab-pane active home-content-sign">  {$Think.session.user.nam}签到成功<br/>
 		</div>
+		<p>
+			第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
+		</p>
+		<p>
+			上节课你出现的问题：{}
+		</p>
 		<div role="tabpanel" class="tab-pane" id="excp">
 		  异常反馈
 		  {include file="feedback/stu_excp"/}
