@@ -10,7 +10,7 @@ create table the_date(
     start_date    int
 ) engine=InnoDB;
 use `LabRecord`;
-insert into the_date(id,week) values (1,1);
+insert into the_date(id,week,start_date) values (1,1,1);
 # IP、座位号映像
 create table ip (
     ip            varchar(80) not null primary key,  # ip地址
@@ -29,7 +29,8 @@ create table course (
     sch_time_end   time not null,                    # 下课时间
     sch_year      varchar(80),                       # 学年
     sch_term      int,                               # 学期
-    sch_day       int                                # 工作日
+    sch_day       varchar(10),                       # 工作日
+    sch_week_start int                               # 第几周开始上课
 ) auto_increment=1 engine=InnoDB;
 # 学生
 create table stu (

@@ -6,3 +6,5 @@ thinkphp
 .env
 /gulp-dev/node_modules
 composer.lock
+output
+uploads

@@ -9,7 +9,7 @@ var tableBox_course = $('#table-course');
 var render_time3 = 0;
 $(document).ready(function() {
   tableBox_course.bootstrapTable({
-    height: 350,
+    height: 650,
     striped: true, // 隔行变色
     method: 'post',
     url: "{:Url('Table/table_course')}",
@@ -19,6 +19,7 @@ $(document).ready(function() {
     pagination: true, //在表格底部显示分页工具栏
     onlyInfoPagination: true,
     pageSize: 1000,
+    detailView: true,
     columns: [{
         field: 'cid',
         title: '课程编号',
@@ -38,7 +39,7 @@ $(document).ready(function() {
         align: 'center',
       },
       {
-        field: 'teacher.name',
+        field: 'tname',
         title: '任课教师',
         sortable: true,
         align: 'center',
@@ -50,25 +51,54 @@ $(document).ready(function() {
         align: 'center',
       },
       {
-      	field: 'sch_year',
-      	title: '学年',
-      	sortable: true,
-      	align: 'center',
+        field: 'sch_year',
+        title: '学年',
+        sortable: true,
+        align: 'center',
       },
       {
-      	field: 'sch_term',
-      	title: '学期',
-      	sortable: true,
-      	align: 'center',
+        field: 'sch_term',
+        title: '学期',
+        sortable: true,
+        align: 'center',
       },
       {
-      	field: 'action',
-      	title: '操作',
-      	sortable: true,
-      	align: 'center',
+        field: 'action',
+        title: '操作',
+        sortable: true,
+        align: 'center',
         formatter: actionFormatter_course,
       }
     ],
+    detailFormatter: function(index, row) {},
+    onExpandRow: function(index, row, $detail) {
+      console.log($detail)
+      $detail.html('<table></table>').find('table').bootstrapTable({
+        height: 400,
+        striped: true, // 隔行变色
+        search: true, // 启用搜索框
+        method: 'post',
+        showHeader: true,
+        pagination: true, //在表格底部显示分页工具栏
+        onlyInfoPagination: true,
+        pageSize: 1000,
+        url: "{:Url('Table/table_stu_course')}",
+        queryParams: { 'cid': row['cid'] },
+        columns: [{
+            field: 'id',
+            title: '学号',
+            sortable: true,
+            align: 'center',
+          },
+          {
+            field: 'name',
+            title: '姓名',
+            sortable: true,
+            align: 'center',
+          }
+        ]
+      })
+    }
   });
 });
 $(document).click(function() {
@@ -83,20 +113,17 @@ function actionFormatter_course(value, row, index) {
 
 function delete_course(id, index) {
   if (confirm("确定要清空数据？对应的学生信息也将清空！"))
-  $.post({
-    url: '{:Url("Table/delete_course")}',
-    data: { 'id': id },
-    success: function(data) {
-      $("#info_course").html(id + '状态修改成功');
-      console.log(data);
-      tableBox_course.bootstrapTable('remove',
-      	{ field: 'action',
-      	  value: [id]
-      	});
-    },
-    error: function() {
-      $("#info_course").html(id + '状态修改失败');
-    }
-  })
+    $.post({
+      url: '{:Url("Table/delete_course")}',
+      data: { 'id': id },
+      success: function(data) {
+        $("#info_course").html(id + '状态修改成功');
+        console.log(data);
+        tableBox_course.bootstrapTable('refresh', { slient: true });
+      },
+      error: function() {
+        $("#info_course").html(id + '状态修改失败');
+      }
+    })
 }
 </script>

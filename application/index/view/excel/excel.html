@@ -48,13 +48,13 @@
         <div class="">
           星期
           <select class="form-control" name="sch_day">
-            <option value="1">一</option>
-            <option value="2">二</option>
-            <option value="3">三</option>
-            <option value="4">四</option>
-            <option value="5">五</option>
-            <option value="6">六</option>
-            <option value="7">日</option>
+            <option value="一">一</option>
+            <option value="二">二</option>
+            <option value="三">三</option>
+            <option value="四">四</option>
+            <option value="五">五</option>
+            <option value="六">六</option>
+            <option value="日">日</option>
           </select>
           上课
         </div>
@@ -129,21 +129,34 @@
       <label class="file">
         <input type="file" name="excel_stu" id="file">
         <span class="btn btn-primary">
-          <i class="fa fa-file-excel-o fa-5x"></i>
-          选择要导入的学生信息excel列表
+          <i class="fa fa-file-excel-o fa-5x"></i><br><br>
+          <div class="file-info">选择要导入的学生信息excel列表</div>
         </span>
-      </label>
+      </label><br><br><br><br><br>
+      <div class="alert alert-danger">导入的Excel文件请严格按照标准</div>
     </div>
     <button class="btn btn-primary excel-submit" type="submit" onclick="check_excel()"><h1>提交</h1></button>
   </form>
 </div>
 <script>
   $('.excel').find('.form-control').blur(function() {
-    console.log('blur');
     console.log($(this))
     if ($(this).val()==='') $(this).parent('.form-group').addClass('has-error');
   })
   function check_excel() {
-    if (!window.confirm('确认全部课程信息填写完成并已上传学生excel文件？'))event.preventDefault();
+    if ($("#file").val() == '') {
+      event.preventDefault();
+      alert('还没有上传学生excel');
+      return ;
+    }
+    if (!window.confirm('确认全部课程信息填写完成并已上传学生excel文件？')) {
+      event.preventDefault();
+      return;
+    }
   }
+  $("#file").change(function() {
+    var arr = this.value.split('\\');
+    var file_name = arr[arr.length-1];
+    $('.file-info').html(file_name);
+  })
 </script>

@@ -24,30 +24,36 @@ class Home extends Controller
 // 主页显示
 	public function homeStu()
 	{
+		if (!session('?user')) $this->error('没登录玩啥呢','/');
 		return view();
 	}
 
 	public function homeTa()
 	{
+		if (!session('?user')) $this->error('没登录玩啥呢','/admin');
 		return view();
 	}
 
 	public function homeLabTeacher()
 	{
+		if (!session('?user')) $this->error('没登录','/admin');
 		return view();
 	}
 
   public function homeEduTeacher()
 	{
+		if (!session('?user')) $this->error('没登录','/admin');
 		return view();
 	}
 // 登出
 	public function logout_stu()
 	{
+		session(null);
 		return redirect('/');
 	}
 	public function logout_admin()
 	{
+		session(null);
 		return redirect('/admin');
 	}
 
