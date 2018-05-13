@@ -18,19 +18,18 @@ function get_present_course(&$param, $who='')
 		$param = db('course')
 			->where('sch_week_start','<=',db('the_date')->find()['week'])
 			->where('sch_day', CN_WEEK[date('N')])
-			->where('sch_time_start','<=',date("H:i:s"))
-			->where('sch_time_end','>=',date("H:i:s"))
+			->whereTime('sch_time_start','<=',date("H:i:s"))
+			->whereTime('sch_time_end','>=',date("H:i:s"))
 			->select();
 	}
 	//老师登录进主页获取对应时间的课程
 	else if (array_key_exists('type',session('user'))) {
 		$param = db('course')
-			->where('tea_id', session('user.id'))
+			->where('tea_id', session('user')['id'])
 			->where('sch_week_start','<=',db('the_date')->find()['week'])
-			->where('sch_week_start','>',db('the_date')->find()['week']-10)
 			->where('sch_day', CN_WEEK[date('N')])
-			->where('sch_time_start','<=',date("H:i:s"))
-			->where('sch_time_end','>=',date("H:i:s"))
+			->whereTime('sch_time_start','<=',date("H:i:s"))
+			->whereTime('sch_time_end','>=',date("H:i:s"))
 			->find();
 	}
 	//学生登录进主页后获取对应时间的课程
@@ -39,8 +38,8 @@ function get_present_course(&$param, $who='')
 			->where('id', session('user')['course_id'])
 			->where('sch_week_start','<=',db('the_date')->find()['week'])
 			->where('sch_day', CN_WEEK[date('N')])
-			->where('sch_time_start','<=',date("H:i:s"))
-			->where('sch_time_end','>=',date("H:i:s"))
+			->whereTime('sch_time_start','<=',date("H:i:s"))
+			->whereTime('sch_time_end','>=',date("H:i:s"))
 			->find();
 	}
 	//实验室助理进入主页
@@ -48,8 +47,8 @@ function get_present_course(&$param, $who='')
 		$param = db('course')
 			->where('sch_week_start','<=',db('the_date')->find()['week'])
 			->where('sch_day', CN_WEEK[date('N')])
-			->where('sch_time_start','<=',date("H:i:s"))
-			->where('sch_time_end','>=',date("H:i:s"))
+			->whereTime('sch_time_start','<=',date("H:i:s"))
+			->whereTime('sch_time_end','>=',date("H:i:s"))
 			->column('id');
 		return 'ta';
 	}

@@ -13,13 +13,11 @@ class Home extends Controller
 // 周数更新
 	public function initialize() {
 		if (!session('?user')) $this->error('没登录');
-		//更新周数天数
+		//更新天数周数
 		$this->the_date= db('the_date')->find();
-		//更新天数
 		if ($this->the_date['day']!=date('N')) {
 			db('the_date')->update(['day'=>date('N'),'id'=>1]);
 		}
-		//自动更新周数
 		if (date('W')-$this->the_date['start_date']!=0){
 			$this->the_date['week']+=date('W')-$this->the_date['start_date'];
 			$this->the_date['start_date']=date('W');
@@ -101,7 +99,7 @@ class Home extends Controller
 	}
 
 // 逻辑函数处理
-	// 更新周数
+
 	public function change_week($week)
 	{
 		$this->the_date['week']=$week;

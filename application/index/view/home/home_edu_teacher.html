@@ -64,7 +64,7 @@
       <div class="alert alert-info">首次操作请设置当前周数！</div>
       <script>
       $('#now_week').val({$GLOBALS['week']});
-      $('#now_week').change(function() {
+      $('#now_week').click(function() {
         $.post({
           url: "{:Url('Home/change_week')}",
           data: { 'week': $('#now_week').val() },
