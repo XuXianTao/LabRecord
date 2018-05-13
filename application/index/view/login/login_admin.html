@@ -57,7 +57,8 @@
 	    			  $(".alert-id").css('display','none');
 	    			  switch (data) {
 	    			  	case 'Home/homeTa':
-	    			  	window.location.href="{:Url('Home/homeTa')}";
+	    			  	var str=prompt("请输入值班课室","比如A201");
+	    			  	window.location.href="{:Url('Home/homeTa')}"+'?cla='+str;
 	    			  	break;
 	    			  	case 'Home/homeLabTeacher':
 	    			  	window.location.href="{:Url('Home/homeLabTeacher')}";

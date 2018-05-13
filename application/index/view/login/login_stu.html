@@ -40,13 +40,24 @@
 	    			case '学号不存在':
 	    			  $(".alert-id").css('display','block');
 	    			  break;
-	    			default:
+	    			case '签到没问题':
 	    			  $(".alert-exist").css('display','none');
 	    			  $(".alert-id").css('display','none');
-	    			  window.location.href="{:Url('Home/homeStu')}";
+	    			  window.location.href="{:Url('Home/homeStu')}"+'?success=1';
+	    			  break;
+	    			case '签到有问题':
+	    			  $(".alert-exist").css('display','none');
+	    			  $(".alert-id").css('display','none');
+	    			  window.location.href="{:Url('Home/homeStu')}"+'?success=0';
+	    			  break;
+	    			case '已签到':
+	    			  $(".alert-exist").css('display','none');
+	    			  $(".alert-id").css('display','none');
+	    			  window.location.href="{:Url('Home/homeStu')}"+'?success=2';
 	    		}
 	    	},
-	    	error:function() {
+	    	error:function(error) {
+	    		console.log(error);
 	    		console.log('error');
 	    	}
 	    })

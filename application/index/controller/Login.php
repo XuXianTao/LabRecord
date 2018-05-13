@@ -6,6 +6,7 @@ use think\Request;
 
 class Login extends Controller
 {
+	protected $present_courseid;
 	public function loginStu()
 	{
 		return view();
@@ -19,12 +20,35 @@ class Login extends Controller
   //判断学生登录
 	public function check_stu($stu_id)
 	{
+		//当前时间所有课程的id数组
+		$counts=get_present_course($this->present_courseid,'stu');
+		//整理成选择条件
+		$condition = [];
+		for ($i=0;$i<$counts;$i++) {
+			array_push($condition,['course_id','=',$this->present_courseid[$i]['id']]);
+		}
+		if ($counts>1) array_push($condition,'or');
 		$stu = db('stu')
 		  ->where('id',$stu_id)
+		  ->where($condition)
 		  ->find();
 		if (!$stu) return json('学号不存在');
 		session('user',$stu);
-		return json('Home/homeStu');
+		$GLOBALS['sweek'] = db('the_date')->find()['week']-$this->present_courseid[0]['sch_week_start'] + 1;
+		$stu = db('stu')
+		->where('id',session('user')['id'])
+		->where('course_id',$this->present_courseid[0]['id']);
+		$success= '签到没问题';
+		if ($stu->find()['sign_w'.$GLOBALS['sweek']]=='未签到') {
+			$stu->update([
+				'sign_w'.$GLOBALS['sweek'] => '已签到',
+				'signin_w'.$GLOBALS['sweek'] => date('H:i:s'),
+			]);
+			db('the_date')->update(['update_statu'=>true,'id'=>1]);
+		} else if ($stu->find()['sign_w'.$GLOBALS['sweek']]=='已签到') {
+			$success = "已签到";
+		} else $success = '签到有问题';
+		return json($success);
 	}
   //判断管理成员登录-TA、仪器管理老师、任课老师
 	public function check_admin($admin_id,$who)
@@ -50,6 +74,17 @@ class Login extends Controller
 			  ->find();
 			  if (!$id) return json('学号不存在');
 				session('user',$id);
+
+				$GLOBALS['week'] = db('the_date')->find()['week'];
+				$data = [
+				'id' => session('user')['id'],
+				'name' => session('user')['name'],
+				'sign_in' => date('Y-m-d H:i:s'),
+				'week' => $GLOBALS['week'],
+				'day' => date('N')
+				];
+				db('sign_ta')->insert($data);
+				session('user.sign_in',$data['sign_in']);
 			  return json('Home/homeTa');
 		}
 	}

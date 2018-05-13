@@ -2,57 +2,98 @@
 namespace app\index\controller;
 
 use think\Controller;
-
-define('CN_WEEK',['','一','二','三','四','五','六','七']);
+use think\facade\Hook;
 
 class Home extends Controller
 {
-//监控判断ta界面是否需要更新
-	protected $update_statu = false;
 	protected $the_date;
+	protected $present_course;
+	protected $present_ta;
+	protected $sign_ta;
 // 周数更新
 	public function initialize() {
-		$this->the_date= db('the_date')->select()[0];
-		$GLOBALS['week'] = $this->the_date['week'];
-		$GLOBALS['day'] = $this->the_date['day'];
+		if (!session('?user')) $this->error('没登录');
+		//更新天数周数
+		$this->the_date= db('the_date')->find();
+		if ($this->the_date['day']!=date('N')) {
+			db('the_date')->update(['day'=>date('N'),'id'=>1]);
+		}
 		if (date('W')-$this->the_date['start_date']!=0){
 			$this->the_date['week']+=date('W')-$this->the_date['start_date'];
 			$this->the_date['start_date']=date('W');
 			db('the_date')->update($this->the_date);
 		}
+
+		$GLOBALS['week'] = $this->the_date['week'];
+		$GLOBALS['day'] = $this->the_date['day'];
+
+		$result = get_present_course($this->present_course);
+		if ($result!=='ta') {
+			if ($result==0) {
+				$GLOBALS['sweek']=1;
+			} else {
+				$GLOBALS['sweek'] = $GLOBALS['week']-$this->present_course['sch_week_start']+1;
+			}
+		}
 	}
 // 主页显示
 	public function homeStu()
 	{
-		if (!session('?user')) $this->error('没登录玩啥呢','/');
+
 		return view();
 	}
 
 	public function homeTa()
 	{
-		if (!session('?user')) $this->error('没登录玩啥呢','/admin');
+		$ta = db('sign_ta')
+			->where('id',session('user.id'))
+			->where('sign_in',session('user.sign_in'));
+		if ($ta->find()['cla']==null)
+			$ta->update(['cla' => input('param.cla')]);
 		return view();
 	}
 
 	public function homeLabTeacher()
 	{
-		if (!session('?user')) $this->error('没登录','/admin');
 		return view();
 	}
 
   public function homeEduTeacher()
 	{
-		if (!session('?user')) $this->error('没登录','/admin');
-		return view();
+		return view()->assign(['course' => $this->present_course]);
 	}
 // 登出
 	public function logout_stu()
 	{
+		$stu = db('stu')
+		->where('id',session('user')['id'])
+		->where('course_id',$this->present_course['id']);
+		$stu->update([
+				'signout_w'.$GLOBALS['sweek'] => date('H:i:s'),
+			]);
 		session(null);
 		return redirect('/');
 	}
 	public function logout_admin()
 	{
+		//TA 登出
+		if (array_key_exists('duty_time',session('user'))) {
+			$ta = db('sign_ta')
+			->where('id',session('user.id'))
+			->where('sign_in',session('user.sign_in'));
+			$ta->update(['sign_out' => date('Y-m-d H:i:s')]);
+
+			$data = $ta->find();
+			//dump($data);
+			$duty_time = strtotime($data['sign_out'])-strtotime($data['sign_in']);
+			//dump($duty_time);
+			$ta->update([
+			  'duty_time' => $duty_time,
+			]);
+			db('ta')
+			->where('id', session('user')['id'])
+			->setInc('duty_time', $duty_time);
+		}
 		session(null);
 		return redirect('/admin');
 	}
@@ -66,14 +107,14 @@ class Home extends Controller
 		db('the_date')->update($this->the_date);
 		$GLOBALS['week'] = $this->the_date['week'];
 	}
-  //TA界面ajax判断是否刷新界面
+  //老师界面ajax判断是否是否有学生登录->刷新界面
 	public function check_sql_update()
 	{
-		if ($this->update_statu) {
-			$this->update_statu = false;
-			return json(true);
+		if (db('the_date')->find()['update_statu'] == true) {
+			db('the_date')->update(['update_statu'=>false,'id'=>1]);
+			return json('changed');
 		}else {
-			return json(false);
+			return json('unchanged');
 		}
 	}
 

@@ -61,6 +61,7 @@
 			<div class="alert alert-success alert-change_week-success" role="alert" style="display:none">
 			  <strong>成功：</strong> <span class="alert-link">当前周数修改成功</span>
 			</div>
+      <div class="alert alert-info">首次操作请设置当前周数！</div>
       <script>
       $('#now_week').val({$GLOBALS['week']});
       $('#now_week').click(function() {
@@ -69,6 +70,10 @@
           data: { 'week': $('#now_week').val() },
           success: function(data) {
             console.log(data);
+            setTimeout(function(){
+              alert('当前周数已修改');
+              location.reload();
+            });
             $('.alert-change_week-success').css('display','block');
             $('.alert-change_week-error').css('display','none');
           },

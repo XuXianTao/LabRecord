@@ -158,5 +158,7 @@
     var arr = this.value.split('\\');
     var file_name = arr[arr.length-1];
     $('.file-info').html(file_name);
+    $('.file .btn').addClass('btn-success');
+    $('.file .btn').removeClass('btn-primary');
   })
 </script>

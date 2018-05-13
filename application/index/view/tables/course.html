@@ -20,6 +20,7 @@ $(document).ready(function() {
     onlyInfoPagination: true,
     pageSize: 1000,
     detailView: true,
+    sortName:'cid',
     columns: [{
         field: 'cid',
         title: '课程编号',
@@ -43,6 +44,9 @@ $(document).ready(function() {
         title: '任课教师',
         sortable: true,
         align: 'center',
+        formatter: function(value, row, index) {
+          return value+"<br/>("+row['tid']+')';
+        }
       },
       {
         field: 'sch_time',
@@ -55,12 +59,9 @@ $(document).ready(function() {
         title: '学年',
         sortable: true,
         align: 'center',
-      },
-      {
-        field: 'sch_term',
-        title: '学期',
-        sortable: true,
-        align: 'center',
+        formatter: function(value, row, index) {
+          return value+'学年<br/>第'+row['sch_term']+'学期';
+        }
       },
       {
         field: 'action',
@@ -73,18 +74,7 @@ $(document).ready(function() {
     detailFormatter: function(index, row) {},
     onExpandRow: function(index, row, $detail) {
       console.log($detail)
-      $detail.html('<table></table>').find('table').bootstrapTable({
-        height: 400,
-        striped: true, // 隔行变色
-        search: true, // 启用搜索框
-        method: 'post',
-        showHeader: true,
-        pagination: true, //在表格底部显示分页工具栏
-        onlyInfoPagination: true,
-        pageSize: 1000,
-        url: "{:Url('Table/table_stu_course')}",
-        queryParams: { 'cid': row['cid'] },
-        columns: [{
+      var $columns = [{
             field: 'id',
             title: '学号',
             sortable: true,
@@ -96,7 +86,28 @@ $(document).ready(function() {
             sortable: true,
             align: 'center',
           }
-        ]
+        ];
+      for (i=1;i<=10;i++) {
+        $cell = {
+          field: 'sign_w'+i,
+          title: '第'+i+'周',
+          sortable: true,
+          align: 'center'
+        };
+        $columns.push($cell);
+      }
+      $detail.html('<table></table>').find('table').bootstrapTable({
+        height: 400,
+        striped: true, // 隔行变色
+        search: true, // 启用搜索框
+        method: 'post',
+        showHeader: true,
+        pagination: true, //在表格底部显示分页工具栏
+        onlyInfoPagination: true,
+        pageSize: 1000,
+        url: "{:Url('Table/table_stu_course')}",
+        queryParams: { 'cid': row['cid'] },
+        columns: $columns
       })
     }
   });

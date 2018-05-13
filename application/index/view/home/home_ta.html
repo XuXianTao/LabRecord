@@ -3,9 +3,9 @@
 	  <div class="container home-nav__container">
 	  	<a class="navbar-brand" href="{:Url('homeTa')}">实验室反馈系统</a>
 	  	<ul class="nav nav-pills nav_tab" role="tablist">
-	  		<li class="nav-item">
+	  		<!-- <li class="nav-item">
 	  			<a class="nav-link" href="#stu" role="tab" data-toggle="tab">当堂学生信息</a>
-	  		</li>
+	  		</li> -->
 	  		<li class="nav-item">
 	  			<a class="nav-link" href="#excp" role="tab" data-toggle="tab">故障处理</a>
 	  		</li>
@@ -19,16 +19,16 @@
 	<div class="tab-content home-content">
 		<div role="tabpanel" class="tab-pane active">
 		  <div class="home-content-sign">
-		  	<strong>{$Think.session.user.nam}</strong>签到成功<br/>
+		  	<strong>{$Think.session.user.name}</strong>签到成功<br/>
 		    欢迎使用实验室反馈系统
 		  </div>
 		  <p>
 		  	第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
 		  </p>
 		</div>
-		<div role="tabpanel" class="tab-pane" id="stu">
-			{include file="tables/student_list"/}
-		</div>
+		<!-- <div role="tabpanel" class="tab-pane" id="stu">
+			{//include file="tables/student_list"/}
+		</div> -->
 
 		<div role="tabpanel" class="tab-pane" id="excp">
 		  {include file="tables/excp_class"/}
@@ -38,25 +38,3 @@
 		</div>
 	</div>
 </div>
-<script>
-	var update;
-	function check_sql_update() {
-		result = $.ajax({
-			url:"{:Url('check_sql_update')}",
-			async:false,
-			type:"GET",
-			success: function(result) {
-				console.log('99999');
-				update = result;
-			},
-			error: function() {
-				console.log('999');
-				update = false;
-			}
-
-		})
-		if (update) location.reload();
-		setTimeout(10000);
-	}
-	$(document).ready(check_sql_update)
-</script>

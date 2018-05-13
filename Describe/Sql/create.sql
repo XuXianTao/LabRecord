@@ -7,7 +7,9 @@ create table the_date(
     id            int not null primary key,
     week          int not null default 1,
     day           int not null default 1,
-    start_date    int
+    start_date    int,
+    update_statu  boolean default false,             # 学生登录
+    update_statu2 boolean default false              # 故障提交
 ) engine=InnoDB;
 use `LabRecord`;
 insert into the_date(id,week,start_date) values (1,1,1);
@@ -37,6 +39,46 @@ create table stu (
     id            int not null,                      # 学号
     name          varchar(80) not null,              # 名字
     course_id     int not null,                      # 课程id
+    sign_w1       varchar(80) default '未签到',
+    sign_w2       varchar(80) default '未签到',
+    sign_w3       varchar(80) default '未签到',
+    sign_w4       varchar(80) default '未签到',
+    sign_w5       varchar(80) default '未签到',
+    sign_w6       varchar(80) default '未签到',
+    sign_w7       varchar(80) default '未签到',
+    sign_w8       varchar(80) default '未签到',
+    sign_w9       varchar(80) default '未签到',
+    sign_w10      varchar(80) default '未签到',
+    signin_w1     time,
+    signin_w2     time,
+    signin_w3     time,
+    signin_w4     time,
+    signin_w5     time,
+    signin_w6     time,
+    signin_w7     time,
+    signin_w8     time,
+    signin_w9     time,
+    signin_w10    time,
+    signout_w1    time,
+    signout_w2    time,
+    signout_w3    time,
+    signout_w4    time,
+    signout_w5    time,
+    signout_w6    time,
+    signout_w7    time,
+    signout_w8    time,
+    signout_w9    time,
+    signout_w10   time,
+    info_w1       varchar(80),
+    info_w2       varchar(80),
+    info_w3       varchar(80),
+    info_w4       varchar(80),
+    info_w5       varchar(80),
+    info_w6       varchar(80),
+    info_w7       varchar(80),
+    info_w8       varchar(80),
+    info_w9       varchar(80),
+    info_w10      varchar(80),
     primary key(id,course_id)
 ) engine=InnoDB;
 
@@ -46,7 +88,8 @@ create table ta (
     name          varchar(80) not null,              # 姓名
     sch_year      varchar(80),                       # 学年
     sch_term      int,                               # 学期
-    sch_time      varchar(80)                        # 具体时间-仅用作描述
+    sch_time      varchar(80),                       # 具体时间-仅用作描述
+    duty_time     int default 0
 ) engine=InnoDB;
 # 管理老师、上课老师
 create table teacher (
@@ -56,16 +99,6 @@ create table teacher (
     primary key(type,id)
 ) engine=InnoDB;
 
-#签到表-stu
-create table sign_stu (
-    id            int not null,                      # 学号
-    name          varchar(80) not null,
-    sign_in       datetime,                          # 签到/登入时间
-    sign_out      datetime,                          # 登出时间
-    statu         varchar(80),                       # 缺勤？
-    week          int not null,                      # 签到周数
-    day           int not null                       # 签到天数
-) engine=InnoDB;
 
 #签到表-ta
 create table sign_ta (
@@ -73,7 +106,7 @@ create table sign_ta (
     name          varchar(80) not null,
     sign_in       datetime,                          # 签到/登入时间
     sign_out      datetime,                          # 登出时间
-    statu         varchar(80),                       # 缺勤？
+    cla           varchar(10),                       # 值班教室
     week          int not null,                      # 签到周数
     day           int not null,                      # 签到天数
     duty_time     int default 0                      # 当天执勤时长

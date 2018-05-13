@@ -1,5 +1,13 @@
 <div class="container">
-    <table class="table table-hover" id="table-stu">
+    <h2 style="margin-top: -25px;">{$course['name']} 第{$GLOBALS['week']}周</h2>
+    <h6>{$course['sch_time_start']}-{$course['sch_time_end']}</h6>
+    <div id="toolbar">
+    </div>
+    <table class="table table-hover" id="table-stu"
+        data-toolbar="#toolbar"
+        data-search="true"
+        data-show-refresh="true"
+        data-show-columns="true">
     </table>
     <div id="info_stu"></div>
 </div>
@@ -14,11 +22,12 @@ $(document).ready(function() {
         method: 'post',
         url: "{:Url('Table/table_stu')}",
         dataType: 'json',
-        search: true, // 启用搜索框
         showHeader: true,
         pagination: true, //在表格底部显示分页工具栏
         onlyInfoPagination: true,
         pageSize: 1000,
+        toolbar : "#toolbar",
+        toolbarAlign: 'right',
         columns: [{
                 field: 'id',
                 title: '学号',
@@ -32,24 +41,23 @@ $(document).ready(function() {
                 align: 'center',
             },
             {
-                field: 'sign_in',
+                field: 'signin_w'+{$GLOBALS['sweek']},
                 title: '登入时间',
                 sortable: true,
                 align: 'center',
             },
             {
-                field: 'sign_out',
+                field: 'signout_w'+{$GLOBALS['sweek']},
                 title: '登出时间',
                 sortable: true,
                 align: 'center',
             },
             {
-                field: 'statu',
+                field: 'sign_w'+{$GLOBALS['sweek']},
                 title: '签到状态',
                 sortable: true,
                 align: 'right',
                 formatter: actionFormatter_stu,
-
             }
         ],
     });
@@ -84,11 +92,27 @@ function edit_stu(id, opera, index) {
         success: function(data) {
             $("#info_stu").html(id+'状态修改成功');
             console.log(data);
-            tableBox_stu.bootstrapTable('updateCell',{index,field:'statu',value:opera_value});
+            tableBox_stu.bootstrapTable('updateCell',{index,field:'sign_w'+{$GLOBALS['sweek']},value:opera_value});
         },
         error: function() {
             $("#info_stu").html(id+'状态修改失败');
         }
     })
 }
+
+//持续更新页面
+function check_sql_update() {
+    $.get({
+        url:'{:Url("check_sql_update")}',
+        success: function(data) {
+            console.log(data);
+            if (data=='changed') tableBox_stu.bootstrapTable('refresh', {silent:true});
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    })
+    setTimeout(check_sql_update,1000);
+}
+check_sql_update();
 </script>
