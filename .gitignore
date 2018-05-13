@@ -5,6 +5,7 @@
 thinkphp
 .env
 /gulp-dev/node_modules
+gulp-dev\package-lock.json
 composer.lock
 output
 uploads

@@ -21,6 +21,8 @@ $(document).ready(function() {
     pageSize: 1000,
     detailView: true,
     sortName:'cid',
+    showRefresh: true,
+    showColumns: true,
     columns: [{
         field: 'cid',
         title: '课程编号',
@@ -105,6 +107,8 @@ $(document).ready(function() {
         pagination: true, //在表格底部显示分页工具栏
         onlyInfoPagination: true,
         pageSize: 1000,
+        showRefresh: true,
+        showColumns: true,
         url: "{:Url('Table/table_stu_course')}",
         queryParams: { 'cid': row['cid'] },
         columns: $columns

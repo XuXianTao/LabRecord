@@ -1,18 +1,11 @@
 <div class="container">
     <h2 style="margin-top: -25px;">{$course['name']} 第{$GLOBALS['week']}周</h2>
     <h6>{$course['sch_time_start']}-{$course['sch_time_end']}</h6>
-    <div id="toolbar">
-    </div>
-    <table class="table table-hover" id="table-stu"
-        data-toolbar="#toolbar"
-        data-search="true"
-        data-show-refresh="true"
-        data-show-columns="true">
+    <table class="table table-hover" id="table-stu">
     </table>
     <div id="info_stu"></div>
 </div>
 <script>
-
 var tableBox_stu = $('#table-stu');
 var render_time = 0;
 $(document).ready(function() {
@@ -26,8 +19,9 @@ $(document).ready(function() {
         pagination: true, //在表格底部显示分页工具栏
         onlyInfoPagination: true,
         pageSize: 1000,
-        toolbar : "#toolbar",
-        toolbarAlign: 'right',
+        search: true,
+        showRefresh: true,
+        showColumns: true,
         columns: [{
                 field: 'id',
                 title: '学号',
