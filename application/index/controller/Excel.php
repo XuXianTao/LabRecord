@@ -4,7 +4,7 @@ namespace app\index\controller;
 use think\Controller;
 use \PhpOffice\PhpSpreadsheet\Spreadsheet;
 use \PhpOffice\PhpSpreadsheet;
-
+define('DS', '/');
 class Excel extends Controller
 {
 	protected $output = '../output';
@@ -28,7 +28,9 @@ class Excel extends Controller
 		$file = request()->file('excel_stu');
 		$info = $file->move($this->uploads);
 		$file_path = $this->uploads.'/'.$info->getSaveName();
+		$file_path=str_replace('/','\\',$file_path);
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+		$reader->setReadDataOnly(true);
 		$spreadsheet = $reader->load($file_path);
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		// if (!is_dir($this->output)) mkdir($this->output);
@@ -51,8 +53,13 @@ class Excel extends Controller
 			}
 		}
 		//dump($stu_data);
+		$spreadsheet->disconnectWorksheets();
+		unset($spreadsheet);
+
+		
+
 		db('stu')->insertAll($stu_data);
-		unlink($file_path);
+		unlink(realpath($file_path));
 		$this->redirect('Home/homeEduTeacher');
 	}
 }

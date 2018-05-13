@@ -52,6 +52,10 @@ function get_present_course(&$param, $who='')
 			->column('id');
 		return 'ta';
 	}
-	return count($param);
+	if(is_array($param) || is_object($param)){
+            return count($param);
+        }else{
+            return 0;
+        }
 }
 
