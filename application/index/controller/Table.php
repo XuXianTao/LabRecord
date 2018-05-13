@@ -24,7 +24,7 @@ class Table extends Controller
 
 	//学生表单
 	public function table_stu() {
-		$result = $this->stu_list
+		$result = db('stu')
 		->where('course_id',$this->present_course['id'])
 		->select();
 		return json($result);
