@@ -1,0 +1,134 @@
+<div class="container">
+  <table class="table table-hover" id="table-ta">
+  </table>
+  <div id="info_ta"></div>
+</div>
+<script>
+var tableBox_ta = $('#table-ta');
+var render_time = 0;
+$(document).ready(function() {
+  tableBox_ta.bootstrapTable({
+    height: 650,
+    striped: true, // 隔行变色
+    method: 'post',
+    url: "{:Url('Table/table_ta')}",
+    dataType: 'json',
+    search: true, // 启用搜索框
+    showHeader: true,
+    showRefresh: true,
+    pagination: true, //在表格底部显示分页工具栏
+    onlyInfoPagination: true,
+    pageSize: 1000,
+    detailView: true,
+    columns: [{
+        field: 'id',
+        title: '学号',
+        sortable: true,
+        align: 'center',
+      },
+      {
+        field: 'name',
+        title: '姓名',
+        sortable: true,
+        align: 'center',
+      },
+      {
+        field: 'sch_year',
+        title: '工作时间',
+        sortable: true,
+        align: 'center',
+        formatter: function(value, row, index) {
+          return value + '学年  第' + row['sch_term'] + '学期<br/>' + row['sch_time'];
+        }
+      },
+      {
+        field: 'duty_time',
+        title: '工作总时长',
+        sortable: true,
+        align: 'center',
+        formatter: function(value, row, index) {
+          var hour = parseInt(value / 60 / 60);
+          var min = parseInt(value / 60 % 60);
+          var sec = value % 60;
+          return hour + '小时' + min + '分钟' + sec + '秒';
+        }
+      },
+    ],
+    onExpandRow: function(index, row, $detail) {
+      console.log($detail)
+      var $columns = [
+        {
+          field: 'week',
+          title: '周数',
+          sortable: true,
+          align: 'center',
+          formatter: function(value, row, index) {
+            return '第'+value+'周';
+          }
+        },
+        {
+          field: 'day',
+          title: '星期',
+          sortable: true,
+          align: 'center',
+          formatter: function(value, row, index) {
+            var the_week = new Array();
+            {foreach $Think.const.CN_WEEK as $k=>$v}
+            the_week.push('{$Think.const.CN_WEEK[$k]}');
+            {/foreach}
+            return '星期'+the_week[value];
+          }
+        },
+        {
+          field: 'cla',
+          title: '值班教室',
+          sortable: true,
+          align:'center',
+        },
+        {
+          field: 'sign_in',
+          title: '登录时间',
+          sortable: true,
+          align: 'center',
+        },
+        {
+          field: 'sign_out',
+          title: '登出时间',
+          sortable: true,
+          align: 'center',
+        },
+        {
+          field: 'duty_time',
+          title: '工作总时长',
+          sortable: true,
+          align: 'center',
+          formatter: function(value, row, index) {
+            var hour = parseInt(value / 60 / 60);
+            var min = parseInt(value / 60 % 60);
+            var sec = value % 60;
+            return hour + '小时' + min + '分钟' + sec + '秒';
+          }
+        },
+      ];
+      $detail.html('<table></table>').find('table').bootstrapTable({
+        height: 400,
+        striped: true, // 隔行变色
+        search: true, // 启用搜索框
+        method: 'post',
+        showHeader: true,
+        pagination: true, //在表格底部显示分页工具栏
+        onlyInfoPagination: true,
+        pageSize: 1000,
+        sortName: 'sign_in',
+        sortOrder: 'desc',
+        url: "{:Url('Table/table_ta_detail')}",
+        queryParams: { 'id': row['id'] },
+        columns: $columns
+      })
+    }
+  });
+});
+$(document).click(function() {
+  tableBox_ta.bootstrapTable('resetView');
+})
+</script>
