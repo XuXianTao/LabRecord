@@ -28,18 +28,22 @@ class Login extends Controller
 			array_push($condition,['course_id','=',$this->present_courseid[$i]['id']]);
 		}
 		if ($counts>1) array_push($condition,'or');
+		//判断在当前时间的课程中是否有这个学生
 		$stu = db('stu')
 		  ->where('id',$stu_id)
 		  ->where($condition)
 		  ->find();
 		if (!$stu) return json('学号不存在');
 		session('user',$stu);
+		//获取当前登陆周数对于学生课程来说是第几周
 		$GLOBALS['sweek'] = db('the_date')->find()['week']-$this->present_courseid[0]['sch_week_start'] + 1;
+		//获取登陆学生的签到状态
 		$stu = db('stu')
 		->where('id',session('user')['id'])
 		->where('course_id',$this->present_courseid[0]['id']);
 		$success= '签到没问题';
 		if ($stu->find()['sign_w'.$GLOBALS['sweek']]=='未签到') {
+			//更新学生的登陆时间
 			$stu->update([
 				'sign_w'.$GLOBALS['sweek'] => '已签到',
 				'signin_w'.$GLOBALS['sweek'] => date('H:i:s'),
@@ -54,6 +58,7 @@ class Login extends Controller
 	public function check_admin($admin_id,$who)
 	{
 		switch ($who) {
+			// 仪器老师登陆
 			case 'lab_teacher':
 			  $id = db('teacher')
 			  ->where("id = $admin_id and type =1")
@@ -61,6 +66,7 @@ class Login extends Controller
 			  if (!$id) return json('学号不存在');
 				session('user',$id);
 			  return json('Home/homeLabTeacher');
+			// 上课老师登陆
 			case 'edu_teacher':
 			  $id = db('teacher')
 			  ->where("id = $admin_id and type =2")
@@ -68,13 +74,14 @@ class Login extends Controller
 			  if (!$id) return json('学号不存在');
 				session('user',$id);
 			  return json('Home/homeEduTeacher');
+			// 助理登陆
 			case 'ta':
 				$id = db('ta')
 			  ->where("id = $admin_id")
 			  ->find();
 			  if (!$id) return json('学号不存在');
 				session('user',$id);
-
+				//更新助理的登陆时间
 				$GLOBALS['week'] = db('the_date')->find()['week'];
 				$data = [
 				'id' => session('user')['id'],

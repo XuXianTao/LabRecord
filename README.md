@@ -1,3 +1,101 @@
+LabRecord
+===============
+#### 本次实验用到的开源项目
+1. Bootstrapv4.0[http://wiki.jikexueyuan.com/project/bootstrap4/getting-started/introduction/]
+2. Bootstrap-table[http://bootstrap-table.wenzhixin.net.cn/zh-cn/documentation/]
+3. phpoffice/phpspreadsheet[https://phpspreadsheet.readthedocs.io/en/develop/]
+
+# Thinkphp5.1
+## 安装
+php本地安装`php composer.phar install`
+composer安装 `composer install`
+如果速度太慢就配置国内镜像Url(使用phar文件的就直接采用第二点然后`composer`换成`php composer.phar`)
+1. 全局配置`composer config -g repo.packagist composer https://packagist.phpcomposer.com`
+2. 单个项目配置`composer config repo.packagist composer https://packagist.phpcomposer.com`
+
+
+### 基本文件说明
+~~~
+controller
+├─Excel.php                   Excel文件的导入导出（学生的签到情况表）
+├─Login.php                   登陆页面的显示和逻辑处理(包括了ajax函数处理)
+├─Signup.php                  注册页面的显示和逻辑处理(包括了ajax函数处理)
+├─Home.php                    登入之后的主界面内容显示、登出逻辑处理
+└─Table.php                   表格内容的获取逻辑处理
+view
+├─layout
+│  └─common.html              每个页面都在使用的模板(head+body前半部分【也就是Logo那一栏】)
+├─login
+│  ├─login_admin.html         助理、上课老师、仪器管理老师登陆界面
+│  └─login_stu.html           学生登陆界面
+├─signup
+│  ├─signup_ta.html           助理的注册页面
+│  └─signup_teacher.html      老师的注册页面
+├─home
+│  ├─home_edu_teacher.html    上课老师主界面
+│  ├─home_lab_teacher.html    仪器管理老师主界面
+│  ├─home_stu.html            学生主界面
+│  └─hom_ta.html              助理主界面
+├─tables
+│  ├─course.html              显示所有课程信息的表格
+│  ├─student_list.html        显示当前课程的学生信息
+│  └─tas_list.html            显示所有助理的信息
+└─excel
+   └─excel.html               导入表格的页面(老师创建课程并导入学生excel)
+common.php                    公共函数get_present_course获取当前时间的课程信息
+behavior                      里面UpdateDate后期估计要去掉，现在应用在tags.php中
+~~~
+
+修改的几个配置/config
+~~~
+template.php -模板配置
+    //路径添加 5.1版本的__STATIC__等字段信息都去掉了，要手动添加
+    'tpl_replace_string' => [
+    '__ROOT__' => Request::root(),
+    '__STATIC__'=>Request::root() .'/static',
+    ],
+    //模板布局-配置到每一个html的模板信息
+    'layout_on'     =>  true,
+    'layout_name'   =>  'layout/common',
+database.php -数据库配置
+	// 数据库名
+    'database'        => 'LabRecord',
+app.php      -总体配置
+    // 默认模块名
+    'default_module'         => 'index',
+    // 默认控制器名
+    'default_controller'     => 'Login',
+    // 默认操作名
+    'default_action'         => 'loginStu',
+
+
+    // 应用调试模式->显示错误信息
+    'app_debug'              => true,
+    // 应用Trace->右下角那个logo
+    'app_trace'              => true,
+~~~
+
+路由修改/route/route.php
+~~~
+Route::rule('admin','index/login/loginAdmin');
+~~~
+
+# gulp-dev【自动化代码工具-用来修改样式】
+## 安装
+1. 安装项目
+  还没配置package.json，目前就直接`npm install --save gulp gulp-less gulp-sourcemaps gulp-postcss autoprefixer cssnano gulp-livereload browser-sync`
+2. 安装全局gulp `npm install -g gulp`
+3. 编辑器安装livereload
+4. 浏览器安装livereload
+
+## 运行
+1. `gulp`
+2. 代码编辑器开启livereload
+3. 浏览器对应页面打开livereload
+【每次修改less文件浏览器都会自动刷新】
+
+
+
 ThinkPHP 5.1
 ===============
 

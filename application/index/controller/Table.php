@@ -11,24 +11,28 @@ class Table extends Controller
 	protected $present_course;
 	public function initialize()
 	{
+		// 获取周数天数
 		$GLOBALS['day'] = date('N');
 		$GLOBALS['week'] = db('the_date')->find()['week'];
 
 		$this->ta_sign_list=db('sign_ta');
 		$this->course_list=db('course');
 		$this->stu_list=db('stu');
+		// 获取当前时间的课程信息
 		$result = get_present_course($this->present_course);
+		// TA登陆暂时没有考虑TA的时间信息，没有考虑目前是上课第几周
 		if ($result!='ta')
 			$GLOBALS['sweek'] = $GLOBALS['week']-$this->present_course['sch_week_start']+1;
 	}
 
-	//学生表单
+	//当前时间的学生表单
 	public function table_stu() {
 		$result = db('stu')
 		->where('course_id',$this->present_course['id'])
 		->select();
 		return json($result);
 	}
+	//修改当前学生表单的签到情况
 	public function edit_stu($id, $opera) {
 		$new_statu = 'null';
 		switch ($opera) {
@@ -43,11 +47,12 @@ class Table extends Controller
 		return json($stu);
 	}
 
-	//ta的表单
+	//所有TA信息
 	public function table_ta() {
 		$result = db('ta')->select();
 		return json($result);
 	}
+	//某个TA的详细登陆登出信息
 	public function table_ta_detail($id) {
 		$result = db('sign_ta')
 		->where('id', $id)
@@ -55,7 +60,7 @@ class Table extends Controller
 		return json($result);
 	}
 
-	//课程的表单
+	//所有课程的表单
 	public function table_course() {
 		return json(db('course')
 			->join('teacher','
@@ -76,6 +81,7 @@ class Table extends Controller
 			])
 			->select());
 	}
+	//删除某个课程
 	public function delete_course($id) {
 		$this->stu_list
 		->where('course_id',$id)

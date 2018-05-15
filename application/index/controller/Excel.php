@@ -32,9 +32,6 @@ class Excel extends Controller
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 		$reader->setReadDataOnly(true);
 		$spreadsheet = $reader->load($file_path);
-		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-		// if (!is_dir($this->output)) mkdir($this->output);
-		// $writer->save($this->output.'/hellp.xlsx');
 		$worksheet = $spreadsheet->getActiveSheet();
 		$hightest_row = $worksheet->getHighestRow();
 		$stu_data = $worksheet->rangeToArray(
@@ -52,13 +49,10 @@ class Excel extends Controller
 				unset($stu_data[$key][$k]);//删除原来数字key值
 			}
 		}
-		//dump($stu_data);
 		$spreadsheet->disconnectWorksheets();
 		unset($spreadsheet);
-
-		
-
 		db('stu')->insertAll($stu_data);
+///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
 		dump($file_path);
 		dump($perms = fileperms($file_path));
 		if (($perms & 0xC000) == 0xC000) {
@@ -107,12 +101,15 @@ class Excel extends Controller
 		$info .= (($perms & 0x0001) ?
 		            (($perms & 0x0200) ? 't' : 'x' ) :
 		            (($perms & 0x0200) ? 'T' : '-'));
-
 		echo $info;
-
+///////////////////////////////////////////
 
 
 		unlink(realpath($file_path));
 		$this->redirect('Home/homeEduTeacher');
+		
+		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+		// if (!is_dir($this->output)) mkdir($this->output);
+		// $writer->save($this->output.'/hellp.xlsx');
 	}
 }

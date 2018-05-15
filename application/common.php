@@ -53,6 +53,7 @@ function get_present_course(&$param, $who='')
 			->column('id');
 		return 'ta';
 	}
+	//解决php7.2出现的对于count函数的处理
 	if(is_array($param) || is_object($param)){
             return count($param);
         }else{
