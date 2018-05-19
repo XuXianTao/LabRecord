@@ -1,7 +1,7 @@
 function init() {
     var myDate = new Date();
     var uname = document.getElementById('uname');
-    if (!uname && typeof(uname) != "undefined" && uname != 0) {
+    if ((!uname && typeof(uname)!="undefined" && uname!=0 && uname!="") || uname.value=="") {
         jQuery("#welcome").html("欢迎！<br>当前时间：" +
             myDate.getFullYear().toString() + "年" + myDate.getMonth().toString() + "月" +
             myDate.getDate().toString() + "日" + myDate.getHours().toString() + "时" +
