@@ -112,4 +112,39 @@ class Excel extends Controller
 		// if (!is_dir($this->output)) mkdir($this->output);
 		// $writer->save($this->output.'/hellp.xlsx');
 	}
+	public function export_stu($course_id){
+		$stu_data = db('stu')->where('course_id',$course_id)->column(
+		'id','name','sign_w1','sign_w2','sign_w3','sign_w4',
+		'sign_w5','sign_w6','sign_w7','sign_w8','sign_w9','sign_w10');
+		if(empty($stu_data)){
+			return '课程id错误，请重试';
+		}
+		$course = db('course')->where('course_id',$course_id)->find();
+		$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+		$spreadsheet->getActiveSheet()
+			->fromArray($stu_data,NULL,'A4')
+			->setCellValue('A1',$course['sch_year']."年第".$course['sch_term']."学期".$course['name']."登记情况")
+			->mergeCells('A1:L1')
+			->setCellValue('A2','学号')
+			->mergeCells('A2:A3')
+			->setCellValue('B2','姓名')
+			->mergeCells('B2:B3')
+			->setCellValue('C2','考勤')
+			->mergeCells('C2:L2')
+			->setCellValue('C3','1')
+			->setCellValue('D3','2')
+			->setCellValue('E3','3')
+			->setCellValue('F3','4')
+			->setCellValue('G3','5')
+			->setCellValue('H3','6')
+			->setCellValue('I3','7')
+			->setCellValue('J3','8')
+			->setCellValue('K3','9')
+			->setCellValue('L3','10');
+		if (!is_dir($this->output)) mkdir($this->output);
+		$path =$this->output.$course['sch_year']."年第".$course['sch_term']."学期".$course['name']."/.xlsx";
+		$writer->save($path);
+		return $path;
+	}
 }
