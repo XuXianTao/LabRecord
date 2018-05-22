@@ -1,144 +1,143 @@
 <div class="container home-course">
-  <div class="home-course__import">
-  </div>
-  <table class="table table-hover" id="table-course"></table>
-  <div id="info_course"></div>
+    <div class="home-course__import">
+    </div>
+    <table class="table table-hover" id="table-course"></table>
+    <div id="info_course"></div>
 </div>
 <script>
-var tableBox_course = $('#table-course');
-var render_time3 = 0;
-$(document).ready(function() {
-  tableBox_course.bootstrapTable({
-    height: 650,
-    striped: true, // 隔行变色
-    method: 'post',
-    url: "{:Url('Table/table_course')}",
-    dataType: 'json',
-    search: true, // 启用搜索框
-    showHeader: true,
-    pagination: true, //在表格底部显示分页工具栏
-    onlyInfoPagination: true,
-    pageSize: 1000,
-    detailView: true,
-    sortName:'cid',
-    showRefresh: true,
-    showColumns: true,
-    columns: [{
-        field: 'cid',
-        title: '课程编号',
-        sortable: true,
-        align: 'center',
-      },
-      {
-        field: 'cname',
-        title: '课程名',
-        sortable: true,
-        align: 'center',
-      },
-      {
-        field: 'cla',
-        title: '教室',
-        sortable: true,
-        align: 'center',
-      },
-      {
-        field: 'tname',
-        title: '任课教师',
-        sortable: true,
-        align: 'center',
-        formatter: function(value, row, index) {
-          return value+"<br/>("+row['tid']+')';
-        }
-      },
-      {
-        field: 'sch_time',
-        title: '上课时间',
-        sortable: true,
-        align: 'center',
-      },
-      {
-        field: 'sch_year',
-        title: '学年',
-        sortable: true,
-        align: 'center',
-        formatter: function(value, row, index) {
-          return value+'学年<br/>第'+row['sch_term']+'学期';
-        }
-      },
-      {
-        field: 'action',
-        title: '操作',
-        sortable: true,
-        align: 'center',
-        formatter: actionFormatter_course,
-      }
-    ],
-    detailFormatter: function(index, row) {},
-    onExpandRow: function(index, row, $detail) {
-      console.log($detail)
-      var $columns = [{
-            field: 'id',
-            title: '学号',
-            sortable: true,
-            align: 'center',
-          },
-          {
-            field: 'name',
-            title: '姓名',
-            sortable: true,
-            align: 'center',
-          }
-        ];
-      for (i=1;i<=10;i++) {
-        $cell = {
-          field: 'sign_w'+i,
-          title: '第'+i+'周',
-          sortable: true,
-          align: 'center'
-        };
-        $columns.push($cell);
-      }
-      $detail.html('<table></table>').find('table').bootstrapTable({
-        height: 400,
-        striped: true, // 隔行变色
-        search: true, // 启用搜索框
-        method: 'post',
-        showHeader: true,
-        pagination: true, //在表格底部显示分页工具栏
-        onlyInfoPagination: true,
-        pageSize: 1000,
-        showRefresh: true,
-        showColumns: true,
-        url: "{:Url('Table/table_stu_course')}",
-        queryParams: { 'cid': row['cid'] },
-        columns: $columns
-      })
-    }
-  });
-});
-$(document).click(function() {
-  tableBox_course.bootstrapTable('resetView');
-})
-
-function actionFormatter_course(value, row, index) {
-  var id = row['cid'];
-  var result = "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"delete_course('" + id + "','" + index + "')\" title='删除'><span>删除</span></a>";
-  return result;
-}
-
-function delete_course(id, index) {
-  if (confirm("确定要清空数据？对应的学生信息也将清空！"))
-    $.post({
-      url: '{:Url("Table/delete_course")}',
-      data: { 'id': id },
-      success: function(data) {
-        $("#info_course").html(id + '状态修改成功');
-        console.log(data);
-        tableBox_course.bootstrapTable('refresh', { slient: true });
-      },
-      error: function() {
-        $("#info_course").html(id + '状态修改失败');
-      }
+    var tableBox_course = $('#table-course');
+    var render_time3 = 0;
+    $(document).ready(function() {
+        tableBox_course.bootstrapTable({
+            height: 650,
+            striped: true, // 隔行变色
+            method: 'post',
+            url: "{:Url('Table/table_course')}",
+            dataType: 'json',
+            search: true, // 启用搜索框
+            showHeader: true,
+            pagination: true, //在表格底部显示分页工具栏
+            onlyInfoPagination: true,
+            pageSize: 1000,
+            detailView: true,
+            sortName: 'cid',
+            showRefresh: true,
+            showColumns: true,
+            columns: [{
+                field: 'cid',
+                title: '课程编号',
+                sortable: true,
+                align: 'center',
+            }, {
+                field: 'cname',
+                title: '课程名',
+                sortable: true,
+                align: 'center',
+            }, {
+                field: 'cla',
+                title: '教室',
+                sortable: true,
+                align: 'center',
+            }, {
+                field: 'tname',
+                title: '任课教师',
+                sortable: true,
+                align: 'center',
+                formatter: function(value, row, index) {
+                    return value + "<br/>(" + row['tid'] + ')';
+                }
+            }, {
+                field: 'sch_time',
+                title: '上课时间',
+                sortable: true,
+                align: 'center',
+            }, {
+                field: 'sch_year',
+                title: '学年',
+                sortable: true,
+                align: 'center',
+                formatter: function(value, row, index) {
+                    return value + '学年<br/>第' + row['sch_term'] + '学期';
+                }
+            }, {
+                field: 'action',
+                title: '操作',
+                sortable: true,
+                align: 'center',
+                formatter: actionFormatter_course,
+            }],
+            detailFormatter: function(index, row) {},
+            onExpandRow: function(index, row, $detail) {
+                console.log($detail)
+                var $columns = [{
+                    field: 'id',
+                    title: '学号',
+                    sortable: true,
+                    align: 'center',
+                }, {
+                    field: 'name',
+                    title: '姓名',
+                    sortable: true,
+                    align: 'center',
+                }];
+                for (i = 1; i <= 10; i++) {
+                    $cell = {
+                        field: 'sign_w' + i,
+                        title: '第' + i + '周',
+                        sortable: true,
+                        align: 'center'
+                    };
+                    $columns.push($cell);
+                }
+                $detail.html('<table></table>').find('table').bootstrapTable({
+                    height: 400,
+                    striped: true, // 隔行变色
+                    search: true, // 启用搜索框
+                    method: 'post',
+                    showHeader: true,
+                    pagination: true, //在表格底部显示分页工具栏
+                    onlyInfoPagination: true,
+                    pageSize: 1000,
+                    showRefresh: true,
+                    showColumns: true,
+                    url: "{:Url('Table/table_stu_course')}",
+                    queryParams: {
+                        'cid': row['cid']
+                    },
+                    columns: $columns
+                })
+            }
+        });
+    });
+    $(document).click(function() {
+        tableBox_course.bootstrapTable('resetView');
     })
-}
+
+    function actionFormatter_course(value, row, index) {
+        var id = row['cid'];
+        var btn_export = "<a href='javascript:;' class='btn btn-primary table-btn' onclick=\"\" title='导出'><span>导出</span></a>";
+        var btn_delete = "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"delete_course('" + id + "','" + index + "')\" title='删除'><span>删除</span></a>";
+        var result = [btn_export, btn_delete];
+        return result;
+    }
+
+    function delete_course(id, index) {
+        if (confirm("确定要清空数据？对应的学生信息也将清空！"))
+            $.post({
+                url: '{:Url("Table/delete_course")}',
+                data: {
+                    'id': id
+                },
+                success: function(data) {
+                    $("#info_course").html(id + '状态修改成功');
+                    console.log(data);
+                    tableBox_course.bootstrapTable('refresh', {
+                        slient: true
+                    });
+                },
+                error: function() {
+                    $("#info_course").html(id + '状态修改失败');
+                }
+            })
+    }
 </script>
