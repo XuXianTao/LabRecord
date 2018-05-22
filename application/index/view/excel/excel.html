@@ -1,25 +1,25 @@
 <div class="container">
-  <form action="{:Url('Excel/import_stu')}" enctype="multipart/form-data" class="excel form-inline row" method="post">
-    <div class="col-md-6">
-      <div class="excel-import__title">
-        <h3>输入课程信息</h3>
-      </div><br>
-      <div class="form-group">
-        <label class="form-control-label" for="class_name">
+    <form action="{:Url('Excel/import_stu')}" enctype="multipart/form-data" class="excel form-inline row" method="post">
+        <div class="col-md-6">
+            <div class="excel-import__title">
+                <h3>输入课程信息</h3>
+            </div><br>
+            <div class="form-group">
+                <label class="form-control-label" for="class_name">
           课程名称
         </label>
-        <input class="form-control" id="class_name" type="text" name="name" placeholder="请输入课程名称...">
-      </div><br><br>
-      <div class="form-group">
-        <label class="form-control-label" for="room">
+                <input class="form-control" id="class_name" type="text" name="name" placeholder="请输入课程名称...">
+            </div><br><br>
+            <div class="form-group">
+                <label class="form-control-label" for="room">
           上课教室
         </label>
-        <input class="form-control" id="room" type="text" name="cla" placeholder="请输入上课教室...">
-      </div><br><br>
-      <div class="form-group">
-        <div class="">
-          第
-          <select class="form-control" name="sch_week">
+                <input class="form-control" id="room" type="text" name="cla" placeholder="请输入上课教室...">
+            </div><br><br>
+            <div class="form-group">
+                <div class="">
+                    第
+                    <select class="form-control" name="sch_week">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
@@ -40,14 +40,13 @@
             <option value="18">18</option>
             <option value="19">19</option>
             <option value="20">20</option>
-          </select>
-          周开始上课
-        </div>
-      </div><br><br>
-      <div class="form-group">
-        <div class="">
-          星期
-          <select class="form-control" name="sch_day">
+          </select> 周开始上课
+                </div>
+            </div><br><br>
+            <div class="form-group">
+                <div class="">
+                    星期
+                    <select class="form-control" name="sch_day">
             <option value="一">一</option>
             <option value="二">二</option>
             <option value="三">三</option>
@@ -55,14 +54,13 @@
             <option value="五">五</option>
             <option value="六">六</option>
             <option value="日">日</option>
-          </select>
-          上课
-        </div>
-      </div><br><br>
-      <div class="form-group">
-        <div class="">
-          上课时间
-          <select class="form-control" name="sch_time_start">
+          </select> 上课
+                </div>
+            </div><br><br>
+            <div class="form-group">
+                <div class="">
+                    上课时间
+                    <select class="form-control" name="sch_time_start">
             <option value="08:00">08:00</option>
             <option value="09:00">09:00</option>
             <option value="10:00">10:00</option>
@@ -79,12 +77,12 @@
             <option value="21:00">21:00</option>
             <option value="22:00">22:00</option>
           </select>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="">
-          下课时间
-          <select class="form-control" name="sch_time_end">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="">
+                    下课时间
+                    <select class="form-control" name="sch_time_end">
             <option value="08:00">08:00</option>
             <option value="09:00">09:00</option>
             <option value="10:00">10:00</option>
@@ -101,10 +99,10 @@
             <option value="21:00">21:00</option>
             <option value="22:00">22:00</option>
           </select>
-        </div>
-      </div><br><br>
-      <div class="form-group">
-        <select name="sch_year" class="form-control">
+                </div>
+            </div><br><br>
+            <div class="form-group">
+                <select name="sch_year" class="form-control">
           <option value="2018">2018</option>
           <option value="2019">2019</option>
           <option value="2020">2020</option>
@@ -112,53 +110,52 @@
           <option value="2022">2022</option>
           <option value="2023">2023</option>
           <option value="2024">2024</option>
-        </select>
-        学年
-      </div>
-      <div class="form-group">
-        <select name="sch_term" class="form-control">
+        </select> 学年
+            </div>
+            <div class="form-group">
+                <select name="sch_term" class="form-control">
           <option value="1">一</option>
           <option value="2">二</option>
           <option value="3">三</option>
-        </select>
-        学期
-      </div><br><br>
-      <div class="alert alert-warning">课程所属教师即当前登录用户</div>
-    </div>
-    <div class="col-md-6">
-      <label class="file">
+        </select> 学期
+            </div><br><br>
+            <div class="alert alert-warning">课程所属教师即当前登录用户</div>
+        </div>
+        <div class="col-md-6">
+            <label class="file">
         <input type="file" name="excel_stu" id="file">
         <span class="btn btn-primary">
           <i class="fa fa-file-excel-o fa-5x"></i><br><br>
           <div class="file-info">选择要导入的学生信息excel列表</div>
         </span>
       </label>
-      <div class="file-alert alert alert-danger">导入的Excel文件请严格按照标准</div>
-    </div>
-    <button class="btn btn-primary excel-submit" type="submit" onclick="check_excel()"><h1>提交</h1></button>
-  </form>
+            <div class="file-alert alert alert-danger">导入的Excel文件请严格按照标准</div>
+        </div>
+        <button class="btn btn-primary excel-submit" type="submit" onclick="check_excel()"><h1>提交</h1></button>
+    </form>
 </div>
 <script>
-  $('.excel').find('.form-control').blur(function() {
-    console.log($(this))
-    if ($(this).val()==='') $(this).parent('.form-group').addClass('has-error');
-  })
-  function check_excel() {
-    if ($("#file").val() == '') {
-      event.preventDefault();
-      alert('还没有上传学生excel');
-      return ;
+    $('.excel').find('.form-control').blur(function() {
+        console.log($(this))
+        if ($(this).val() === '') $(this).parent('.form-group').addClass('has-error');
+    })
+
+    function check_excel() {
+        if ($("#file").val() == '') {
+            event.preventDefault();
+            alert('还没有上传学生excel');
+            return;
+        }
+        if (!window.confirm('确认全部课程信息填写完成并已上传学生excel文件？')) {
+            event.preventDefault();
+            return;
+        }
     }
-    if (!window.confirm('确认全部课程信息填写完成并已上传学生excel文件？')) {
-      event.preventDefault();
-      return;
-    }
-  }
-  $("#file").change(function() {
-    var arr = this.value.split('\\');
-    var file_name = arr[arr.length-1];
-    $('.file-info').html(file_name);
-    $('.file .btn').addClass('btn-success');
-    $('.file .btn').removeClass('btn-primary');
-  })
+    $("#file").change(function() {
+        var arr = this.value.split('\\');
+        var file_name = arr[arr.length - 1];
+        $('.file-info').html(file_name);
+        $('.file .btn').addClass('btn-success');
+        $('.file .btn').removeClass('btn-primary');
+    })
 </script>

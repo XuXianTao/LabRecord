@@ -115,10 +115,26 @@
 
     function actionFormatter_course(value, row, index) {
         var id = row['cid'];
-        var btn_export = "<a href='javascript:;' class='btn btn-primary table-btn' onclick=\"\" title='导出'><span>导出</span></a>";
+        var btn_export = "<a href='javascript:;' class='btn btn-primary table-btn' onclick=\"export_course('" + id + "','" + index + "')\" title='导出'><span>导出</span></a>";
         var btn_delete = "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"delete_course('" + id + "','" + index + "')\" title='删除'><span>删除</span></a>";
-        var result = [btn_export, btn_delete];
+        var result = btn_export + btn_delete;
         return result;
+    }
+
+    function export_course(id, index) {
+        $.post({
+            url: '{:Url("Excel/export_stu")}',
+            data: {
+                'id': id
+            },
+            success: function(data) {
+                $("#info_course").html('导出成功');
+                console.log(data);
+            },
+            error: function() {
+                $("#info_course").html('导出失败');
+            }
+        })
     }
 
     function delete_course(id, index) {
