@@ -113,13 +113,25 @@ class Excel extends Controller
 		// $writer->save($this->output.'/hellp.xlsx');
 	}
 	public function export_stu($course_id){
-		$stu_data = db('stu')->where('course_id',$course_id)->column(
-		'id','name','sign_w1','sign_w2','sign_w3','sign_w4',
-		'sign_w5','sign_w6','sign_w7','sign_w8','sign_w9','sign_w10');
+		$stu_data = db('stu')->where('course_id',$course_id)->column('id,name,sign_w1,sign_w2,sign_w3,sign_w4,sign_w5,sign_w6
+		,sign_w7,sign_w8,sign_w9,sign_w10');
 		if(empty($stu_data)){
 			return '课程id错误，请重试';
 		}
 		$course = db('course')->where('id',$course_id)->find();
+		$stu = array('id'=>0,'name'=>1,'sign_w1'=>2,'sign_w2'=>3,'sign_w3'=>4,'sign_w4'=>5,
+		'sign_w5'=>6,'sign_w6'=>7,'sign_w7'=>8,'sign_w8'=>9,'sign_w9'=>10,'sign_w10'=>11);
+		$i = 0;
+
+		foreach($stu_data as $id => $stu_data_c){
+			foreach($stu_data_c as $key => $val){
+				$stu_data_c[$stu[$key]] = $val;
+				unset($stu_data_c[$key]);
+			}
+			$stu_data[$i] = $stu_data_c;
+			unset($stu_data[$id]);
+			$i++;
+		}
 		$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		$spreadsheet->getActiveSheet()
