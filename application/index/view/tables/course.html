@@ -125,14 +125,18 @@
         $.post({
             url: '{:Url("Excel/export_stu")}',
             data: {
-                'id': id
+                'course_id': id
             },
             success: function(data) {
                 $("#info_course").html('导出成功');
                 console.log(data);
+                tableBox_course.bootstrapTable('refresh', {
+                    slient: true
+                });
             },
-            error: function() {
+            error: function(error) {
                 $("#info_course").html('导出失败');
+                console.log(error);
             }
         })
     }

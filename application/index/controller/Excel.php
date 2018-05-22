@@ -107,7 +107,7 @@ class Excel extends Controller
 
 		unlink(realpath($file_path));
 		$this->redirect('Home/homeEduTeacher');
-		
+
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		// if (!is_dir($this->output)) mkdir($this->output);
 		// $writer->save($this->output.'/hellp.xlsx');
@@ -119,7 +119,7 @@ class Excel extends Controller
 		if(empty($stu_data)){
 			return '课程id错误，请重试';
 		}
-		$course = db('course')->where('course_id',$course_id)->find();
+		$course = db('course')->where('id',$course_id)->find();
 		$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		$spreadsheet->getActiveSheet()
@@ -143,7 +143,7 @@ class Excel extends Controller
 			->setCellValue('K3','9')
 			->setCellValue('L3','10');
 		if (!is_dir($this->output)) mkdir($this->output);
-		$path =$this->output.$course['sch_year']."年第".$course['sch_term']."学期".$course['name']."/.xlsx";
+		$path =$this->output.'/'.$course['sch_year']."年第".$course['sch_term']."学期".$course['name'].".xlsx";
 		$writer->save($path);
 		return $path;
 	}
