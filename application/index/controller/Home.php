@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 use think\Controller;
 use think\facade\Hook;
+use think\facade\Session;
 
 class Home extends Controller
 {
@@ -72,9 +73,10 @@ class Home extends Controller
 // 登出
 	public function logout_stu()
 	{
+		//dump(session('user'));
 		//记录登出时间
 		if(Session::has('user')){
-			if(!array_key_exists('course_id',session('user'))){
+			if(array_key_exists('course_id',session('user'))){
 				$stu = db('stu')
 				->where('id',session('user')['id'])
 				->where('course_id',$this->present_course['id']);

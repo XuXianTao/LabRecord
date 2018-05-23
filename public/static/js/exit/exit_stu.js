@@ -6,13 +6,13 @@ $(document).ready(function() {
         }
     }
     window.onbeforeunload = function() {
-        console.log('!isF5:'+!isF5);
+        console.log('isF5:'+isF5);
         if (!isF5) {
             return '关闭';
             $.ajax({
                 url: '{:Url("Home/logout_stu")}'
             });
-            
+
         }
     }
 });

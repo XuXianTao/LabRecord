@@ -21,6 +21,8 @@ class Login extends Controller
 						return $this->redirect('Home/homeEduTeacher');
 					}
 				}
+			}else {
+				$this->redirect('Home/homeStu');
 			}
 		}
 	}
