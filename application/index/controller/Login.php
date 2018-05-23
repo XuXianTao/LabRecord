@@ -3,10 +3,27 @@ namespace app\index\controller;
 
 use think\Controller;
 use think\Request;
+use think\facade\Session;
 
 class Login extends Controller
 {
 	protected $present_courseid;
+	// 周数更新
+	public function initialize(){
+		if(Session::has('user')){
+			if(!array_key_exists('course_id',session('user'))){
+				if(array_key_exists('duty_time',session('user'))){
+					return $this->redirect('Home/homeTa');
+				}else if (array_key_exists('type',session('user'))){
+					if(session('user')['type'] == 1){
+						return $this->redirect('Home/homeLabTeacher');
+					}else{
+						return $this->redirect('Home/homeEduTeacher');
+					}
+				}
+			}
+		}
+	}
 	public function loginStu()
 	{
 		return view();
