@@ -73,14 +73,18 @@ class Home extends Controller
 	public function logout_stu()
 	{
 		//记录登出时间
-		$stu = db('stu')
-		->where('id',session('user')['id'])
-		->where('course_id',$this->present_course['id']);
-		$stu->update([
-				'signout_w'.$GLOBALS['sweek'] => date('H:i:s'),
-			]);
-		session(null);
-		return redirect('/');
+		if(Session::has('user')){
+			if(!array_key_exists('course_id',session('user'))){
+				$stu = db('stu')
+				->where('id',session('user')['id'])
+				->where('course_id',$this->present_course['id']);
+				$stu->update([
+						'signout_w'.$GLOBALS['sweek'] => date('H:i:s'),
+					]);
+				session(null);
+				return redirect('/');
+			}
+		}
 	}
 	public function logout_admin()
 	{
