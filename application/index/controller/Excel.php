@@ -12,7 +12,7 @@ class Excel extends Controller
 	protected $uploads = '../uploads';
 	public function import_stu() {
 		//新建课程
-		/*$data_course = [
+		$data_course = [
 			'name' => input('param.name'),
 			'cla' => input('param.cla'),
 			'tea_id' => session('user')['id'],
@@ -23,15 +23,25 @@ class Excel extends Controller
 			'sch_day' => input('param.sch_day'),
 			'sch_week_start' => input('param.sch_week')
 		];
-		$cid = db('course')->insertGetId($data_course);*/
+		$cid = db('course')->insertGetId($data_course);
 
 		//读取学生excel
 		//$file = request()->file('excel_stu');
 		//$info = $file->move($this->uploads);
-		$file_path = $this->uploads.'/'.'电路与电子学实验成绩记分册_1525847227818.xlsx';//$info->getSaveName();
+		$file_name = $info->getSaveName();
+		for($i=0;$i<strlen($file_name);$i++){
+			if($file_name[$i]=='.'){
+				break;
+			}
+		}
+		$file_type = substr($file_name,$i+1);
+		$file_type = ucfirst($file_type);
+		dump($file_type);
+		$file_path = $this->uploads.'/'.$file_name;
 		$file_path=str_replace('\\','/',$file_path);
 		dump($file_path);
-		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+		$new_namespace = '\\PhpOffice\\PhpSpreadsheet\\Reader\\'.$file_type.'';
+		$reader = new $new_namespace;
 		$reader->setReadDataOnly(true);
 		$spreadsheet = $reader->load($file_path);
 		$worksheet = $spreadsheet->getActiveSheet();
@@ -71,7 +81,7 @@ class Excel extends Controller
 		}
 		$spreadsheet->disconnectWorksheets();
 		unset($spreadsheet);
-		//db('stu')->insertAll($stu_data);
+		db('stu')->insertAll($stu_data);
 ///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
 		dump($file_path);
 		dump($perms = fileperms($file_path));
@@ -126,7 +136,7 @@ class Excel extends Controller
 
 
 		unlink(realpath($file_path));
-		//$this->redirect('Home/homeEduTeacher');
+		$this->redirect('Home/homeEduTeacher');
 
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		// if (!is_dir($this->output)) mkdir($this->output);
