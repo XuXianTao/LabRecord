@@ -12,7 +12,7 @@ class Excel extends Controller
 	protected $uploads = '../uploads';
 	public function import_stu() {
 		//新建课程
-		$data_course = [
+		/*$data_course = [
 			'name' => input('param.name'),
 			'cla' => input('param.cla'),
 			'tea_id' => session('user')['id'],
@@ -23,25 +23,44 @@ class Excel extends Controller
 			'sch_day' => input('param.sch_day'),
 			'sch_week_start' => input('param.sch_week')
 		];
-		$cid = db('course')->insertGetId($data_course);
+		$cid = db('course')->insertGetId($data_course);*/
 
 		//读取学生excel
-		$file = request()->file('excel_stu');
-		$info = $file->move($this->uploads);
-		$file_path = $this->uploads.'/'.$info->getSaveName();
+		//$file = request()->file('excel_stu');
+		//$info = $file->move($this->uploads);
+		$file_path = $this->uploads.'/'.'电路与电子学实验成绩记分册_1525847227818.xlsx';//$info->getSaveName();
 		$file_path=str_replace('\\','/',$file_path);
+		dump($file_path);
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 		$reader->setReadDataOnly(true);
 		$spreadsheet = $reader->load($file_path);
 		$worksheet = $spreadsheet->getActiveSheet();
 		$hightest_row = $worksheet->getHighestRow();
+		$higntest_col = $worksheet->getHighestColumn();
+		$highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($higntest_col);
+		dump($higntest_col);
+		$row_t=0;
+		$col_t=0;
+		for ($row = 1; $row <= $hightest_row; ++$row) {
+			for($col = 1; $col <= $highestColumnIndex; ++$col) {
+				if( $worksheet->getCellByColumnAndRow($col, $row)->getValue()=='学号'){
+					$row_t = $row;
+					$col_t = $col;
+				}
+			}
+		}
+		$col_t_s=\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col_t);
+		$row_t++;
+		$col_t++;
+		dump($col_t_s.$row_t);
+		$col_t_1 =\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col_t);
 		$stu_data = $worksheet->rangeToArray(
-			'A4:B'.$hightest_row,
+			$col_t_s.$row_t.':'.($col_t_1).$hightest_row,
 			NULL,
 			TRUE,
 			TRUE,
 			FALSE
-		);
+		);//根据姓名和学号后面跟着我们要的数据和它们紧邻在一起，直接拿这两列的数据
 		$keys = array('id','name');
 		foreach ($stu_data as $key=>$val) {
 			$stu_data[$key]['course_id'] = $cid;
@@ -52,7 +71,7 @@ class Excel extends Controller
 		}
 		$spreadsheet->disconnectWorksheets();
 		unset($spreadsheet);
-		db('stu')->insertAll($stu_data);
+		//db('stu')->insertAll($stu_data);
 ///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
 		dump($file_path);
 		dump($perms = fileperms($file_path));
@@ -107,7 +126,7 @@ class Excel extends Controller
 
 
 		unlink(realpath($file_path));
-		$this->redirect('Home/homeEduTeacher');
+		//$this->redirect('Home/homeEduTeacher');
 
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		// if (!is_dir($this->output)) mkdir($this->output);
