@@ -8,7 +8,7 @@ use \PhpOffice\PhpSpreadsheet;
 define('DS', '/');
 class Excel extends Controller
 {
-	protected $output = '../output';
+    protected $output = '../output';
 	protected $uploads = '../uploads';
 	public function import_stu() {
 		//新建课程
