@@ -29,7 +29,7 @@ class Excel extends Controller
 		$file = request()->file('excel_stu');
 		$info = $file->move($this->uploads);
 		$file_path = $this->uploads.'/'.$info->getSaveName();
-		$file_path=str_replace('/','\\',$file_path);
+		$file_path=str_replace('\\','/',$file_path);
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 		$reader->setReadDataOnly(true);
 		$spreadsheet = $reader->load($file_path);
