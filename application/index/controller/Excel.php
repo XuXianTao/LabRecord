@@ -26,22 +26,51 @@ class Excel extends Controller
 		$cid = db('course')->insertGetId($data_course);
 
 		//读取学生excel
-		$file = request()->file('excel_stu');
-		$info = $file->move($this->uploads);
-		$file_path = $this->uploads.'/'.$info->getSaveName();
+		//$file = request()->file('excel_stu');
+		//$info = $file->move($this->uploads);
+		$file_name = $info->getSaveName();
+		for($i=0;$i<strlen($file_name);$i++){
+			if($file_name[$i]=='.'){
+				break;
+			}
+		}
+		$file_type = substr($file_name,$i+1);
+		$file_type = ucfirst($file_type);
+		dump($file_type);
+		$file_path = $this->uploads.'/'.$file_name;
 		$file_path=str_replace('\\','/',$file_path);
-		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+		dump($file_path);
+		$new_namespace = '\\PhpOffice\\PhpSpreadsheet\\Reader\\'.$file_type.'';
+		$reader = new $new_namespace;
 		$reader->setReadDataOnly(true);
 		$spreadsheet = $reader->load($file_path);
 		$worksheet = $spreadsheet->getActiveSheet();
 		$hightest_row = $worksheet->getHighestRow();
+		$higntest_col = $worksheet->getHighestColumn();
+		$highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($higntest_col);
+		dump($higntest_col);
+		$row_t=0;
+		$col_t=0;
+		for ($row = 1; $row <= $hightest_row; ++$row) {
+			for($col = 1; $col <= $highestColumnIndex; ++$col) {
+				if( $worksheet->getCellByColumnAndRow($col, $row)->getValue()=='学号'){
+					$row_t = $row;
+					$col_t = $col;
+				}
+			}
+		}
+		$col_t_s=\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col_t);
+		$row_t++;
+		$col_t++;
+		dump($col_t_s.$row_t);
+		$col_t_1 =\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col_t);
 		$stu_data = $worksheet->rangeToArray(
-			'A4:B'.$hightest_row,
+			$col_t_s.$row_t.':'.($col_t_1).$hightest_row,
 			NULL,
 			TRUE,
 			TRUE,
 			FALSE
-		);
+		);//根据姓名和学号后面跟着我们要的数据和它们紧邻在一起，直接拿这两列的数据
 		$keys = array('id','name');
 		foreach ($stu_data as $key=>$val) {
 			$stu_data[$key]['course_id'] = $cid;

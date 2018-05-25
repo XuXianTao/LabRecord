@@ -1,12 +1,12 @@
 <div class="container login">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
-			<form class="input-group" method="post">
+			<div class="input-group">
 				<input name="stu_id" type="text" class="form-control" placeholder="请输入学号...">
 				<span class="input-group-btn">
 					<button class="btn btn-info  btn-secondary" id="login_stu" type="button">登录</button>
 				</span>
-			</form>
+			</div>
 			<div class="alert alert-danger alert-exist" role="alert" style="display:none">
 			  <strong>错误：</strong> <span class="alert-link">学号不能为空</span>
 			</div>
@@ -19,6 +19,11 @@
 </div>
 <script>
   $(document).ready(function() {
+  	 //回车提交事件
+    $('input').keydown(function() {
+      if (event.keyCode == "13") //keyCode=13是回车键
+        $('#login_stu').click();
+    });
 	  $('#login_stu').click(function() {
 		  $(".alert-exist").css('display','none');
 	  	//学号为空
