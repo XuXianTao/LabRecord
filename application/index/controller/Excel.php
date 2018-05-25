@@ -26,8 +26,8 @@ class Excel extends Controller
 		$cid = db('course')->insertGetId($data_course);
 
 		//读取学生excel
-		//$file = request()->file('excel_stu');
-		//$info = $file->move($this->uploads);
+		$file = request()->file('excel_stu');
+		$info = $file->move($this->uploads);
 		$file_name = $info->getSaveName();
 		for($i=0;$i<strlen($file_name);$i++){
 			if($file_name[$i]=='.'){
@@ -53,10 +53,19 @@ class Excel extends Controller
 		$col_t=0;
 		for ($row = 1; $row <= $hightest_row; ++$row) {
 			for($col = 1; $col <= $highestColumnIndex; ++$col) {
+				$col_t = $col;
 				if( $worksheet->getCellByColumnAndRow($col, $row)->getValue()=='学号'){
+					dump('in');
+					while($worksheet->getCellByColumnAndRow($col, $row+1)->getValue()==NULL){
+						++$row;
+					}
 					$row_t = $row;
-					$col_t = $col;
+					break;
+					
 				}
+			}
+			if($col_t==$col){
+				break;
 			}
 		}
 		$col_t_s=\PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($col_t);
@@ -71,16 +80,23 @@ class Excel extends Controller
 			TRUE,
 			FALSE
 		);//根据姓名和学号后面跟着我们要的数据和它们紧邻在一起，直接拿这两列的数据
+		
 		$keys = array('id','name');
 		foreach ($stu_data as $key=>$val) {
 			$stu_data[$key]['course_id'] = $cid;
-			foreach ($val as $k=>$v) {
-				$stu_data[$key][$keys[$k]] = $v; //新建数据库对应键值
-				unset($stu_data[$key][$k]);//删除原来数字key值
+			if($val[0]==NULL||$val[1]==NULL||!is_string($val[0])||!is_string($val[1])){
+				unset($stu_data[$key]);
+			}else{
+				foreach ($val as $k=>$v) {
+					$stu_data[$key][$keys[$k]] = $v; //新建数据库对应键值
+					unset($stu_data[$key][$k]);//删除原来数字key值
+				}
 			}
 		}
+		dump($stu_data);
 		$spreadsheet->disconnectWorksheets();
 		unset($spreadsheet);
+		
 		db('stu')->insertAll($stu_data);
 ///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
 		dump($file_path);
