@@ -11,8 +11,16 @@ class Excel extends Controller
     protected $output = '../output';
 	protected $uploads = '../uploads';
 	public function check_data(){
-
-	}
+		$flag = db('course')->where('sch_year','=',input('param.sch_year'))
+					->where('sch_term','=',input('param.sch_term'))
+					->where('sch_day','=',input('param.sch_day'))
+					->where('cla','=',input('param.cla'))
+					->where('sch_time_start <= '.input('param.sch_time_end').' and sch_time_end >= '.input('param.sch_time_start'))
+					->where('sch_week_start <= '.input('param.sch_week_end').' and sch_week_end >= '.input('param.sch_week_start'))
+					->count();
+		dump($flag);
+		return json($flag);
+	}	
 	public function import_stu() {
 		//新建课程
 		$data_course = [
@@ -86,16 +94,20 @@ class Excel extends Controller
 			TRUE,
 			FALSE
 		);//根据姓名和学号后面跟着我们要的数据和它们紧邻在一起，直接拿这两列的数据
-		
+		dump($stu_data);
 		$keys = array('id','nam');
 		foreach ($stu_data as $key=>$val) {
 			$stu_data[$key]['course_id'] = $cid;
 			if($val[0]==NULL||$val[1]==NULL||!is_string($val[0])||!is_string($val[1])){
 				unset($stu_data[$key]);
 			}else{
-				foreach ($val as $k=>$v) {
-					$stu_data[$key][$keys[$k]] = $v; //新建数据库对应键值
-					unset($stu_data[$key][$k]);//删除原来数字key值
+				if(strlen($val[0])!=8){
+					unset($stu_data[$key]);
+				}else{
+					foreach ($val as $k=>$v) {
+						$stu_data[$key][$keys[$k]] = $v; //新建数据库对应键值
+						unset($stu_data[$key][$k]);//删除原来数字key值
+					}
 				}
 			}
 		}
@@ -183,7 +195,7 @@ class Excel extends Controller
 		}
 
 		unlink(realpath($file_path));
-		$this->redirect('Home/homeEduTeacher');
+		$this->redirect('Home/homeAdmin');
 
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		// if (!is_dir($this->output)) mkdir($this->output);
