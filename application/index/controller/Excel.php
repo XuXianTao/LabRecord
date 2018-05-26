@@ -18,8 +18,7 @@ class Excel extends Controller
 					->where('sch_time_start <= '.input('param.sch_time_end').' and sch_time_end >= '.input('param.sch_time_start'))
 					->where('sch_week_start <= '.input('param.sch_week_end').' and sch_week_end >= '.input('param.sch_week_start'))
 					->count();
-		dump($flag);
-		return $flag;
+		return json($flag);
 	}	
 	public function import_stu() {
 		//新建课程
