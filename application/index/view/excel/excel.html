@@ -1,5 +1,5 @@
 <div class="container">
-    <form action="{:Url('Excel/import_stu')}" enctype="multipart/form-data" class="excel form-inline row" method="post">
+    <form action="{:Url('Excel/import_stu')}" enctype="multipart/form-data" class="excel form-inline row" method="post" onsubmit="return check_data()">
         <!-- 课程信息区 左6列 -->
         <div class="col-md-6">
             <!-- 标题提示 -->
@@ -17,7 +17,7 @@
             <div class="form-group">
                 <label class="form-control-label" for="cla">上课教室</label>
                 <select class="form-control" name="cla">
-                    <option value="C101">C102</option>
+                    <option value="C102">C102</option>
                     <option value="C103">C103</option>
                     <option value="C105">C105</option>
                 </select>
@@ -43,7 +43,7 @@
             <!-- 开课周 -->
             <div class="form-group">
                 <div class="">
-                    第 
+                    第
                     <select class="form-control" name="sch_week_start">
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -66,7 +66,7 @@
             <!-- 结课周 -->
             <div class="form-group">
                 <div class="">
-                    第 
+                    第
                     <select class="form-control" name="sch_week_end">
                         <option value="5">5</option>
                         <option value="6">6</option>
@@ -162,7 +162,7 @@
                 </span>
             </label>
             <div class="file-alert alert alert-danger">导入的Excel文件请严格按照标准</div><br><br>
-            <button class="btn btn-primary excel-submit" type="submit" onclick="check_data()"><h1>提交</h1></button>
+            <button class="btn btn-primary excel-submit" type="submit"><h1>提交</h1></button>
         </div>
     </form>
 </div>
@@ -175,9 +175,18 @@
     })
 
     function check_data() {
-        $.ajax({
+        if ($("#file").val() == '') {
+            alert('还没有上传学生excel');
+            return false;
+        }
+        if (!window.confirm('确认全部课程信息填写完成并已上传学生excel文件？')) {
+            return false;
+        }
+        var statu = true;
+        $.post({
             url: '{:Url("Excel/check_data")}',
             dataType: "json",
+            async: false,
             data: {
                 'cla': $("select[name='cla']").val(),
                 'sch_year': $("select[name='sch_year']").val(),
@@ -189,32 +198,24 @@
                 'sch_time_end': $("select[name='sch_time_end']").val()
             },
             success: function(data) {
-                console.log(data.flag);
-                alert(data.flag);
+                console.log(data);
                 // 出错
-                if (data.flag != 0) {
-                    event.preventDefault();
-                    console.log('错误！错误信息：'+data.flag);
-                    alert('错误！错误信息：'+data.flag);
-                    return;
+                if (data != 0) {
+                    console.log('错误！错误信息：'+data);
+                    alert('错误！在同一时段的同一教室已有课程安排，请联系管理员');
+                    statu = false;
+                    return false;
                 }
             },
             error: function(data) {
-                console.log(data.flag);
+                console.log(data);
                 event.preventDefault();
-                alert('错误！错误信息：'+data.flag);
-                return;
+                alert('错误！错误信息：'+data);
+                    statu = false;
+                return false;
             }
-        })
-        if ($("#file").val() == '') {
-            event.preventDefault();
-            alert('还没有上传学生excel');
-            return;
-        }
-        if (!window.confirm('确认全部课程信息填写完成并已上传学生excel文件？')) {
-            event.preventDefault();
-            return;
-        }
+        });
+        return statu;
     }
 
     $("#file").change(function() {

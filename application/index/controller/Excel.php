@@ -8,18 +8,20 @@ use \PhpOffice\PhpSpreadsheet;
 define('DS', '/');
 class Excel extends Controller
 {
-    protected $output = '../output';
+	protected $output = '../output';
 	protected $uploads = '../uploads';
 	public function check_data(){
 		$flag = db('course')->where('sch_year','=',input('param.sch_year'))
 					->where('sch_term','=',input('param.sch_term'))
 					->where('sch_day','=',input('param.sch_day'))
 					->where('cla','=',input('param.cla'))
-					->where('sch_time_start <= '.input('param.sch_time_end').' and sch_time_end >= '.input('param.sch_time_start'))
-					->where('sch_week_start <= '.input('param.sch_week_end').' and sch_week_end >= '.input('param.sch_week_start'))
+					->where('sch_time_start','<=',input('param.sch_time_end'))
+					->where('sch_time_end','>=',input('param.sch_time_start'))
+					->where('sch_week_start','<=',input('param.sch_week_end'))
+					->where('sch_week_end','>=',input('param.sch_week_start'))
 					->count();
-		return json(['flag'=>$flag]);
-	}	
+		return json($flag);
+	}
 	public function import_stu() {
 		//新建课程
 		$data_course = [
@@ -74,7 +76,7 @@ class Excel extends Controller
 					}
 					$row_t = $row;
 					break;
-					
+
 				}
 			}
 			if($col_t==$col){
@@ -113,7 +115,7 @@ class Excel extends Controller
 		dump($stu_data);
 		$spreadsheet->disconnectWorksheets();
 		unset($spreadsheet);
-		
+
 		db('stu')->insertAll($stu_data);
 
 
@@ -212,7 +214,7 @@ class Excel extends Controller
 		->field('sign_stu.id,stat,week,stu.nam')
 		->order(['sign_stu.id','week'])
 		->select();
-		
+
 		$stu_m = [];
 		foreach($stu as $stu_i){
 			$stu_m[$stu_i['id']][0]=$stu_i['id'];
@@ -251,7 +253,7 @@ class Excel extends Controller
 			->mergeCells('B2:B3')
 			->setCellValue('C2','考勤')
 			->mergeCells("C2:$max_index_s".'2');
-		
+
 		//
 		for($i = 2;$i<$max_index;$i++){
 			$index_s = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i+1);
