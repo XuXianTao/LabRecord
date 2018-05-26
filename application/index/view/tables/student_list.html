@@ -1,5 +1,5 @@
 <div class="container">
-    <h2 style="margin-top: -25px;">{$course['name']} 第{$GLOBALS['week']}周</h2>
+    <h2 style="margin-top: -25px;">{$course['nam']} 第{$GLOBALS['week']}周</h2>
     <h6>{$course['sch_time_start']}-{$course['sch_time_end']}</h6>
     <table class="table table-hover" id="table-stu">
     </table>
@@ -29,25 +29,25 @@ $(document).ready(function() {
                 align: 'center',
             },
             {
-                field: 'name',
+                field: 'nam',
                 title: '姓名',
                 sortable: true,
                 align: 'center',
             },
             {
-                field: 'signin_w'+{$GLOBALS['sweek']},
+                field: 'sign_in',
                 title: '登入时间',
                 sortable: true,
                 align: 'center',
             },
             {
-                field: 'signout_w'+{$GLOBALS['sweek']},
+                field: 'sign_out',
                 title: '登出时间',
                 sortable: true,
                 align: 'center',
             },
             {
-                field: 'sign_w'+{$GLOBALS['sweek']},
+                field: 'stat',
                 title: '签到状态',
                 sortable: true,
                 align: 'right',
@@ -86,7 +86,7 @@ function edit_stu(id, opera, index) {
         success: function(data) {
             $("#info_stu").html(id+'状态修改成功');
             console.log(data);
-            tableBox_stu.bootstrapTable('updateCell',{index,field:'sign_w'+{$GLOBALS['sweek']},value:opera_value});
+            tableBox_stu.bootstrapTable('updateCell',{index,field:'stat',value:opera_value});
         },
         error: function() {
             $("#info_stu").html(id+'状态修改失败');

@@ -8,17 +8,19 @@
 <div class="container login">
 	<div class="row">
 		<div class="col-md-4 col-md-offset-4">
-			<form class="input-group" method="post">
+			<div class="input-group" method="post">
 				<input type="text" name="admin_id" class="form-control" placeholder="请输入学号/职工号..." value="{$Think.get.id}">
 				<span class="input-group-btn">
 					<button class="btn btn-danger btn-secondary dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" type="button">登录</button>
 					<div class="dropdown-menu dropdown-menu-login" aria-labelledby="dropdownMenu2">
-						<button class="dropdown-item" name="lab_teacher" type="button">实验室仪器管理老师登录</button>
-						<button class="dropdown-item" name="edu_teacher" type="button">上课老师登录</button>
+						<button class="dropdown-item" name="lab_teacher" type="button">仪器管理老师登录</button>
+						<button class="dropdown-item" name="edu_teacher" type="button">教学老师登录</button>
+						<button class="dropdown-item" name="com_teacher" type="button">仪器管理&教学老师登录</button>
 						<button class="dropdown-item" name="ta" type="button">助理登录</button>
+						<button class="dropdown-item" name="admin" type="button" style="display:none">ADMIN</button>
 					</div>
 				</span>
-			</form>
+			</div>
 			<div class="alert alert-danger alert-exist" role="alert" style="display:none">
 			  <strong>错误：</strong> <span class="alert-link">学号/职工号不能为空</span>
 			</div>
@@ -31,6 +33,12 @@
 
 <script>
   $(document).ready(function() {
+  	//回车提交事件
+  	$('input').keydown(function() {
+      if (event.keyCode == "13") //keyCode=13是回车键
+      	$('button[name="admin"]').click();
+    });
+
 	  $('.dropdown-menu-login .dropdown-item').click(function() {
 		  $(".alert-exist").css('display','none');
 	  	var who = this.name;
@@ -52,25 +60,25 @@
 	    			case '学号不存在':
 	    			  $(".alert-id").css('display','block');
 	    			  break;
+	    			case 'admin_account_error':
+	    			  $(".alert-id").css('display','block');
+	    			  break;
 	    			default:
 	    			  $(".alert-exist").css('display','none');
 	    			  $(".alert-id").css('display','none');
 	    			  switch (data) {
-	    			  	case 'Home/homeTa':
+	    			  	case 'Ta':
 	    			  	var str=prompt("请输入值班课室","比如A201");
-	    			  	window.location.href="{:Url('Home/homeTa')}"+'?cla='+str;
+	    			  	window.location.href="{:Url('Home/homeAdmin')}"+'?cla='+str;
 	    			  	break;
-	    			  	case 'Home/homeLabTeacher':
-	    			  	window.location.href="{:Url('Home/homeLabTeacher')}";
+	    			  	default:
+	    			  	window.location.href="{:Url('Home/homeAdmin')}";
 	    			  	break;
-	    			  	case 'Home/homeEduTeacher':
-	    			  	window.location.href="{:Url('Home/homeEduTeacher')}";
-	    			  	break;
-	    			  	default:break;
 	    			  }
 	    		}
 	    	},
 	    	error:function() {
+	    		$(".alert-id").css('display','block');
 	    		console.log('error');
 	    	}
 	    })

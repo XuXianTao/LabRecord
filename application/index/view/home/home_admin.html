@@ -1,0 +1,208 @@
+<?php
+switch (session('who')) {
+  case 'ta': define('WHO',TA); break;
+  case 'edu_teacher': define('WHO',EDU_TEACHER); break;
+  case 'lab_teacher': define('WHO',LAB_TEACHER); break;
+  case 'com_teacher': define('WHO',COM_TEACHER); break;
+  case 'admin': define('WHO',ADMIN); break;
+}
+?>
+<div class="home">
+  <nav class="home-nav navbar navbar-light bg-faded">
+    <div class="container home-nav__container">
+      <a class="navbar-brand" href="{:Url('homeAdmin')}">实验室反馈系统</a>
+      <ul class="nav nav-pills nav_tab" role="tablist">
+        {if WHO['sign_stu']}
+        <li class="nav-item">
+          <a class="nav-link" href="#stu" role="tab" data-toggle="tab">当堂学生信息</a>
+        </li>
+        {/if}
+        {if WHO['p_mechine']}
+        <li class="nav-item">
+          <a class="nav-link" href="#excp" role="tab" data-toggle="tab">故障处理</a>
+        </li>
+        {/if}
+        {if WHO['s_mechine']}
+        <li class="nav-item">
+          <a class="nav-link" href="#edu" role="tab" data-toggle="tab">故障统计</a>
+        </li>
+        {/if}
+        {if WHO['que']}
+        <li class="nav-item">
+          <a class="nav-link" href="#ques" role="tab" data-toggle="tab">问卷/小测管理</a>
+        </li>
+        {/if}
+        {if WHO['que_publish']}
+        <li class="nav-item">
+          <a class="nav-link" href="#pulished" role="tab" data-toggle="tab">已发布问卷、小测管理</a>
+        </li>
+        {/if}
+        {if WHO['course']}
+        <li class="nav-item">
+          <a class="nav-link" href="#course" role="course" data-toggle="tab">课程信息</a>
+        </li>
+        {/if}
+        {if WHO['course_import']}
+        <li class="nav-item">
+          <a class="nav-link" href="#excel" role="tab" data-toggle="tab">新建课程</a>
+        </li>
+        {/if}
+        {if WHO['ta_msg']}
+        <li class="nav-item">
+          <a class="nav-link" href="#ta_msg" role="tab" data-toggle="tab">助教留言</a>
+        </li>
+        {/if}
+        {if WHO['sign_ta']}
+        <li class="nav-item">
+          <a class="nav-link" href="#tas" role="tab" data-toggle="tab">助教信息</a>
+        </li>
+        {/if}
+        {if WHO['teachers']}
+        <li class="nav-item">
+          <a class="nav-link" href="#teachers" role="tab" data-toggle="tab">教师信息</a>
+        </li>
+        {/if}
+      </ul>
+      <a type="button" class="btn btn-danger logout" href="{:Url('logout_admin')}">登出</a>
+    </div>
+  </nav>
+  <div class="tab-content home-content">
+    <div role="tabpanel" class="tab-pane active">
+    {switch $Think.session.who}
+      {case ta}
+    <!-- 助理 -->
+      <div class="home-content-sign">
+        <strong>{$Think.session.user.nam}</strong>签到成功<br/>
+        欢迎使用实验室反馈系统
+      </div>
+      <p>
+        第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
+      </p>
+      {/case}
+      {case lab_teacher|edu_teacher}
+    <!-- 教师 -->
+      <div class="home-content-sign">
+        欢迎<strong>{$Think.session.user.nam}</strong>使用<br/>
+        实验室反馈系统
+      </div>
+      <p>
+        第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
+      </p>
+      {/case}
+      {case admin}
+    <!-- 管理员配置周数 -->
+      <div class="home-content-sign">
+        欢迎<strong>{$Think.session.user.nam}</strong>使用
+        <br/> 实验室反馈系统
+      </div>
+      <p>
+        当前第
+        <select name="now_week" id="now_week">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+          <option value="16">16</option>
+          <option value="17">17</option>
+          <option value="18">18</option>
+          <option value="19">19</option>
+          <option value="20">20</option>
+        </select>
+        周
+      </p>
+      <p>星期{$Think.const.CN_WEEK[$GLOBALS['day']]}</p>
+      <div class="alert alert-danger alert-change_week-error" role="alert" style="display:none">
+        <strong>错误：</strong> <span class="alert-link">当前周数修改失败</span>
+      </div>
+      <div class="alert alert-success alert-change_week-success" role="alert" style="display:none">
+        <strong>成功：</strong> <span class="alert-link">当前周数修改成功</span>
+      </div>
+      <!-- <div class="alert alert-info">首次操作请设置当前周数！</div> -->
+      <script>
+      $('#now_week').val({$GLOBALS['week']});
+      $('#now_week').change(function() {
+        $.post({
+          url: "{:Url('Home/change_week')}",
+          data: { 'week': $('#now_week').val() },
+          success: function(data) {
+            console.log(data);
+            setTimeout(function(){
+              alert('当前周数已修改');
+              location.reload();
+            });
+            $('.alert-change_week-success').css('display','block');
+            $('.alert-change_week-error').css('display','none');
+          },
+          error: function() {
+            $('.alert-change_week-success').css('display','none');
+            $('.alert-change_week-error').css('display','block');
+          }
+        })
+      })
+      </script>
+      {/case}
+    {/switch}
+    </div>
+    {if WHO['sign_stu']}
+    <div role="tabpanel" class="tab-pane" id="stu">
+      {include file="tables/student_list"/}
+    </div>
+    {/if}
+    {if WHO['p_mechine']}
+    <div role="tabpanel" class="tab-pane" id="excp">
+      {include file="tables/excp_class"/}
+    </div>
+    {/if}
+    {if WHO['s_mechine']}
+    <div role="tabpanel" class="tab-pane" id="edu">
+      {include file="tables/excp_statistics"}
+    </div>
+    {/if}
+    {if WHO['que']}
+    <div role="tabpanel" class="tab-pane" id="ques">
+      {include file="tables/questionnaire_test"/}
+    </div>
+    {/if}
+    {if WHO['que_publish']}
+    <div role="tabpanel" class="tab-pane" id="pulished">
+      {include file="tables/questionnaire_test_published"/}
+    </div>
+    {/if}
+    {if WHO['course']}
+    <div role="tabpanel" class="tab-pane" id="course">
+      {include file="tables/course"/}
+    </div>
+    {/if}
+    {if WHO['course_import']}
+    <div role="tabpanel" class="tab-pane" id="excel">
+      {include file="excel/excel"/}
+    </div>
+    {/if}
+    {if WHO['ta_msg']}
+    <div role="tabpanel" class="tab-pane" id="ta_msg">
+      ta_msg
+    </div>
+    {/if}
+    {if WHO['sign_ta']}
+    <div role="tabpanel" class="tab-pane" id="tas">
+      {include file="tables/tas_list"/}
+    </div>
+    {/if}
+    {if WHO['teachers']}
+    <div role="tabpanel" class="tab-pane" id="teachers">
+      teachers
+    </div>
+    {/if}
+  </div>
+</div>

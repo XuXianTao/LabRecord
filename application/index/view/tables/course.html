@@ -44,7 +44,7 @@
                 sortable: true,
                 align: 'center',
                 formatter: function(value, row, index) {
-                    return value + "<br/>(" + row['tid'] + ')';
+                    return value + "<br/>[" + row['tid'] + ']';
                 }
             }, {
                 field: 'sch_time',
@@ -75,12 +75,12 @@
                     sortable: true,
                     align: 'center',
                 }, {
-                    field: 'name',
+                    field: 'nam',
                     title: '姓名',
                     sortable: true,
                     align: 'center',
                 }];
-                for (i = 1; i <= 10; i++) {
+                for (i = row['sch_week_start']; i <= row['sch_week_end']; i++) {
                     $cell = {
                         field: 'sign_w' + i,
                         title: '第' + i + '周',

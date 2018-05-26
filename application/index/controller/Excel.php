@@ -10,10 +10,13 @@ class Excel extends Controller
 {
     protected $output = '../output';
 	protected $uploads = '../uploads';
+	public function check_data(){
+
+	}
 	public function import_stu() {
 		//新建课程
 		$data_course = [
-			'name' => input('param.name'),
+			'nam' => input('param.name'),
 			'cla' => input('param.cla'),
 			'tea_id' => session('user')['id'],
 			'sch_time_start' => input('param.sch_time_start'),
@@ -21,8 +24,11 @@ class Excel extends Controller
 			'sch_year' => input('param.sch_year'),
 			'sch_term' => input('param.sch_term'),
 			'sch_day' => input('param.sch_day'),
-			'sch_week_start' => input('param.sch_week')
+			'sch_week_start' => input('param.sch_week_start'),
+			'sch_week_end' => input('param.sch_week_end'),
+			'grp_mem_num' => input('param.grp_mem_num'),
 		];
+		dump($data_course);
 		$cid = db('course')->insertGetId($data_course);
 
 		//读取学生excel
@@ -81,7 +87,7 @@ class Excel extends Controller
 			FALSE
 		);//根据姓名和学号后面跟着我们要的数据和它们紧邻在一起，直接拿这两列的数据
 		
-		$keys = array('id','name');
+		$keys = array('id','nam');
 		foreach ($stu_data as $key=>$val) {
 			$stu_data[$key]['course_id'] = $cid;
 			if($val[0]==NULL||$val[1]==NULL||!is_string($val[0])||!is_string($val[1])){
@@ -98,6 +104,23 @@ class Excel extends Controller
 		unset($spreadsheet);
 		
 		db('stu')->insertAll($stu_data);
+
+
+		//加入对应要签到的条目
+		$sign_stu_data = [];
+		$sign_i = 0;
+		for($week = input('param.sch_week_start');$week <= input('param.sch_week_end');$week++){
+			foreach($stu_data as $key=>$val){
+				$sign_stu_data[$sign_i]['id'] = $val['id'];
+				$sign_stu_data[$sign_i]['course_id'] = $cid;
+				$sign_stu_data[$sign_i]['week'] = $week;
+				$sign_i++;
+			}
+		}
+		db('sign_stu')->insertAll($sign_stu_data);
+		unset($sign_stu_data);
+
+
 ///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
 		dump($file_path);
 		dump($perms = fileperms($file_path));
@@ -150,6 +173,14 @@ class Excel extends Controller
 		echo $info;
 ///////////////////////////////////////////
 
+		if(input('param.grp_mem_num')==1){
+			foreach ($stu_data as $key=>$val) {
+				$stu_data[$key]['stu1_id'] = $stu_data[$key]['id'];
+				unset($stu_data[$key]['nam']);
+				unset($stu_data[$key]['id']);
+			}
+			db('grp')->insertAll($stu_data);
+		}
 
 		unlink(realpath($file_path));
 		$this->redirect('Home/homeEduTeacher');
@@ -159,50 +190,70 @@ class Excel extends Controller
 		// $writer->save($this->output.'/hellp.xlsx');
 	}
 	public function export_stu($course_id){
-		$stu_data = db('stu')->where('course_id',$course_id)->column('id,name,sign_w1,sign_w2,sign_w3,sign_w4,sign_w5,sign_w6
-		,sign_w7,sign_w8,sign_w9,sign_w10');
-		if(empty($stu_data)){
+		$course = db('course')->where('id',$course_id)->find();
+		if(empty($course)){
 			return '课程id错误，请重试';
 		}
-		$course = db('course')->where('id',$course_id)->find();
-		$stu = array('id'=>0,'name'=>1,'sign_w1'=>2,'sign_w2'=>3,'sign_w3'=>4,'sign_w4'=>5,
-		'sign_w5'=>6,'sign_w6'=>7,'sign_w7'=>8,'sign_w8'=>9,'sign_w9'=>10,'sign_w10'=>11);
-		$i = 0;
+		//查找课程对应的学生的签到信息，包括id，姓名，哪一周
+		$stu = db('sign_stu')
+		->join('stu','stu.id=sign_stu.id')
+		->where('course_id',$course_id)
+		->field('id,stat,week,stu.nam')
+		->order(['id','week'])
+		->select();
+		
+		$stu_m = [];
+		foreach($stu as $stu_i){
+			$stu_m[$stu_i['id']][0]=$stu_i['id'];
+			$stu_m[$stu_i['id']][1]=$stu_i['nam'];
+			$stu_m[$stu_i['id']][$stu_i['week']-$course['sch_week_start']+2]=$stu_i['stat'];
+		}
+		//统计一个学生的签到情况
+		$stu_data = [];
 
-		foreach($stu_data as $id => $stu_data_c){
-			foreach($stu_data_c as $key => $val){
-				$stu_data_c[$stu[$key]] = $val;
-				unset($stu_data_c[$key]);
+		$i=0;
+		$max_index = 0;
+		foreach($stu_m as $stu_){
+			$stu_data[$i] = $stu_;
+			if($max_index<count($stu_)){
+				$max_index = count($stu_);
 			}
-			$stu_data[$i] = $stu_data_c;
-			unset($stu_data[$id]);
 			$i++;
 		}
+		//整理成以数字为基准的数组,并记录最大的数组宽度
+		unset($stu_m);
+		dump($stu_data);
+
 		$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-		$spreadsheet->getActiveSheet()
+		$worksheet = $spreadsheet->getActiveSheet();
+		//获取excel表的宽度
+		$max_index_s = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($max_index);
+
+		$worksheet
 			->fromArray($stu_data,NULL,'A4')
 			->setCellValue('A1',$course['sch_year']."年第".$course['sch_term']."学期".$course['name']."登记情况")
-			->mergeCells('A1:L1')
+			->mergeCells("A1:$max_index_s".'1')
 			->setCellValue('A2','学号')
 			->mergeCells('A2:A3')
 			->setCellValue('B2','姓名')
 			->mergeCells('B2:B3')
 			->setCellValue('C2','考勤')
-			->mergeCells('C2:L2')
-			->setCellValue('C3','1')
-			->setCellValue('D3','2')
-			->setCellValue('E3','3')
-			->setCellValue('F3','4')
-			->setCellValue('G3','5')
-			->setCellValue('H3','6')
-			->setCellValue('I3','7')
-			->setCellValue('J3','8')
-			->setCellValue('K3','9')
-			->setCellValue('L3','10');
+			->mergeCells("C2:$max_index_s".'2');
+		
+		//
+		for($i = 2;$i<$max_index;$i++){
+			$index_s = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i);
+			$worksheet->setCellValue($index_s.'3',$course['sch_week_start']+$i-2);
+		}
+
 		if (!is_dir($this->output)) mkdir($this->output);
 		$path =$this->output.'/'.$course['sch_year']."年第".$course['sch_term']."学期".$course['name'].".xlsx";
 		$writer->save($path);
+
+		$spreadsheet->disconnectWorksheets();
+		unset($spreadsheet);
+
 		return $path;
 	}
 }
