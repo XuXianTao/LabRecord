@@ -177,11 +177,7 @@
     function check_data() {
         $.ajax({
             url: '{:Url("Excel/check_data")}',
-<<<<<<< HEAD
-            type:'POST',
-=======
             dataType: "json",
->>>>>>> d5ce8c342684b4204501fbda6abc89ac9e0bc917
             data: {
                 'cla': $("select[name='cla']").val(),
                 'sch_year': $("select[name='sch_year']").val(),
