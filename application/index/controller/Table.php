@@ -5,8 +5,6 @@ use think\Controller;
 
 class Table extends Controller
 {
-	protected $ta_sign_list;
-	protected $course_list;
 	protected $p_course;
 	public function initialize()
 	{
@@ -14,8 +12,6 @@ class Table extends Controller
 		$GLOBALS['day'] = date('N');
 		$GLOBALS['week'] = db('the_date')->find()['week'];
 
-		$this->ta_sign_list=db('sign_ta');
-		$this->course_list=db('course');
 		// 获取当前时间的课程信息
 		get_present_course($present_course_query);
 		if (session('who')=='edu_teacher')
@@ -83,6 +79,8 @@ class Table extends Controller
 				'cla',
 				'sch_year',
 				'sch_term',
+				'sch_week_start',
+				'sch_week_end',
 				'tea.nam' =>'tname',
 				'tea.id' =>'tid'
 			])
@@ -90,17 +88,30 @@ class Table extends Controller
 	}
 	//删除某个课程
 	public function delete_course($id) {
-		$this->stu_list
+		db('stu')
 		->where('course_id',$id)
 		->delete();
-		$this->course_list->delete($id);
+		db('sign_stu')
+		->where('course_id',$id)
+		->delete();
+		db('course')->delete($id);
 		return 'success';
 	}
 
 	//读取某课程对应所有学生
 	public function table_stu_course($cid) {
-		return json($this->stu_list
-		->where('course_id',$cid)
-		->select());
+		$result = db('stu')->where('course_id',$cid)->select();
+		// 修改数组结构获取签到情况
+		for ($i = 0; $i<count($result); $i++) {
+			$sid = $result[$i]['id'];
+			$sign = db('sign_stu')
+			->where('course_id', $cid)
+			->where('id', $sid)
+			->select();
+			for ($j = 0; $j<count($sign); $j++) {
+				$result[$i]['sign_w'.$sign[$j]['week']] = $sign[$j]['stat'];
+			}
+		}
+		return json($result);
 	}
 }
