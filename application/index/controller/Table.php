@@ -91,10 +91,10 @@ class Table extends Controller
 		db('sign_stu')
 		->where('course_id',$id)
 		->delete();
-		db('stu')
+		db('grp')
 		->where('course_id',$id)
 		->delete();
-		db('grp')
+		db('stu')
 		->where('course_id',$id)
 		->delete();
 		db('course')->delete($id);

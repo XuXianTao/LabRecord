@@ -47,28 +47,7 @@ class Login extends Controller
 		session('user',$stu);
 		session('who','stu');
 		//获取登陆学生的签到状态
-		$week = db('the_date')->find()['week'];
-		$sign_stu = db('sign_stu')
-		->where('id', session('user')['id'])
-		->where('course_id', session('user')['course_id'])
-		->where('week', $week);
 		$success= '签到没问题';
-		$hostip =  $_SERVER['REMOTE_ADDR'];
-		$stat = $sign_stu->find()['stat'];
-		if ($stat =='未签到') {
-			//更新学生的登陆时间
-			$sign_stu->update([
-				'stat' => '已签到',
-				'sign_in' => date('H:i:s'),
-				'ip' => $hostip
-			]);
-			db('the_date')->update(['update_statu'=>true,'id'=>1]);
-		} else if ($stat=='已签到') {
-			$success = "已签到";
-		} else if ($stat=='已补签') {
-			$success = "已补签";
-		}
-		else $success = '签到有问题';
 		return json($success);
 	}
   //判断管理成员登录-TA、仪器管理老师、任课老师
