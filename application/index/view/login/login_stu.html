@@ -59,6 +59,12 @@
 	    			  $(".alert-exist").css('display','none');
 	    			  $(".alert-id").css('display','none');
 	    			  window.location.href="{:Url('Home/homeStu')}"+'?success=2';
+	    			  break;
+	    			case '已补签':
+	    			  $(".alert-exist").css('display','none');
+	    			  $(".alert-id").css('display','none');
+	    			  window.location.href="{:Url('Home/homeStu')}"+'?success=3';
+	    			  break;
 	    		}
 	    	},
 	    	error:function(error) {

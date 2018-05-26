@@ -64,7 +64,7 @@ define('ADMIN',[
         'sign_stu'      => FALSE,
         'p_mechine'     => TRUE,
         's_mechine'     => TRUE,
-        'que'           => TRUE,
+        'que'           => FALSE,
         'que_publish'   => TRUE,
         'course'        => TRUE,
         'course_import' => FALSE,

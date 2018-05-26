@@ -23,7 +23,7 @@ class Table extends Controller
 	//当前时间的学生表单
 	public function table_stu() {
 		$result = db('sign_stu')
-		->where('course_id',$this->p_course['id'])
+		->where('sign_stu.course_id',$this->p_course['id'])
 		->where('week', $GLOBALS['week'])
 		->join('stu', 'sign_stu.id = stu.id and sign_stu.course_id = stu.course_id')
 		->select();
@@ -88,10 +88,13 @@ class Table extends Controller
 	}
 	//删除某个课程
 	public function delete_course($id) {
+		db('sign_stu')
+		->where('course_id',$id)
+		->delete();
 		db('stu')
 		->where('course_id',$id)
 		->delete();
-		db('sign_stu')
+		db('grp')
 		->where('course_id',$id)
 		->delete();
 		db('course')->delete($id);

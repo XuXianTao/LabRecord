@@ -15,11 +15,12 @@
 	</nav>
 	<div class="tab-content home-content">
 		<div role="tabpanel" class="tab-pane active home-content-sign">
-			{$Think.session.user.name}
+			{$Think.session.user.nam}
 			<br/>
 			{present name="$_GET['success']"}
 				{if ($_GET['success']==1)}签到成功
 				{elseif ($_GET['success']==2)}你已经签到
+				{elseif ($_GET['success']==3)}你已经补签
 				{else /}你的到勤出现问题
 				<h4>请到TA处处理签到</h4>
 				{/if}

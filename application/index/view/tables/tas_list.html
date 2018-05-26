@@ -8,7 +8,7 @@ var tableBox_ta = $('#table-ta');
 var render_time = 0;
 $(document).ready(function() {
   tableBox_ta.bootstrapTable({
-    height: 650,
+    height: 600,
     striped: true, // 隔行变色
     method: 'post',
     url: "{:Url('Table/table_ta')}",
@@ -111,7 +111,7 @@ $(document).ready(function() {
         },
       ];
       $detail.html('<table></table>').find('table').bootstrapTable({
-        height: 400,
+        height: 300,
         striped: true, // 隔行变色
         search: true, // 启用搜索框
         method: 'post',
