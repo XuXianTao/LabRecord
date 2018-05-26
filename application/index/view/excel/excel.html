@@ -188,9 +188,10 @@
                 'sch_time_end': $("select[name='sch_time_end'").val()
             },
             success: function(data) {
+                console.log(data);
                 alert(data);
                 // 出错
-                if (data != 0) {
+                if (data.value != 0) {
                     event.preventDefault();
                     console.log('错误！错误信息：'+data);
                     alert('错误！错误信息：'+data);
