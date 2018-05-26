@@ -16,7 +16,7 @@ class Signup
 	{
 		$ta = [
 			'id' => input('param.id'),
-			'name' => input('param.name'),
+			'nam' => input('param.name'),
 			'sch_year' => input('param.sch_year'),
 			'sch_term' => input('param.sch_term'),
 			'sch_time' => input('param.sch_time')
@@ -28,10 +28,10 @@ class Signup
 	{
 		$teacher = [
 			'id' => input('param.id'),
-			'name' => input('param.name'),
-			'type' => input('param.type')
+			'nam' => input('param.name'),
+			'typ' => input('param.type')
 		];
-		db('teacher')->insert($teacher);
+		db('tea')->insert($teacher);
 		return $teacher;
 	}
 }

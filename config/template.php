@@ -41,4 +41,5 @@ return [
     //模板布局
     'layout_on'     =>  true,
     'layout_name'   =>  'layout/common',
+
 ];
