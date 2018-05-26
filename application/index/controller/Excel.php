@@ -11,8 +11,16 @@ class Excel extends Controller
     protected $output = '../output';
 	protected $uploads = '../uploads';
 	public function check_data(){
-
-	}
+		$flag = db('course')->where('sch_year','=',input('param.sch_year'))
+					->where('sch_term','=',input('param.sch_term'))
+					->where('sch_day','=',input('param.sch_day'))
+					->where('cla','=',input('param.cla'))
+					->where('sch_time_start <= '.input('param.sch_time_end').' and sch_time_end >= '.input('param.sch_time_start'))
+					->where('sch_week_start <= '.input('param.sch_week_end').' and sch_week_end >= '.input('param.sch_week_start'))
+					->count();
+		dump($flag);
+		return json($flag);
+	}	
 	public function import_stu() {
 		//新建课程
 		$data_course = [
@@ -86,16 +94,20 @@ class Excel extends Controller
 			TRUE,
 			FALSE
 		);//根据姓名和学号后面跟着我们要的数据和它们紧邻在一起，直接拿这两列的数据
-		
+		dump($stu_data);
 		$keys = array('id','nam');
 		foreach ($stu_data as $key=>$val) {
 			$stu_data[$key]['course_id'] = $cid;
 			if($val[0]==NULL||$val[1]==NULL||!is_string($val[0])||!is_string($val[1])){
 				unset($stu_data[$key]);
 			}else{
-				foreach ($val as $k=>$v) {
-					$stu_data[$key][$keys[$k]] = $v; //新建数据库对应键值
-					unset($stu_data[$key][$k]);//删除原来数字key值
+				if(strlen($val[0])!=8){
+					unset($stu_data[$key]);
+				}else{
+					foreach ($val as $k=>$v) {
+						$stu_data[$key][$keys[$k]] = $v; //新建数据库对应键值
+						unset($stu_data[$key][$k]);//删除原来数字key值
+					}
 				}
 			}
 		}
@@ -183,7 +195,7 @@ class Excel extends Controller
 		}
 
 		unlink(realpath($file_path));
-		$this->redirect('Home/homeEduTeacher');
+		$this->redirect('Home/homeAdmin');
 
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		// if (!is_dir($this->output)) mkdir($this->output);
@@ -197,9 +209,9 @@ class Excel extends Controller
 		//查找课程对应的学生的签到信息，包括id，姓名，哪一周
 		$stu = db('sign_stu')
 		->join('stu','stu.id=sign_stu.id')
-		->where('course_id',$course_id)
-		->field('id,stat,week,stu.nam')
-		->order(['id','week'])
+		->where('sign_stu.course_id',$course_id)
+		->field('sign_stu.id,stat,week,stu.nam')
+		->order(['sign_stu.id','week'])
 		->select();
 		
 		$stu_m = [];
@@ -222,7 +234,7 @@ class Excel extends Controller
 		}
 		//整理成以数字为基准的数组,并记录最大的数组宽度
 		unset($stu_m);
-		dump($stu_data);
+		dump($max_index);
 
 		$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
@@ -232,7 +244,7 @@ class Excel extends Controller
 
 		$worksheet
 			->fromArray($stu_data,NULL,'A4')
-			->setCellValue('A1',$course['sch_year']."年第".$course['sch_term']."学期".$course['name']."登记情况")
+			->setCellValue('A1',$course['sch_year']."年第".$course['sch_term']."学期".$course['nam']."登记情况")
 			->mergeCells("A1:$max_index_s".'1')
 			->setCellValue('A2','学号')
 			->mergeCells('A2:A3')
@@ -243,12 +255,13 @@ class Excel extends Controller
 		
 		//
 		for($i = 2;$i<$max_index;$i++){
-			$index_s = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i);
+			$index_s = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i+1);
+			dump($index_s);
 			$worksheet->setCellValue($index_s.'3',$course['sch_week_start']+$i-2);
 		}
 
 		if (!is_dir($this->output)) mkdir($this->output);
-		$path =$this->output.'/'.$course['sch_year']."年第".$course['sch_term']."学期".$course['name'].".xlsx";
+		$path =$this->output.'/'.$course['sch_year']."年第".$course['sch_term']."学期".$course['nam'].".xlsx";
 		$writer->save($path);
 
 		$spreadsheet->disconnectWorksheets();
