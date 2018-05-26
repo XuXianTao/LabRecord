@@ -156,10 +156,10 @@ create table que_a_sta (
     ratio         float                               # 占比例
 ) engine=InnoDB;
 
-alter table course add foreign key fk_course_tea(tea_id) references tea(id) ON DELETE CASCADE ON UPDATE CASCADE;
-alter table stu add foreign key fk_stu_course(course_id) references course(id) ON DELETE CASCADE ON UPDATE CASCADE;
-alter table grp add foreign key fk_grp_course(course_id) references course(id) ON DELETE CASCADE ON UPDATE CASCADE;
-alter table sign_stu add foreign key fb_sign_stu_stu(id) references stu(id) ON DELETE CASCADE ON UPDATE CASCADE;
-alter table sign_stu add foreign key fb_sign_stu_course(course_id) references course(id) ON DELETE CASCADE ON UPDATE CASCADE;
-alter table sign_stu add foreign key fb_sign_stu_ip(ip) references ip(ip) ON DELETE CASCADE ON UPDATE CASCADE;
-alter table sign_ta add foreign key fb_sign_ta_ta(id) references ta(id) ON DELETE CASCADE ON UPDATE CASCADE;
+alter table course add foreign key fk_course_tea(tea_id) references tea(id);
+alter table stu add foreign key fk_stu_course(course_id) references course(id);
+alter table grp add foreign key fk_grp_course(course_id) references course(id);
+alter table sign_stu add foreign key fb_sign_stu_stu(id) references stu(id);
+alter table sign_stu add foreign key fb_sign_stu_course(course_id) references course(id);
+alter table sign_stu add foreign key fb_sign_stu_ip(ip) references ip(ip);
+alter table sign_ta add foreign key fb_sign_ta_ta(id) references ta(id);
