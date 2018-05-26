@@ -54,7 +54,8 @@ class Login extends Controller
 		->where('week', $week);
 		$success= '签到没问题';
 		$hostip =  $_SERVER['REMOTE_ADDR'];
-		if ($sign_stu->find()['stat']=='未签到') {
+		$stat = $sign_stu->find()['stat'];
+		if ($stat =='未签到') {
 			//更新学生的登陆时间
 			$sign_stu->update([
 				'stat' => '已签到',
@@ -62,9 +63,12 @@ class Login extends Controller
 				'ip' => $hostip
 			]);
 			db('the_date')->update(['update_statu'=>true,'id'=>1]);
-		} else if ($sign_stu->find()['stat']=='已签到') {
+		} else if ($stat=='已签到') {
 			$success = "已签到";
-		} else $success = '签到有问题';
+		} else if ($stat=='已补签') {
+			$success = "已补签";
+		}
+		else $success = '签到有问题';
 		return json($success);
 	}
   //判断管理成员登录-TA、仪器管理老师、任课老师
