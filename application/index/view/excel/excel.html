@@ -127,7 +127,6 @@
                         <option value="09:40">09:40</option>
                         <option value="10:45">10:45</option>
                         <option value="11:40">11:40</option>
-                        <option value="15:05">15:05</option>
                         <option value="16:00">16:00</option>
                         <option value="17:05">17:05</option>
                         <option value="18:00">18:00</option>
@@ -145,7 +144,7 @@
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
-                        <option value="4">3</option>
+                        <option value="4">4</option>
                     </select> 人
                 </div>
             </div><br><br>
@@ -188,7 +187,16 @@
                 'sch_time_start': $("select[name='sch_time_start'").val(),
                 'sch_time_end': $("select[name='sch_time_end'").val()
             },
-            success: function(data) { console.log('数据填写没有错误') },
+            success: function(data) {
+                var index = data;
+                // 出错
+                if (index != 0) {
+                    event.preventDefault();
+                    console.log('错误！错误信息：'+data);
+                    alert('错误！错误信息：'+data);
+                    return;
+                }
+            },
             error: function(data) {
                 event.preventDefault();
                 alert('错误！错误信息：'+data);
@@ -213,4 +221,43 @@
         $('.file .btn').addClass('btn-success');
         $('.file .btn').removeClass('btn-primary');
     })
+
+    $("select[name='sch_time_start']").change(function() {
+        var val = $("select[name='sch_time_start']").val();
+        console.log("value: "+val);
+        switch(val) {
+            case "08:00": $("select[name='sch_time_end']").val("09:40"); break;
+            case "08:55": $("select[name='sch_time_end']").val("11:40"); break;
+            case "10:00": $("select[name='sch_time_end']").val("11:40"); break;
+            case "14:20": $("select[name='sch_time_end']").val("16:00"); break;
+            case "15:15": $("select[name='sch_time_end']").val("18:00"); break;
+            case "16:20": $("select[name='sch_time_end']").val("18:00"); break;
+            case "19:00": $("select[name='sch_time_end']").val("20:40"); break;
+            case "19:55": $("select[name='sch_time_end']").val("21:35"); break;
+        }
+    });
+
+    $("select[name='sch_time_end']").change(function() {
+        var val_end = $("select[name='sch_time_end']").val();
+        var arr_end = val_end.split(':');
+        var hour_end = parseInt(arr_end[0]);
+        var min_end = parseInt(arr_end[1]);
+
+        var val_start = $("select[name='sch_time_start']").val();
+        var arr_start = val_start.split(':');
+        var hour_start = parseInt(arr_start[0]);
+        var min_start = parseInt(arr_start[1]);
+
+        if ((hour_end>hour_start) || (hour_end==hour_start&&min_end>min_start)) {}
+        else {
+            switch(val_start) {
+                case "10:00": $("select[name='sch_time_end']").val("11:40"); break;
+                case "14:20": $("select[name='sch_time_end']").val("16:00"); break;
+                case "15:15": $("select[name='sch_time_end']").val("18:00"); break;
+                case "16:20": $("select[name='sch_time_end']").val("18:00"); break;
+                case "19:00": $("select[name='sch_time_end']").val("20:40"); break;
+                case "19:55": $("select[name='sch_time_end']").val("21:35"); break;
+            }
+        }
+    });
 </script>
