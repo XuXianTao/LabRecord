@@ -19,6 +19,49 @@ class Signin extends Controller
             return false;
         }
     }
+    //判断组队是否正确
+    public function check_grp_data(){
+        if(session('who')=='stu'){
+            if(session('user')){
+                $grp_src = [
+                    'course_id' => session('user')['course_id'],
+                    'stu1_id' => input('param.stu1_id'),
+                    'stu2_id' => input('param.stu2_id'),
+                    'stu3_id' => input('param.stu3_id'),
+                    'stu4_id' => input('param.stu4_id')
+                ];
+        
+                foreach($grp_src as $key=>$val){
+                    if($val==''||$val == NULL){
+                        unset($grp_src[$key]);
+                    }else{
+                        if($key!='course_id'){
+                            $stu = db('stu')->where('course_id',$course_id)
+                                            ->where('id',$val)
+                                            ->count();
+                            if($stu==0){
+                                return 1;//成员信息有误
+                            }
+                            $stu = db('grp')->where('course_id','=',$course_id)
+                            ->whereOr('stu1_id','=',$val)
+                            ->whereOr('stu2_id','=',$val)
+                            ->whereOr('stu3_id','=',$val)
+                            ->whereOr('stu4_id','=',$val)
+                            ->count();//查找学生有没有其对应的组队信息
+                            if($stu!=0){
+                                return 2;//有人重复组队
+                            }
+                        }
+                    }
+                }
+            }else{
+                return 3;//登录失效了
+            }
+        }else{
+            return 3;//登录失效了
+        }
+        return 0;//登陆没问题
+    }
     // 建立组队信息
     public function cre_grp(){
         $grp_src = [
@@ -28,37 +71,7 @@ class Signin extends Controller
             'stu3_id' => input('param.stu3_id'),
             'stu4_id' => input('param.stu4_id')
         ];
-        foreach($grp_src as $key=>$val){
-            if($val==''||$val == NULL){
-                if($key!='course_id'){
-                    if($key!='stu1_id'){
-                        unset($grp_src[$key]);
-                    }else{
-                        return '组长信息不能为空!';
-                    }
-                }else{
-                    return '学生登录失效!';
-                }
-            }else{
-                if($key!='course_id'){
-                    $stu = db('stu')->where('course_id',$course_id)
-                                    ->where('id',$val)
-                                    ->count();
-                    if($stu==0){
-                        return '成员信息有误!';
-                    }
-                    $stu = db('grp')->where('course_id','=',$course_id)
-                    ->whereOr('stu1_id','=',$val)
-                    ->whereOr('stu2_id','=',$val)
-                    ->whereOr('stu3_id','=',$val)
-                    ->whereOr('stu4_id','=',$val)
-                    ->count();//查找学生有没有其对应的组队信息
-                    if($stu!=0){
-                        return '有人重复组队!';
-                    }
-                }
-            }
-        }
+        
         $cid = db('grp')->insert($grp_src);
         return '组队成功！';
     }
