@@ -38,4 +38,16 @@
     $("#grp_mem2").css("display", "none");
     $("#grp_mem3").css("display", "none");
     $("#grp_mem4").css("display", "none");
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "{:Url('Signin/sign_in_data')}",
+        success: function(data) {
+
+        },
+        error: function(data) {
+            
+        }
+    })
 </script>

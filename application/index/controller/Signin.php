@@ -71,7 +71,7 @@ class Signin extends Controller
             'stu3_id' => input('param.stu3_id'),
             'stu4_id' => input('param.stu4_id')
         ];
-        
+        dump($grp_src);
         $cid = db('grp')->insert($grp_src);
         return '组队成功！';
     }
