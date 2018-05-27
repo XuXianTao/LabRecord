@@ -1,0 +1,114 @@
+<div class="container">
+    <form method="post" action="{:Url('Signin/cre_grp')}" enctype="multipart/form-data" onsubmit="return check_data()">
+            <div class="form-group row" name="grp_mem1">
+                <label class="col-md-4 form-control-label" for="grp_mem1">组长学号：</label>
+                <div class="col-md-8">
+                    <input class="form-control" id="grp_mem1" name="grp_mem1" type="text" placeholder="请输入组长学号" required="required">
+                </div>
+            </div>
+            <div class="form-group row" name="grp_mem2">
+                <label class="col-md-4 form-control-label" for="grp_mem2">组员学号：</label>
+                <div class="col-md-8">
+                    <input class="col-md-4 form-control" id="grp_mem2" name="grp_mem2" type="text" placeholder="请输入组员学号">
+                </div>
+            </div>
+            <div class="form-group row" name="grp_mem3">
+                <label class="col-md-4 form-control-label" for="grp_mem3">组员学号：</label>
+                <div class="col-md-8">
+                    <input class="form-control" id="grp_mem3" name="grp_mem3" type="text" placeholder="请输入组员学号">
+                </div>
+            </div>
+            <div class="form-group row" name="grp_mem4">
+                <label class="col-md-4 form-control-label" for="grp_mem4">组员学号：</label>
+                <div class="col-md-8">
+                    <input class="form-control" id="grp_mem4" name="grp_mem4" type="text" placeholder="请输入组员学号">
+                </div>
+            </div>
+                <span id="add_mem" class="btn btn-secondary">
+                    <i class="fa fa-plus fa-2x"></i>
+                </span>
+                <span id="sub_mem" class="btn btn-secondary">
+                    <i class="fa fa-minus fa-2x"></i>
+                </span><br><br>
+            <div class="alert alert-danger"><h3>组队信息务必再三确认！原则上不允许修改！</h3></div>
+            <button class="btn btn-primary" type="submit"><h4>提交</h4></button>
+    </form>
+</div>
+
+<script>
+    $("div[name=grp_mem2]").css("display", "none");
+    $("div[name=grp_mem3]").css("display", "none");
+    $("div[name=grp_mem4]").css("display", "none");
+
+    $("#add_mem").click(function() {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: '{:Url("Signin/judge_grp")}',
+            data: {
+                'num': $("div[name=grp_mem2]").css("display")=="none"? 1: $("div[name=grp_mem3]").css("display")=="none"? 2: $("div[name=grp_mem4]").css("display")=="none"? 3: 4
+            },
+            success: function(data) {
+                if (data == true) {
+                    if ($("div[name=grp_mem2]").css("display") == "none")
+                        $("div[name=grp_mem2]").css("display", "block");
+                    else if ($("div[name=grp_mem3]").css("display") == "none")
+                        $("div[name=grp_mem3]").css("display", "block");
+                    else
+                        $("div[name=grp_mem4]").css("display", "block");
+                }
+                else {
+                    alert("已经达到组队上限人数！无法再添加组员！");
+                }
+            },
+            error: function(data) {
+                console.log(data);
+                alert('错误！错误信息：'+data+'！请联系维护处理！');
+            }
+        });
+    });
+
+    $("#sub_mem").click(function() {
+        if ($("div[name=grp_mem2]").css("display") == "none")
+            alert("已经是最低组队人数！");
+        else if ($("div[name=grp_mem4]").css("display") == "block") {
+            $("div[name=grp_mem4]").css("display","none");
+            $("#grp_mem4").val("");
+        }
+        else if ($("div[name=grp_mem3]").css("display") == "block") {
+            $("div[name=grp_mem3]").css("display","none");
+            $("#grp_mem3").val("");
+        }
+        else {
+            $("div[name=grp_mem2]").css("display","none");
+            $("#grp_mem2").val("");
+        }
+    });
+
+    function check_data() {
+        var val1 = $("#grp_mem1").val();
+        var val2 = $("#grp_mem2").val();
+        var val3 = $("#grp_mem3").val();
+        var val4 = $("#grp_mem4").val();
+        if ( (val2=="" && (val3!="" || val4!="")) || (val3=="" && val4!="") ) {
+            alert("请按顺序填写信息");
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            async: false,
+            url: ,
+            data: {
+
+            },
+            success: function(data) {
+
+            },
+            error: function(data) {
+                console.log(data);
+                alert('错误！错误信息：'+data+'！请联系维护处理！');
+            }
+        })
+    }
+</script>

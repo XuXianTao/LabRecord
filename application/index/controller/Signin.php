@@ -9,6 +9,7 @@ class Signin extends Controller
 {
 	public function initialize() {
     }
+    // 点击+号调用，判断人数是否超过最多人数，超过是false
     public function judge_grp($num){
         $course_id = session('user')['course_id'];
         $course = db('course')->where('id',$course_id)->find();
@@ -18,6 +19,7 @@ class Signin extends Controller
             return false;
         }
     }
+    // 建立组队信息
     public function cre_grp(){
         $grp_src = [
 			'course_id' => session('user')['course_id'],

@@ -33,6 +33,7 @@ class Home extends Controller
 		get_present_course($this->present_course);
 	}
 // 主页显示
+// 拥有队伍数
 	public function homeStu()
 	{
 		if(session('?user')){
