@@ -83,16 +83,18 @@ class Home extends Controller
 						->whereOr('stu3_id','=',session('user')['id'])
 						->whereOr('stu4_id','=',session('user')['id'])
 						->find();
-				foreach($grp as $key=>$val){
-					if($key!='course_id'&&$key!='id'){
-						if($val){
-							$sign_stu = db('sign_stu')
-									->where('id',$val)
-									->where('course_id',session('user.course_id'))
-									->where('week',$GLOBALS['week'])
-									->update([
-											'sign_out' => date('H:i:s'),
-										]);
+				if($grp){
+					foreach($grp as $key=>$val){
+						if($key!='course_id'&&$key!='id'){
+							if($val){
+								$sign_stu = db('sign_stu')
+										->where('id',$val)
+										->where('course_id',session('user.course_id'))
+										->where('week',$GLOBALS['week'])
+										->update([
+												'sign_out' => date('H:i:s'),
+											]);
+							}
 						}
 					}
 				}
