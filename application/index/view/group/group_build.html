@@ -1,37 +1,37 @@
 <div class="container">
-    <form method="post" action="{:Url('')}" enctype="multipart/form-data" onsubmit="return check_data()">
-            <div class="form-group row" name="grp_mem1">
-                <label class="col-md-4 form-control-label" for="grp_mem1">组长学号：</label>
-                <div class="col-md-8">
-                    <input class="form-control" id="grp_mem1" name="grp_mem1" type="text" placeholder="请输入组长学号" required="required">
-                </div>
+    <form method="post" action="{:Url('Signin/cre_grp')}" enctype="multipart/form-data" onsubmit="return check_data()">
+        <div class="form-group row" name="grp_mem1">
+            <label class="col-md-4 form-control-label" for="grp_mem1">组长学号：</label>
+            <div class="col-md-8">
+                <input class="form-control" id="grp_mem1" name="grp_mem1" type="text" placeholder="请输入组长学号" required="required">
             </div>
-            <div class="form-group row" name="grp_mem2">
-                <label class="col-md-4 form-control-label" for="grp_mem2">组员学号：</label>
-                <div class="col-md-8">
-                    <input class="form-control" id="grp_mem2" name="grp_mem2" type="text" placeholder="请输入组员学号">
-                </div>
+        </div>
+        <div class="form-group row" name="grp_mem2">
+            <label class="col-md-4 form-control-label" for="grp_mem2">组员学号：</label>
+            <div class="col-md-8">
+                <input class="form-control" id="grp_mem2" name="grp_mem2" type="text" placeholder="请输入组员学号">
             </div>
-            <div class="form-group row" name="grp_mem3">
-                <label class="col-md-4 form-control-label" for="grp_mem3">组员学号：</label>
-                <div class="col-md-8">
-                    <input class="form-control" id="grp_mem3" name="grp_mem3" type="text" placeholder="请输入组员学号">
-                </div>
+        </div>
+        <div class="form-group row" name="grp_mem3">
+            <label class="col-md-4 form-control-label" for="grp_mem3">组员学号：</label>
+            <div class="col-md-8">
+                <input class="form-control" id="grp_mem3" name="grp_mem3" type="text" placeholder="请输入组员学号">
             </div>
-            <div class="form-group row" name="grp_mem4">
-                <label class="col-md-4 form-control-label" for="grp_mem4">组员学号：</label>
-                <div class="col-md-8">
-                    <input class="form-control" id="grp_mem4" name="grp_mem4" type="text" placeholder="请输入组员学号">
-                </div>
+        </div>
+        <div class="form-group row" name="grp_mem4">
+            <label class="col-md-4 form-control-label" for="grp_mem4">组员学号：</label>
+            <div class="col-md-8">
+                <input class="form-control" id="grp_mem4" name="grp_mem4" type="text" placeholder="请输入组员学号">
             </div>
-                <span id="add_mem" class="btn btn-secondary">
-                    <i class="fa fa-plus fa-2x"></i>
-                </span>
-                <span id="sub_mem" class="btn btn-secondary">
-                    <i class="fa fa-minus fa-2x"></i>
-                </span><br><br>
-            <div class="alert alert-danger"><h3>组队信息务必再三确认！原则上不允许修改！</h3></div>
-            <button class="btn btn-primary" type="submit"><h4>提交</h4></button>
+        </div>
+            <span id="add_mem" class="btn btn-secondary">
+                <i class="fa fa-plus fa-2x"></i>
+            </span>
+            <span id="sub_mem" class="btn btn-secondary">
+                <i class="fa fa-minus fa-2x"></i>
+            </span><br><br>
+        <div class="alert alert-danger"><h3>组队信息务必再三确认！原则上不允许修改！</h3></div>
+        <button class="btn btn-primary" type="submit"><h4>提交</h4></button>
     </form>
 </div>
 
@@ -85,30 +85,54 @@
         }
     });
 
-    // function check_data() {
-    //     var val1 = $("#grp_mem1").val();
-    //     var val2 = $("#grp_mem2").val();
-    //     var val3 = $("#grp_mem3").val();
-    //     var val4 = $("#grp_mem4").val();
-    //     if ( (val2=="" && (val3!="" || val4!="")) || (val3=="" && val4!="") ) {
-    //         alert("请按顺序填写信息");
-    //         return false;
-    //     }
-    //     $.ajax({
-    //         type: "POST",
-    //         dataType: "json",
-    //         async: false,
-    //         url: ,
-    //         data: {
-
-    //         },
-    //         success: function(data) {
-
-    //         },
-    //         error: function(data) {
-    //             console.log(data);
-    //             alert('错误！错误信息：'+data+'！请联系维护处理！');
-    //         }
-    //     })
-    // }
+    function check_data() {
+        var val1 = $("#grp_mem1").val();
+        var val2 = $("#grp_mem2").val();
+        var val3 = $("#grp_mem3").val();
+        var val4 = $("#grp_mem4").val();
+        if ( (val2=="" && (val3!="" || val4!="")) || (val3=="" && val4!="") ) {
+            alert("请按顺序填写信息");
+            return false;
+        }
+        if (!window.confirm('组队确认？'))
+            return false;
+        var stst = true;
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            async: false,
+            url: '{:Url("check_grp_data")}',
+            data: {
+                'stu1_id': val1,
+                'stu2_id': val2,
+                'stu3_id': val3,
+                'stu4_id': val4
+            },
+            success: function(data) {
+                if (data == 1) {
+                    alert("成员信息有误！请重新核对！");
+                    stat = false;
+                    return ;
+                }
+                else if (data == 2) {
+                    alert("存在重复组队！请重新核对！");
+                    stat = false;
+                    return ;
+                }
+                else if (data == 3) {
+                    alert("登录失效！请重新登陆！");
+                    stat = false;
+                    return ;
+                }
+                else {
+                    alert("组队信息核对完毕！")
+                }
+            },
+            error: function(data) {
+                console.log(data);
+                alert('错误！错误信息：'+data+'！请联系维护处理！');
+            }
+        });
+        return stat;
+    }
 </script>
