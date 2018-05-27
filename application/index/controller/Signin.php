@@ -84,10 +84,19 @@ class Signin extends Controller
 						->whereOr('stu3_id','=',session('user')['id'])
 						->whereOr('stu4_id','=',session('user')['id'])
                         ->find();
-            if($grp == NULL){
-                return '无组队信息!';
-            }
-            return $grp;
+                if($grp == NULL){
+                    return '无组队信息!';
+                }
+                foreach($grp as $key=>$mem){
+                    if($key != 'id' && $key !='course_id' && $grp[$key]!=NULL){
+                        $stu = db('stu')->where('course_id',session('user')['course_id'])
+                                        ->where('id',$mem)
+                                        ->field('nam,id')
+                                        ->find();
+                        $grp[$key]=$stu;
+                    }
+                }
+                return $grp;
             }
         }
         return '登录已失效!';
