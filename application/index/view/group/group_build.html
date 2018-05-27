@@ -1,5 +1,5 @@
 <div class="container">
-    <form method="post" action="{:Url('Signin/cre_grp')}" enctype="multipart/form-data" onsubmit="return check_data()">
+    <form method="post" action="{:Url('')}" enctype="multipart/form-data" onsubmit="return check_data()">
             <div class="form-group row" name="grp_mem1">
                 <label class="col-md-4 form-control-label" for="grp_mem1">组长学号：</label>
                 <div class="col-md-8">
@@ -9,7 +9,7 @@
             <div class="form-group row" name="grp_mem2">
                 <label class="col-md-4 form-control-label" for="grp_mem2">组员学号：</label>
                 <div class="col-md-8">
-                    <input class="col-md-4 form-control" id="grp_mem2" name="grp_mem2" type="text" placeholder="请输入组员学号">
+                    <input class="form-control" id="grp_mem2" name="grp_mem2" type="text" placeholder="请输入组员学号">
                 </div>
             </div>
             <div class="form-group row" name="grp_mem3">
@@ -85,30 +85,30 @@
         }
     });
 
-    function check_data() {
-        var val1 = $("#grp_mem1").val();
-        var val2 = $("#grp_mem2").val();
-        var val3 = $("#grp_mem3").val();
-        var val4 = $("#grp_mem4").val();
-        if ( (val2=="" && (val3!="" || val4!="")) || (val3=="" && val4!="") ) {
-            alert("请按顺序填写信息");
-            return false;
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            async: false,
-            url: ,
-            data: {
+    // function check_data() {
+    //     var val1 = $("#grp_mem1").val();
+    //     var val2 = $("#grp_mem2").val();
+    //     var val3 = $("#grp_mem3").val();
+    //     var val4 = $("#grp_mem4").val();
+    //     if ( (val2=="" && (val3!="" || val4!="")) || (val3=="" && val4!="") ) {
+    //         alert("请按顺序填写信息");
+    //         return false;
+    //     }
+    //     $.ajax({
+    //         type: "POST",
+    //         dataType: "json",
+    //         async: false,
+    //         url: ,
+    //         data: {
 
-            },
-            success: function(data) {
+    //         },
+    //         success: function(data) {
 
-            },
-            error: function(data) {
-                console.log(data);
-                alert('错误！错误信息：'+data+'！请联系维护处理！');
-            }
-        })
-    }
+    //         },
+    //         error: function(data) {
+    //             console.log(data);
+    //             alert('错误！错误信息：'+data+'！请联系维护处理！');
+    //         }
+    //     })
+    // }
 </script>
