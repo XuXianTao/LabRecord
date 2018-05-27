@@ -78,10 +78,10 @@
                         <option value="13">13</option>
                         <option value="14">14</option>
                         <option value="15">15</option>
-                        <option value="11">16</option>
-                        <option value="12">17</option>
-                        <option value="13">18</option>
-                        <option value="14">19</option>
+                        <option value="16">16</option>
+                        <option value="17">17</option>
+                        <option value="18">18</option>
+                        <option value="19">19</option>
                     </select> 周结课
                 </div>
             </div><br><br>
@@ -182,8 +182,9 @@
         if (!window.confirm('确认全部课程信息填写完成并已上传学生excel文件？')) {
             return false;
         }
-        var statu = true;
-        $.post({
+        var stat = true;
+        $.ajax({
+            type: "POST",
             url: '{:Url("Excel/check_data")}',
             dataType: "json",
             async: false,
@@ -203,19 +204,18 @@
                 if (data != 0) {
                     console.log('错误！错误信息：'+data);
                     alert('错误！在同一时段的同一教室已有课程安排，请联系管理员');
-                    statu = false;
+                    stat = false;
                     return false;
                 }
             },
             error: function(data) {
                 console.log(data);
-                event.preventDefault();
                 alert('错误！错误信息：'+data);
-                    statu = false;
+                stat = false;
                 return false;
             }
         });
-        return statu;
+        return stat;
     }
 
     $("#file").change(function() {
