@@ -72,7 +72,8 @@ class Signin extends Controller
         ];
         dump($grp_src);
         $cid = db('grp')->insert($grp_src);
-        return '组队成功！';
+        //return '组队成功！';
+        $this->redirect('/');
     }
     public function sign_in_data(){
         if(session('who')=='stu'){

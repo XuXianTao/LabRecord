@@ -48,7 +48,7 @@
             console.log(data);
             for (var i=1;i<=4;i++) {
                 var index = 'stu' + i +'_id';
-                if (data[index]==0) return;
+                if (data[index]==0 || data[index]==null) break;
                 $("#grp_mem"+i+">td:first-of-type").html(data[index]['id']);
                 $("#grp_mem"+i+">td:nth-of-type(2)").html(data[index]['nam']);
                 $("#grp_mem"+i).css("display", "");
