@@ -30,7 +30,7 @@ class Signin extends Controller
                     'stu3_id' => input('param.stu3_id'),
                     'stu4_id' => input('param.stu4_id')
                 ];
-        
+                $course_id = session('user')['course_id'];
                 foreach($grp_src as $key=>$val){
                     if($val==''||$val == NULL){
                         unset($grp_src[$key]);
@@ -43,7 +43,7 @@ class Signin extends Controller
                                 return 1;//成员信息有误
                             }
                             $stu = db('grp')->where('course_id','=',$course_id)
-                            ->whereOr('stu1_id','=',$val)
+                            ->where('stu1_id','=',$val)
                             ->whereOr('stu2_id','=',$val)
                             ->whereOr('stu3_id','=',$val)
                             ->whereOr('stu4_id','=',$val)
@@ -66,10 +66,10 @@ class Signin extends Controller
     public function cre_grp(){
         $grp_src = [
 			'course_id' => session('user')['course_id'],
-			'stu1_id' => input('param.stu1_id'),
-            'stu2_id' => input('param.stu2_id'),
-            'stu3_id' => input('param.stu3_id'),
-            'stu4_id' => input('param.stu4_id')
+			'stu1_id' => input('param.grp_mem1'),
+            'stu2_id' => input('param.grp_mem2'),
+            'stu3_id' => input('param.grp_mem3'),
+            'stu4_id' => input('param.grp_mem4')
         ];
         dump($grp_src);
         $cid = db('grp')->insert($grp_src);
@@ -79,7 +79,7 @@ class Signin extends Controller
         if(session('who')=='stu'){
             if(session('user')){
                 $grp = db('grp')->where('course_id','=',session('user')['course_id'])
-						->whereOr('stu1_id','=',session('user')['id'])
+						->where('stu1_id','=',session('user')['id'])
 						->whereOr('stu2_id','=',session('user')['id'])
 						->whereOr('stu3_id','=',session('user')['id'])
 						->whereOr('stu4_id','=',session('user')['id'])
@@ -137,7 +137,7 @@ class Signin extends Controller
         }else{
             return '登录已失效!';
         }
-        
-        
+
+
     }
 }

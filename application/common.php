@@ -87,4 +87,19 @@ function get_present_course(&$param)
 		->where('sch_time_start','<=',date("H:i:s"))
 		->where('sch_time_end','>=',date("H:i:s"));
 }
-
+/*
+ * @param int $sid 学生学号
+ * @param int $cid 课程号
+ * @param array &$grp 找到的第一个小组
+ * @return int 找到的小组数
+ */
+function get_group($sid, $cid, &$grp)
+{
+    $grp_query = db('grp')->where('course_id', '=', $cid)
+        ->where('stu1_id','=', $sid)
+        ->whereOr('stu2_id','=', $sid)
+        ->whereOr('stu3_id','=', $sid)
+        ->whereOr('stu4_id','=', $sid);
+    $grp = $grp_query->find();//查找学生有没有其对应的组队信息
+    return count($grp);
+}

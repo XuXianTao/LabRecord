@@ -36,17 +36,10 @@ class Home extends Controller
 // 拥有队伍数
 	public function homeStu()
 	{
-		if(session('?user')){
-			if(session('who')=='stu'){
-				$grp_stat = db('grp')->where('course_id','=',session('user')['course_id'])
-						 ->whereOr('stu1_id','=',session('user')['id'])
-						 ->whereOr('stu2_id','=',session('user')['id'])
-						 ->whereOr('stu3_id','=',session('user')['id'])
-						 ->whereOr('stu4_id','=',session('user')['id'])
-						 ->count();//查找学生有没有其对应的组队信息
-			}
-		}
-		return view()->assign(['grp_stat'=>$grp_stat]);
+		if(session('who')=='stu'){
+			$grp_stat = get_group(session('user.id'), session('user.course_id'), $grp);
+			return view()->assign(['grp_stat'=>$grp_stat]);
+		} else $this->error('你不是学生');
 	}
 	public function homeAdmin()
 	{
@@ -78,13 +71,8 @@ class Home extends Controller
 		//记录登出时间
 		if(Session::has('user')){
 			if(session('who')=='stu'){
-				$grp = db('grp')->where('course_id','=',session('user')['course_id'])
-						->whereOr('stu1_id','=',session('user')['id'])
-						->whereOr('stu2_id','=',session('user')['id'])
-						->whereOr('stu3_id','=',session('user')['id'])
-						->whereOr('stu4_id','=',session('user')['id'])
-						->find();
-				if($grp){
+				$grp_stat = get_group(session('user.id'), session('user.course_id'), $grp);
+				if($grp_stat){
 					foreach($grp as $key=>$val){
 						if($key!='course_id'&&$key!='id'){
 							if($val){

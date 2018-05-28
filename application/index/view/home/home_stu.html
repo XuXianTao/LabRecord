@@ -9,15 +9,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#edu" role="tab" data-toggle="tab">问卷填写</a>
                 </li>
-                {if ($grp_stat==0)}
-                <li class="nav-item">
-                    <a class="nav-link" href="#group_build" role="tab" data-toggle="tab">组队</a>
-                </li>
-                {else}
-                <li class="nav-item">
-                    <a class="nav-link" href="#group_information" role="tab" data-toggle="tab">队伍信息</a>
-                </li>
-                {/if}
             </ul>
             <a type="button" class="btn btn-danger logout" href="{:Url('logout_stu')}">登出</a>
 	    </div>
@@ -34,13 +25,20 @@
 				<h4>请到TA处处理签到</h4>
 				{/if}
 			{/present}
-		</div>
-		<p>
+		<h6>
 			第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
-		</p>
-		<p>
+		</h6>
+    <h6>
+        {if ($grp_stat==0)}
+            {include file="group/group_build"/}
+        {else}
+            {include file="group/group_information"/}
+        {/if}
+    </h6>
+		<h6>
 			上节课你出现的问题：{}
-		</p>
+		</h6>
+    </div>
 		<div role="tabpanel" class="tab-pane" id="excp">
 		    异常反馈
 		    {include file="feedback/stu_excp"/}
@@ -48,16 +46,7 @@
 		<div role="tabpanel" class="tab-pane" id="edu">
 		    问卷填写
 		    {include file="feedback/stu_test"/}
-        </div>
-        {if ($grp_stat==0)}
-        <div role="tabpanel" class="tab-pane" id="group_build">
-            {include file="group/group_build"/}
-        </div>
-        {else}
-        <div role="tabpanel" class="tab-pane" id="group_information">
-            {include file="group/group_information"/}
-        </div>
-        {/if}
+    </div>
 	</div>
 </div>
 
