@@ -101,5 +101,6 @@ function get_group($sid, $cid, &$grp)
         ->whereOr('stu3_id','=', $sid)
         ->whereOr('stu4_id','=', $sid);
     $grp = $grp_query->find();//查找学生有没有其对应的组队信息
-    return count($grp);
+    if($grp) return 1;
+    else return 0;
 }
