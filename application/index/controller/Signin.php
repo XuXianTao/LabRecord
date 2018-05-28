@@ -96,43 +96,29 @@ class Signin extends Controller
         }
         return '登录已失效!';
     }
-    public function sign_in(){
-        if(session('who')=='stu'){
-            if(session('user')){
-                $week = (db('the_date')>find())['week'];
-                $success=[];
-                for($i = 1;$i <= 4;$i++){
-                    if(input('param.stu'.$i.'_id')){
-                        $sign_stu = db('sign_stu')
-                                        ->where('id', input('param.stu'.$i.'_id'))
-                                        ->where('course_id', session('user')['course_id'])
-                                        ->where('week', $week);
-                        $success[$i]= '签到没问题';
-                        $hostip =  $_SERVER['REMOTE_ADDR'];
-                        $stat = $sign_stu->find()['stat'];
-                        if ($stat =='未签到') {
-                            //更新学生的登陆时间
-                            $sign_stu->update([
-                                'stat' => '已签到',
-                                'sign_in' => date('H:i:s'),
-                                'ip' => $hostip
-                            ]);
-                            db('the_date')->update(['update_statu'=>true,'id'=>1]);
-                        } else if ($stat=='已签到') {
-                            $success[$i] = "已签到";
-                        } else if ($stat=='已补签') {
-                            $success[$i] = "已补签";
-                        }
-                    }
-                }
-                return $success;
-            }else{
-                return '登录已失效!';
-            }
-        }else{
-            return '登录已失效!';
+    public function sign_in($sid){
+        $week = (db('the_date')->find())['week'];
+        $success=[];
+        $sign_stu = db('sign_stu')
+                        ->where('id', $sid)
+                        ->where('course_id', session('user')['course_id'])
+                        ->where('week', $week);
+        $success[$i]= '签到没问题';
+        $hostip =  $_SERVER['REMOTE_ADDR'];
+        $stat = $sign_stu->find()['stat'];
+        if ($stat =='未签到') {
+            //更新学生的登陆时间
+            $sign_stu->update([
+                'stat' => '已签到',
+                'sign_in' => date('H:i:s'),
+                'ip' => $hostip
+            ]);
+            db('the_date')->update(['update_statu'=>true,'id'=>1]);
+        } else if ($stat=='已签到') {
+            $success[$i] = "已签到";
+        } else if ($stat=='已补签') {
+            $success[$i] = "已补签";
         }
-
-
+        return $success;
     }
 }
