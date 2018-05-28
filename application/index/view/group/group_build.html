@@ -39,7 +39,7 @@
     $("div[name=grp_mem2]").css("display", "none");
     $("div[name=grp_mem3]").css("display", "none");
     $("div[name=grp_mem4]").css("display", "none");
-    //点击加号判断人数上限
+    // 点击加号判断人数上限
     $("#add_mem").click(function() {
         $.ajax({
             type: "POST",
@@ -50,12 +50,18 @@
             },
             success: function(data) {
                 if (data == true) {
-                    if ($("div[name=grp_mem2]").css("display") == "none")
+                    if ($("div[name=grp_mem2]").css("display") == "none") {
                         $("div[name=grp_mem2]").css("display", "block");
-                    else if ($("div[name=grp_mem3]").css("display") == "none")
+                        $("#grp_mem2").prop("required","true");
+                    }
+                    else if ($("div[name=grp_mem3]").css("display") == "none") {
                         $("div[name=grp_mem3]").css("display", "block");
-                    else
+                        $("#grp_mem3").prop("required","true");
+                    }
+                    else {
                         $("div[name=grp_mem4]").css("display", "block");
+                        $("#grp_mem4").prop("required","true");
+                    }
                 }
                 else {
                     alert("已经达到组队上限人数！无法再添加组员！");
@@ -67,21 +73,24 @@
             }
         });
     });
-    //点击减号判断人数
+    // 点击减号判断人数
     $("#sub_mem").click(function() {
         if ($("div[name=grp_mem2]").css("display") == "none")
             alert("已经是最低组队人数！");
         else if ($("div[name=grp_mem4]").css("display") == "block") {
             $("div[name=grp_mem4]").css("display","none");
             $("#grp_mem4").val("");
+            $("#grp_mem4").prop("required","false");
         }
         else if ($("div[name=grp_mem3]").css("display") == "block") {
             $("div[name=grp_mem3]").css("display","none");
             $("#grp_mem3").val("");
+            $("#grp_mem3").prop("required","false");
         }
         else {
             $("div[name=grp_mem2]").css("display","none");
             $("#grp_mem2").val("");
+            $("#grp_mem2").prop("required","false");
         }
     });
     //点击提交判断成员信息
