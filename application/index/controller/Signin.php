@@ -21,34 +21,33 @@ class Signin extends Controller
     }
     //判断组队是否正确
     public function check_grp_data(){
+        $result = [];
         if(session('who')=='stu'){
             if(session('user')){
+                $cid = session('user.course_id');
+                $sid = session('user.id');
                 $grp_src = [
-                    'course_id' => session('user')['course_id'],
+                    'course_id' => $cid,
                     'stu1_id' => input('param.stu1_id'),
                     'stu2_id' => input('param.stu2_id'),
                     'stu3_id' => input('param.stu3_id'),
                     'stu4_id' => input('param.stu4_id')
                 ];
-                $course_id = session('user')['course_id'];
                 foreach($grp_src as $key=>$val){
                     if($val==''||$val == NULL){
                         unset($grp_src[$key]);
                     }else{
                         if($key!='course_id'){
-                            $stu = db('stu')->where('course_id',$course_id)
+                            $stu = db('stu')->where('course_id',$cid)
                                             ->where('id',$val)
-                                            ->count();
-                            if($stu==0){
+                                            ->find();
+                            array_push($result, $stu);
+                            if(empty($stu)){
                                 return 1;//成员信息有误
                             }
-                            $stu = db('grp')->where('course_id','=',$course_id)
-                            ->where('stu1_id','=',$val)
-                            ->whereOr('stu2_id','=',$val)
-                            ->whereOr('stu3_id','=',$val)
-                            ->whereOr('stu4_id','=',$val)
-                            ->count();//查找学生有没有其对应的组队信息
-                            if($stu!=0){
+                            $stu_num = get_group($sid, $cid, $grp);
+                            //查找学生有没有其对应的组队信息
+                            if($stu_num!=0){
                                 return 2;//有人重复组队
                             }
                         }
@@ -60,7 +59,7 @@ class Signin extends Controller
         }else{
             return 3;//登录失效了
         }
-        return 0;//登陆没问题
+        return json($result);//登陆没问题
     }
     // 建立组队信息
     public function cre_grp(){
@@ -78,25 +77,20 @@ class Signin extends Controller
     public function sign_in_data(){
         if(session('who')=='stu'){
             if(session('user')){
-                $grp = db('grp')->where('course_id','=',session('user')['course_id'])
-						->where('stu1_id','=',session('user')['id'])
-						->whereOr('stu2_id','=',session('user')['id'])
-						->whereOr('stu3_id','=',session('user')['id'])
-						->whereOr('stu4_id','=',session('user')['id'])
-                        ->find();
-                if($grp == NULL){
+                $grp_num = get_group(session('user.id'),session('user.course_id'),$grp);
+                if($grp_num == 0){
                     return '无组队信息!';
                 }
                 foreach($grp as $key=>$mem){
-                    if($key != 'id' && $key !='course_id' && $grp[$key]!=NULL){
-                        $stu = db('stu')->where('course_id',session('user')['course_id'])
+                    if(preg_match("/^stu[1-4]_id$/",$key)  && $grp[$key]!=0){
+                        $stu = db('stu')->where('course_id',session('user.course_id'))
                                         ->where('id',$mem)
                                         ->field('nam,id')
                                         ->find();
                         $grp[$key]=$stu;
                     }
                 }
-                return $grp;
+                return json($grp);
             }
         }
         return '登录已失效!';
