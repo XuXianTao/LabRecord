@@ -98,12 +98,11 @@ class Signin extends Controller
     }
     public function sign_in($sid){
         $week = (db('the_date')->find())['week'];
-        $success=[];
         $sign_stu = db('sign_stu')
                         ->where('id', $sid)
                         ->where('course_id', session('user')['course_id'])
                         ->where('week', $week);
-        $success[$i]= '签到没问题';
+        $success= '签到没问题';
         $hostip =  $_SERVER['REMOTE_ADDR'];
         $stat = $sign_stu->find()['stat'];
         if ($stat =='未签到') {
@@ -115,9 +114,9 @@ class Signin extends Controller
             ]);
             db('the_date')->update(['update_statu'=>true,'id'=>1]);
         } else if ($stat=='已签到') {
-            $success[$i] = "已签到";
+            $success = "已签到";
         } else if ($stat=='已补签') {
-            $success[$i] = "已补签";
+            $success = "已补签";
         }
         return $success;
     }
