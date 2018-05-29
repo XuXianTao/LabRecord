@@ -33,7 +33,11 @@ class Login extends Controller
 		$this->present_course = $present_course_query->select();
 		$counts = count($this->present_course);
 		//整理成选择条件
-		$condition = [];
+		if($counts>0){
+			$condition = [];
+		}else{
+			return json('学号不存在');
+		}
 		for ($i=0;$i<$counts;$i++) {
 			array_push($condition,['course_id','=',$this->present_course[$i]['id']]);
 		}
