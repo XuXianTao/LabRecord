@@ -75,13 +75,10 @@
                     },
                     success: function(data) {
                         console.log('签到状态检索：'+data);
-                        if (data == 1) {
-                            $("#btn_signin_mem"+i).html("已签到");
-                            $("#btn_signin_mem"+i).attr("disabled",true);
-                            $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
-                            $("#btn_signin_mem"+i).addClass("btn-secondary-outline");
-                        }
-                            
+                        $("#btn_signin_mem"+i).html(data);
+                        $("#btn_signin_mem"+i).attr("disabled",true);
+                        $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
+                        $("#btn_signin_mem"+i).addClass("btn-secondary-outline");
                     },
                     error: function(data) {
                         console.log(data);
