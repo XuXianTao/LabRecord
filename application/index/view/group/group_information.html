@@ -78,8 +78,8 @@
                         },
                         success: function(data) {
                             console.log(data);
-                            domEle.html("已签到");
-                            domEle.attr("disabled",true);
+                            $(this).html("已签到");
+                            $(this).attr("disabled",true);
                         },
                         error: function(data) {
                             console.log(data);
