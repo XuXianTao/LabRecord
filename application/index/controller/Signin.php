@@ -103,11 +103,7 @@ class Signin extends Controller
                         ->where('course_id', session('user')['course_id'])
                         ->where('week', $week);
         $stat = $sign_stu->find()['stat'];
-        if ($stat =='已签到' || $stat=='已补签') {
-            return 1;
-        }else{
-            return 0;
-        }
+        return $stat;
     }
 
     public function sign_in($sid){
