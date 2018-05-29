@@ -78,8 +78,18 @@
                         if (data != '未签到') {
                             $("#btn_signin_mem"+i).html(data);
                             $("#btn_signin_mem"+i).attr("disabled",true);
+                        }
+                        if (data == '缺勤') {
                             $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
-                            $("#btn_signin_mem"+i).addClass("btn-secondary-outline");
+                            $("#btn_signin_mem"+i).addClass("btn-danger-outline");
+                        }
+                        else if (data == '已补签') {
+                            $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
+                            $("#btn_signin_mem"+i).addClass("btn-warning-outline");
+                        }
+                        else if (data == '已请假') {
+                            $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
+                            $("#btn_signin_mem"+i).addClass("btn-success-outline");
                         }
                     },
                     error: function(data) {
