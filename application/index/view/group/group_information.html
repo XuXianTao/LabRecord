@@ -63,23 +63,21 @@
                 $("#grp_mem"+i+">td:nth-of-type(3)").html('<button class="btn btn-primary-outline" id="btn_signin_mem'+i+'" name="btn_signin_mem'+i+'">签到</button>');
                 $("#grp_mem"+i).css("display", "");
                 console.log(data[index]);
-            }
-            // 添加点击事件
-            $('button[name^="btn_signin_mem"]').each(function(index,domEle) {
-                domEle.addEventListener("click", function() {
-                    console.log($("#grp_mem"+(index+1)+">td:first-of-type").text());
+                // 添加点击事件
+                $("#btn_signin_mem"+i).click(function() {
+                    console.log($("#grp_mem"+i+">td:first-of-type").text());
                     $.ajax({
                         type: "POST",
                         dataType: "json",
                         async: false,
                         url: '{:Url("Signin/sign_in")}',
                         data: {
-                            'sid': $("#grp_mem"+(index+1)+">td:first-of-type").text()
+                            'sid': $("#grp_mem"+i+">td:first-of-type").text()
                         },
                         success: function(data) {
-                            console.log(data);
-                            $(this).html("已签到");
-                            $(this).attr("disabled",true);
+                            console.log('点击签到按钮后状态：'+data);
+                            $("#btn_signin_mem"+i).html(data);
+                            $("#btn_signin_mem"+i).attr("disabled",true);
                         },
                         error: function(data) {
                             console.log(data);
@@ -87,7 +85,26 @@
                         }
                     })
                 })
-            })
+                // 设定按钮初始状态
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    url: '{:Url("Signin/sign_in_stat")}',
+                    data: {
+                        'sid': $("#grp_mem"+i+">td:first-of-type").text()
+                    },
+                    success: function(data) {
+                        console.log('签到状态检索：'+data);
+                        if (data == 1)
+                            $("#btn_signin_mem"+i).attr("disabled",true);
+                    },
+                    error: function(data) {
+                        console.log(data);
+                        alert('错误！错误信息： '+data+ ' ！请联系维护处理！');
+                    }
+                })
+            }
         },
         error: function(data) {
             console.log(data);
