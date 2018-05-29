@@ -96,6 +96,20 @@ class Signin extends Controller
         }
         return '登录已失效!';
     }
+    public function sign_in_stat($sid){
+        $week = (db('the_date')->find())['week'];
+        $stat = db('sign_stu')
+                        ->where('id', $sid)
+                        ->where('course_id', session('user')['course_id'])
+                        ->where('week', $week)
+                        ->find()['stat'];
+        if ($stat =='已签到' || stat=='已补签') {
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
     public function sign_in($sid){
         $week = (db('the_date')->find())['week'];
         $sign_stu = db('sign_stu')
