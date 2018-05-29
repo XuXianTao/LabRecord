@@ -159,7 +159,6 @@ create table que_a_sta (
 alter table course add foreign key fk_course_tea(tea_id) references tea(id);
 alter table stu add foreign key fk_stu_course(course_id) references course(id);
 alter table grp add foreign key fk_grp_course(course_id) references course(id);
-alter table sign_stu add foreign key fb_sign_stu_stu(id) references stu(id);
-alter table sign_stu add foreign key fb_sign_stu_course(course_id) references course(id);
+alter table sign_stu add foreign key fb_sign_stu_stu(id,course_id) references stu(id,course_id);
 alter table sign_stu add foreign key fb_sign_stu_ip(ip) references ip(ip);
 alter table sign_ta add foreign key fb_sign_ta_ta(id) references ta(id);
