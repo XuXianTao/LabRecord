@@ -76,7 +76,7 @@
                         },
                         success: function(data) {
                             console.log('点击签到按钮后状态：'+data);
-                            $("#btn_signin_mem"+i).html(data);
+                            $("#btn_signin_mem"+i).html("已签到");
                             $("#btn_signin_mem"+i).attr("disabled",true);
                             $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
                             $("#btn_signin_mem"+i).addClass("btn-secondary-outline");
