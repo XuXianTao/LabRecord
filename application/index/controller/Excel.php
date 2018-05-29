@@ -257,7 +257,7 @@ class Excel extends Controller
 		//
 		for($i = 2;$i<$max_index;$i++){
 			$index_s = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($i+1);
-			dump($index_s);
+			//dump($index_s);
 			$worksheet->setCellValue($index_s.'3',$course['sch_week_start']+$i-2);
 		}
 
