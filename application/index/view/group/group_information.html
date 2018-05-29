@@ -63,59 +63,197 @@
                 $("#grp_mem"+i+">td:nth-of-type(3)").html('<button class="btn btn-primary-outline" id="btn_signin_mem'+i+'" name="btn_signin_mem'+i+'">签到</button>');
                 $("#grp_mem"+i).css("display", "");
                 console.log(data[index]);
-                // 添加点击事件
-                $("#btn_signin_mem"+i).click(function() {
-                    console.log($("#grp_mem"+i+">td:first-of-type").text());
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        async: false,
-                        url: '{:Url("Signin/sign_in")}',
-                        data: {
-                            'sid': $("#grp_mem"+i+">td:first-of-type").text()
-                        },
-                        success: function(data) {
-                            console.log('点击签到按钮后状态：'+data);
-                            $("#btn_signin_mem"+i).html("已签到");
-                            $("#btn_signin_mem"+i).attr("disabled",true);
-                            $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
-                            $("#btn_signin_mem"+i).addClass("btn-secondary-outline");
-                        },
-                        error: function(data) {
-                            console.log(data);
-                            alert('错误1！错误信息： '+data+ ' ！请联系维护处理！');
-                        }
-                    })
-                })
-                // 设定按钮初始状态
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    async: false,
-                    url: '{:Url("Signin/sign_in_stat")}',
-                    data: {
-                        'sid': $("#grp_mem"+i+">td:first-of-type").text()
-                    },
-                    success: function(data) {
-                        console.log('签到状态检索：'+data);
-                        if (data == 1) {
-                            $("#btn_signin_mem"+i).html("已签到");
-                            $("#btn_signin_mem"+i).attr("disabled",true);
-                            $("#btn_signin_mem"+i).removeClass("btn-primary-outline");
-                            $("#btn_signin_mem"+i).addClass("btn-secondary-outline");
-                        }
-                            
-                    },
-                    error: function(data) {
-                        console.log(data);
-                        alert('错误2！错误信息： '+data+ ' ！请联系维护处理！');
-                    }
-                })
             }
         },
         error: function(data) {
             console.log(data);
             alert('错误3！错误信息： '+data+ ' ！请联系维护处理！');
+        }
+    })
+    // 添加点击事件
+    $("#btn_signin_mem1").click(function() {
+        console.log($("#grp_mem1>td:first-of-type").text());
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            async: false,
+            url: '{:Url("Signin/sign_in")}',
+            data: {
+                'sid': $("#grp_mem1>td:first-of-type").text()
+            },
+            success: function(data) {
+                console.log('点击签到按钮后状态：'+data);
+                $("#btn_signin_mem1").html("已签到");
+                $("#btn_signin_mem1").attr("disabled",true);
+                $("#btn_signin_mem1").removeClass("btn-primary-outline");
+                $("#btn_signin_mem1").addClass("btn-secondary-outline");
+            },
+            error: function(data) {
+                console.log(data);
+                alert('错误1！错误信息： '+data+ ' ！请联系维护处理！');
+            }
+        })
+    })
+    $("#btn_signin_mem2").click(function() {
+        console.log($("#grp_mem2>td:first-of-type").text());
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            async: false,
+            url: '{:Url("Signin/sign_in")}',
+            data: {
+                'sid': $("#grp_mem2>td:first-of-type").text()
+            },
+            success: function(data) {
+                console.log('点击签到按钮后状态：'+data);
+                $("#btn_signin_mem2").html("已签到");
+                $("#btn_signin_mem2").attr("disabled",true);
+                $("#btn_signin_mem2").removeClass("btn-primary-outline");
+                $("#btn_signin_mem2").addClass("btn-secondary-outline");
+            },
+            error: function(data) {
+                console.log(data);
+                alert('错误1！错误信息： '+data+ ' ！请联系维护处理！');
+            }
+        })
+    })
+    $("#btn_signin_mem3").click(function() {
+        console.log($("#grp_mem3>td:first-of-type").text());
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            async: false,
+            url: '{:Url("Signin/sign_in")}',
+            data: {
+                'sid': $("#grp_mem3>td:first-of-type").text()
+            },
+            success: function(data) {
+                console.log('点击签到按钮后状态：'+data);
+                $("#btn_signin_mem3").html("已签到");
+                $("#btn_signin_mem3").attr("disabled",true);
+                $("#btn_signin_mem3").removeClass("btn-primary-outline");
+                $("#btn_signin_mem3").addClass("btn-secondary-outline");
+            },
+            error: function(data) {
+                console.log(data);
+                alert('错误1！错误信息： '+data+ ' ！请联系维护处理！');
+            }
+        })
+    })
+    $("#btn_signin_mem4").click(function() {
+        console.log($("#grp_mem4>td:first-of-type").text());
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            async: false,
+            url: '{:Url("Signin/sign_in")}',
+            data: {
+                'sid': $("#grp_mem4>td:first-of-type").text()
+            },
+            success: function(data) {
+                console.log('点击签到按钮后状态：'+data);
+                $("#btn_signin_mem4").html("已签到");
+                $("#btn_signin_mem4").attr("disabled",true);
+                $("#btn_signin_mem4").removeClass("btn-primary-outline");
+                $("#btn_signin_mem4").addClass("btn-secondary-outline");
+            },
+            error: function(data) {
+                console.log(data);
+                alert('错误1！错误信息： '+data+ ' ！请联系维护处理！');
+            }
+        })
+    })
+    // 设定按钮初始状态
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        async: false,
+        url: '{:Url("Signin/sign_in_stat")}',
+        data: {
+            'sid': $("#grp_mem1>td:first-of-type").text()
+        },
+        success: function(data) {
+            console.log('签到状态检索：'+data);
+            if (data == 1) {
+                $("#btn_signin_mem1").html("已签到");
+                $("#btn_signin_mem1").attr("disabled",true);
+                $("#btn_signin_mem1").removeClass("btn-primary-outline");
+                $("#btn_signin_mem1").addClass("btn-secondary-outline");
+            }
+                
+        },
+        error: function(data) {
+            console.log(data);
+            alert('错误2！错误信息： '+data+ ' ！请联系维护处理！');
+        }
+    })
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        async: false,
+        url: '{:Url("Signin/sign_in_stat")}',
+        data: {
+            'sid': $("#grp_mem2>td:first-of-type").text()
+        },
+        success: function(data) {
+            console.log('签到状态检索：'+data);
+            if (data == 1) {
+                $("#btn_signin_mem2").html("已签到");
+                $("#btn_signin_mem2").attr("disabled",true);
+                $("#btn_signin_mem2").removeClass("btn-primary-outline");
+                $("#btn_signin_mem2").addClass("btn-secondary-outline");
+            }
+                
+        },
+        error: function(data) {
+            console.log(data);
+            alert('错误2！错误信息： '+data+ ' ！请联系维护处理！');
+        }
+    })
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        async: false,
+        url: '{:Url("Signin/sign_in_stat")}',
+        data: {
+            'sid': $("#grp_mem3>td:first-of-type").text()
+        },
+        success: function(data) {
+            console.log('签到状态检索：'+data);
+            if (data == 1) {
+                $("#btn_signin_mem3").html("已签到");
+                $("#btn_signin_mem3").attr("disabled",true);
+                $("#btn_signin_mem3").removeClass("btn-primary-outline");
+                $("#btn_signin_mem3").addClass("btn-secondary-outline");
+            }
+                
+        },
+        error: function(data) {
+            console.log(data);
+            alert('错误2！错误信息： '+data+ ' ！请联系维护处理！');
+        }
+    })
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        async: false,
+        url: '{:Url("Signin/sign_in_stat")}',
+        data: {
+            'sid': $("#grp_mem4>td:first-of-type").text()
+        },
+        success: function(data) {
+            console.log('签到状态检索：'+data);
+            if (data == 1) {
+                $("#btn_signin_mem4").html("已签到");
+                $("#btn_signin_mem4").attr("disabled",true);
+                $("#btn_signin_mem4").removeClass("btn-primary-outline");
+                $("#btn_signin_mem4").addClass("btn-secondary-outline");
+            }
+                
+        },
+        error: function(data) {
+            console.log(data);
+            alert('错误2！错误信息： '+data+ ' ！请联系维护处理！');
         }
     })
 </script>
