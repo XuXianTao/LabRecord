@@ -43,7 +43,7 @@ class Signin extends Controller
                     if(empty($stu)){
                         return 1;//成员信息有误
                     }
-                    $stu_num = get_group($sid, $cid, $grp);
+                    $stu_num = get_group($val, $cid, $grp);
                     //查找学生有没有其对应的组队信息
                     if($stu_num!=0){
                         return 2;//有人重复组队
