@@ -235,7 +235,7 @@ class Excel extends Controller
 		}
 		//整理成以数字为基准的数组,并记录最大的数组宽度
 		unset($stu_m);
-		dump($max_index);
+		//dump($max_index);
 
 		$spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
