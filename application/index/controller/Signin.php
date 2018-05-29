@@ -22,42 +22,34 @@ class Signin extends Controller
     //判断组队是否正确
     public function check_grp_data(){
         $result = [];
-        if(session('who')=='stu'){
-            if(session('user')){
-                $cid = session('user.course_id');
-                $sid = session('user.id');
-                $grp_src = [
-                    'course_id' => $cid,
-                    'stu1_id' => input('param.stu1_id'),
-                    'stu2_id' => input('param.stu2_id'),
-                    'stu3_id' => input('param.stu3_id'),
-                    'stu4_id' => input('param.stu4_id')
-                ];
-                foreach($grp_src as $key=>$val){
-                    if($val==''||$val == NULL){
-                        unset($grp_src[$key]);
-                    }else{
-                        if($key!='course_id'){
-                            $stu = db('stu')->where('course_id',$cid)
-                                            ->where('id',$val)
-                                            ->find();
-                            array_push($result, $stu);
-                            if(empty($stu)){
-                                return 1;//成员信息有误
-                            }
-                            $stu_num = get_group($sid, $cid, $grp);
-                            //查找学生有没有其对应的组队信息
-                            if($stu_num!=0){
-                                return 2;//有人重复组队
-                            }
-                        }
+        $cid = session('user.course_id');
+        $sid = session('user.id');
+        $grp_src = [
+            'course_id' => $cid,
+            'stu1_id' => input('param.stu1_id'),
+            'stu2_id' => input('param.stu2_id'),
+            'stu3_id' => input('param.stu3_id'),
+            'stu4_id' => input('param.stu4_id')
+        ];
+        foreach($grp_src as $key=>$val){
+            if($val==''||$val == NULL){
+                unset($grp_src[$key]);
+            }else{
+                if($key!='course_id'){
+                    $stu = db('stu')->where('course_id',$cid)
+                                    ->where('id',$val)
+                                    ->find();
+                    array_push($result, $stu);
+                    if(empty($stu)){
+                        return 1;//成员信息有误
+                    }
+                    $stu_num = get_group($val, $cid, $grp);
+                    //查找学生有没有其对应的组队信息
+                    if($stu_num!=0){
+                        return 2;//有人重复组队
                     }
                 }
-            }else{
-                return 3;//登录失效了
             }
-        }else{
-            return 3;//登录失效了
         }
         return json($result);//登陆没问题
     }
