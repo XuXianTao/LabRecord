@@ -60,38 +60,38 @@
                 if (data[index]==0 || data[index]==null) break;
                 $("#grp_mem"+i+">td:first-of-type").html(data[index]['id']);
                 $("#grp_mem"+i+">td:nth-of-type(2)").html(data[index]['nam']);
-                $("#grp_mem"+i+">td:nth-of-type(3)").html('<button class="btn btn-primary-outline" id="btn_signin_mem'+i+' name="btn_signin_mem'+i+'">签到</button>');
+                $("#grp_mem"+i+">td:nth-of-type(3)").html('<button class="btn btn-primary-outline" id="btn_signin_mem'+i+'" name="btn_signin_mem'+i+'">签到</button>');
                 $("#grp_mem"+i).css("display", "");
                 console.log(data[index]);
             }
+            // 添加点击事件
+            $('button[name^="btn_signin_mem"]').each(function(index,domEle) {
+                domEle.addEventListener("click", function() {
+                    console.log($("#grp_mem"+(index+1)+">td:first-of-type").text());
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        async: false,
+                        url: '{:Url("Signin/sign_in")}',
+                        data: {
+                            'sid': $("#grp_mem"+(index+1)+">td:first-of-type").text()
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            domEle.text("已签到");
+                            domEle.attr("disabled",true);
+                        },
+                        error: function(data) {
+                            console.log(data);
+                            alert('错误！错误信息： '+data+ ' ！请联系维护处理！');
+                        }
+                    })
+                })
+            })
         },
         error: function(data) {
             console.log(data);
             alert('错误！错误信息： '+data+ ' ！请联系维护处理！');
         }
     })
-    // 添加点击事件
-    $('button[name^="btn_signin_mem"]').each(function(index,domEle) {
-        console.log('index:'+index);
-        domEle.addEventListener("click", function() {
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                async: false,
-                url: '{:Url("Signin/sign_in")}',
-                data: {
-                    'sid': $("#grp_mem"+index+">td:first-of-type").text()
-                },
-                success: function(data) {
-                    console.log(data);
-
-                },
-                error: function(data) {
-                    console.log(data);
-                    alert('错误！错误信息： '+data+ ' ！请联系维护处理！');
-                }
-            })
-        })
-    })
-
 </script>
