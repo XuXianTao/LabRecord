@@ -110,7 +110,8 @@ create table excp_submit (
     cla           varchar(10) not null,               # 课室号
     num           varchar(10) not null,               # 台号
     submit_tim    datetime,                           # 提交时间
-    excp_desc     varchar(200) not null               # 故障描述
+    excp_desc     varchar(200) not null,              # 故障描述
+    stat          varchar(10) not null default '未处理'# 处理状态
 ) auto_increment=1 engine=InnoDB;
 
 # 总体故障统计表，待定留用
