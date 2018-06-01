@@ -1,0 +1,115 @@
+<div class="container">
+  <table class="table table-hover" id="table-tea">
+  </table>
+  <div id="info_tea"></div>
+</div>
+<script>
+var tableBox_tea = $('#table-tea');
+var render_time = 0;
+$(document).ready(function() {
+  tableBox_tea.bootstrapTable({
+    height: 600,
+    striped: true, // 隔行变色
+    method: 'post',
+    url: "{:Url('Table/table_tea')}",
+    dataType: 'json',
+    search: true, // 启用搜索框
+    showHeader: true,
+    showRefresh: true,
+    pagination: true, //在表格底部显示分页工具栏
+    onlyInfoPagination: true,
+    pageSize: 1000,
+    detailView: true,
+    columns: [{
+        field: 'id',
+        title: '职工号',
+        sortable: true,
+        align: 'center',
+      },
+      {
+        field: 'nam',
+        title: '姓名',
+        sortable: true,
+        align: 'center',
+      },
+      {
+        field: 'typ',
+        title: '职称',
+        sortable: true,
+        align: 'center',
+        formatter: function(value, row, index) {
+          switch (value) {
+            case 1: return '仪器管理老师';
+            case 2: return '教学老师';
+            case 3: return '仪器管理&教学老师';
+          }
+        }
+      }
+    ],
+    onExpandRow: function(index, row, $detail) {
+      console.log($detail)
+      var $columns = [
+        {
+          field: 'id',
+          title: '课程编号',
+          sortable: true,
+          align: 'center'
+        },
+        {
+          field: 'nam',
+          title: '课程名',
+          sortable: true,
+          align: 'center'
+        },
+        {
+          field: 'cla',
+          title: '上课教室',
+          sortable: true,
+          align:'center',
+        },
+        {
+          field: 'sch_year',
+          title: '上课日期',
+          sortable: true,
+          align: 'center',
+          formatter: function(value, row, index) {
+            var str = row['sch_year'] + '学年 第' + row['sch_term'] + '学期';
+            return str;
+          }
+        },
+        {
+          field: 'sch_time_start',
+          title: '上课时间',
+          sortable: true,
+          align: 'center',
+          formatter: function (value, row, index) {
+            var str = row['sch_week_start'] + '周 - ' + row['sch_week_end'] + '周 周' + row['sch_day'] + '<br/>' + value +' - ' + row['sch_time_end'];
+            return str;
+          }
+        },
+        {
+          field: 'grp_mem_num',
+          title: '最大组队人数',
+          sortable: true,
+          align: 'center',
+        },
+      ];
+      $detail.html('<table></table>').find('table').bootstrapTable({
+        striped: true, // 隔行变色
+        method: 'post',
+        showHeader: true,
+        onlyInfoPagination: true,
+        pageSize: 1000,
+        sortName: 'sign_in',
+        sortOrder: 'desc',
+        url: "{:Url('Table/table_tea_course')}",
+        queryParams: { 'cid': row['id'] },
+        columns: $columns
+      })
+    }
+  });
+});
+$(document).click(function() {
+  tableBox_ta.bootstrapTable('resetView');
+})
+</script>

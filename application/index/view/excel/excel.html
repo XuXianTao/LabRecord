@@ -8,146 +8,31 @@
             </div><br>
 
             <!-- 课程名称输入 -->
-            <div class="form-group">
-                <label class="form-control-label" for="class_name">课程名称</label>
-                <input class="form-control" id="class_name" type="text" name="name" placeholder="请输入课程名称...">
-            </div><br><br>
+            {include file="course_detail/class_name"/}<br><br>
 
             <!-- 上课课室输入 -->
-            <div class="form-group">
-                <label class="form-control-label" for="cla">上课教室</label>
-                <select class="form-control" name="cla">
-                    <option value="C102">C102</option>
-                    <option value="C103">C103</option>
-                    <option value="C105">C105</option>
-                </select>
-            </div><br><br>
+            {include file="course_detail/cla"/}<br><br>
 
             <!-- 学年学期 -->
-            <div class="form-group">
-                <select class="form-control" name="sch_year">
-                    <option value="2018">2018</option>
-                    <option value="2019">2019</option>
-                    <option value="2020">2020</option>
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                </select> 学年第
-                <select class="form-control" name="sch_term">
-                    <option value="1">一</option>
-                    <option value="2">二</option>
-                </select> 学期
-            </div><br><br>
+            {include file="course_detail/sch_year"/}<br><br>
 
             <!-- 开课周 -->
-            <div class="form-group">
-                <div class="">
-                    第
-                    <select class="form-control" name="sch_week_start">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                    </select> 周开课
-                </div>
-            </div><br><br>
+            {include file="course_detail/sch_week_start"/}<br><br>
 
             <!-- 结课周 -->
-            <div class="form-group">
-                <div class="">
-                    第
-                    <select class="form-control" name="sch_week_end">
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                    </select> 周结课
-                </div>
-            </div><br><br>
+            {include file="course_detail/sch_week_end"/}<br><br>
 
             <!-- 上课日 -->
-            <div class="form-group">
-                <div class="">
-                    星期
-                    <select class="form-control" name="sch_day">
-                        <option value="一">一</option>
-                        <option value="二">二</option>
-                        <option value="三">三</option>
-                        <option value="四">四</option>
-                        <option value="五">五</option>
-                        <option value="六">六</option>
-                        <option value="日">日</option>
-                    </select> 上课
-                </div>
-            </div><br><br>
+            {include file="course_detail/sch_day"/}<br><br>
 
             <!-- 上课时间 -->
-            <div class="form-group">
-                <div class="">
-                    上课时间
-                    <select class="form-control" name="sch_time_start">
-                        <option value="08:00">08:00</option>
-                        <option value="08:55">08:55</option>
-                        <option value="10:00">10:00</option>
-                        <option value="14:20">14:20</option>
-                        <option value="15:15">15:15</option>
-                        <option value="16:20">16:20</option>
-                        <option value="19:00">19:00</option>
-                        <option value="19:55">19:55</option>
-                    </select>
-                </div>
-            </div><br><br>
+            {include file="course_detail/sch_time_start"/}<br><br>
 
             <!-- 下课时间 -->
-            <div class="form-group">
-                <div class="">
-                    下课时间
-                    <select class="form-control" name="sch_time_end">
-                        <option value="09:40">09:40</option>
-                        <option value="10:45">10:45</option>
-                        <option value="11:40">11:40</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:05">17:05</option>
-                        <option value="18:00">18:00</option>
-                        <option value="20:40">20:40</option>
-                        <option value="21:35">21:35</option>
-                    </select>
-                </div>
-            </div><br><br>
+            {include file="course_detail/sch_time_end"/}<br><br>
 
             <!-- 组队人数 -->
-            <div class="form-group">
-                <div class="">
-                    组队人数：
-                    <select class="form-control" name="grp_mem_num">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select> 人
-                </div>
-            </div><br><br>
+            {include file="course_detail/grp_mem_num"/}<br><br>
 
             <div class="alert alert-warning">课程所属教师即当前登录用户</div>
         </div>
