@@ -81,8 +81,12 @@ class Table extends Controller
 				'sch_term',
 				'sch_week_start',
 				'sch_week_end',
+				'sch_day',
+				'sch_time_start',
+				'sch_time_end',
+				'grp_mem_num',
 				'tea.nam' =>'tname',
-				'tea.id' =>'tid'
+				'tea.id' =>'tid',
 			])
 			->select());
 	}
@@ -100,7 +104,12 @@ class Table extends Controller
 		db('course')->delete($id);
 		return 'success';
 	}
-
+	//修改某个课程
+	public function change_course($cid, $detail) {
+		db('course')->where('id',$cid)
+		->update($detail);
+		return json($detail);
+	}
 	//读取某课程对应所有学生
 	public function table_stu_course($cid) {
 		$result = db('stu')->where('course_id',$cid)->select();
@@ -116,5 +125,13 @@ class Table extends Controller
 			}
 		}
 		return json($result);
+	}
+
+	//所有教师信息
+	public function table_tea() {
+		return json(db('tea')->select());
+	}
+	public function table_tea_course($cid) {
+		return json(db('course')->where('tea_id',$cid)->select());
 	}
 }

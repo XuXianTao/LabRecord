@@ -3,158 +3,276 @@
     </div>
     <table class="table table-hover" id="table-course"></table>
     <div id="info_course"></div>
+    <div class="modal fade" id="change_course_modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="course-modal__title">课程信息修改</h4>
+                </div>
+                <div class="modal-body">
+                    <form class=" form-inline row">
+                        <!-- 课程名称输入 -->
+                        {include file="course_detail/class_name"/}
+                        <br>
+                        <br>
+                        <!-- 上课课室输入 -->
+                        {include file="course_detail/cla"/}
+                        <br>
+                        <br>
+                        <!-- 学年学期 -->
+                        {include file="course_detail/sch_year"/}
+                        <br>
+                        <br>
+                        <!-- 开课周 -->
+                        {include file="course_detail/sch_week_start"/}
+                        <br>
+                        <br>
+                        <!-- 结课周 -->
+                        {include file="course_detail/sch_week_end"/}
+                        <br>
+                        <br>
+                        <!-- 上课日 -->
+                        {include file="course_detail/sch_day"/}
+                        <br>
+                        <br>
+                        <!-- 上课时间 -->
+                        {include file="course_detail/sch_time_start"/}
+                        <br>
+                        <br>
+                        <!-- 下课时间 -->
+                        {include file="course_detail/sch_time_end"/}
+                        <br>
+                        <br>
+                        <!-- 组队人数 -->
+                        {include file="course_detail/grp_mem_num"/}
+                        <br>
+                        <br>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="change_course_submit">修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
-    var tableBox_course = $('#table-course');
-    var render_time3 = 0;
-    $(document).ready(function() {
-        tableBox_course.bootstrapTable({
-            height: 600,
-            striped: true, // 隔行变色
-            method: 'post',
-            url: "{:Url('Table/table_course')}",
-            dataType: 'json',
-            search: true, // 启用搜索框
-            showHeader: true,
-            pagination: true, //在表格底部显示分页工具栏
-            onlyInfoPagination: true,
-            pageSize: 1000,
-            detailView: true,
-            sortName: 'cid',
-            showRefresh: true,
-            showColumns: true,
-            columns: [{
-                field: 'cid',
-                title: '课程编号',
-                sortable: true,
-                align: 'center',
-            }, {
-                field: 'cname',
-                title: '课程名',
-                sortable: true,
-                align: 'center',
-            }, {
-                field: 'cla',
-                title: '教室',
-                sortable: true,
-                align: 'center',
-            }, {
-                field: 'tname',
-                title: '任课教师',
-                sortable: true,
-                align: 'center',
-                formatter: function(value, row, index) {
-                    return value + "<br/>[" + row['tid'] + ']';
-                }
-            }, {
-                field: 'sch_time',
-                title: '上课时间',
-                sortable: true,
-                align: 'center',
-            }, {
-                field: 'sch_year',
-                title: '学年',
-                sortable: true,
-                align: 'center',
-                formatter: function(value, row, index) {
-                    return value + '学年<br/>第' + row['sch_term'] + '学期';
-                }
-            }, {
-                field: 'action',
-                title: '操作',
-                sortable: true,
-                align: 'center',
-                formatter: actionFormatter_course,
-            }],
-            detailFormatter: function(index, row) {},
-            onExpandRow: function(index, row, $detail) {
-                console.log($detail)
-                var $columns = [{
-                    field: 'id',
-                    title: '学号',
-                    sortable: true,
-                    align: 'center',
-                }, {
-                    field: 'nam',
-                    title: '姓名',
-                    sortable: true,
-                    align: 'center',
-                }];
-                for (i = row['sch_week_start']; i <= row['sch_week_end']; i++) {
-                    $cell = {
-                        field: 'sign_w' + i,
-                        title: '第' + i + '周',
-                        sortable: true,
-                        align: 'center'
-                    };
-                    $columns.push($cell);
-                }
-                $detail.html('<table></table>').find('table').bootstrapTable({
-                    height: 400,
-                    striped: true, // 隔行变色
-                    search: true, // 启用搜索框
-                    method: 'post',
-                    showHeader: true,
-                    pagination: true, //在表格底部显示分页工具栏
-                    onlyInfoPagination: true,
-                    pageSize: 1000,
-                    showRefresh: true,
-                    showColumns: true,
-                    url: "{:Url('Table/table_stu_course')}",
-                    queryParams: {
-                        'cid': row['cid']
-                    },
-                    columns: $columns
-                })
+var tableBox_course = $('#table-course');
+var render_time3 = 0;
+$(document).ready(function() {
+    tableBox_course.bootstrapTable({
+        height: 600,
+        striped: true, // 隔行变色
+        method: 'post',
+        url: "{:Url('Table/table_course')}",
+        dataType: 'json',
+        search: true, // 启用搜索框
+        showHeader: true,
+        pagination: true, //在表格底部显示分页工具栏
+        onlyInfoPagination: true,
+        pageSize: 1000,
+        detailView: true,
+        sortName: 'cid',
+        showRefresh: true,
+        showColumns: true,
+        columns: [{
+            field: 'cid',
+            title: '课程编号',
+            sortable: true,
+            align: 'center',
+        }, {
+            field: 'cname',
+            title: '课程名',
+            sortable: true,
+            align: 'center',
+        }, {
+            field: 'cla',
+            title: '教室',
+            sortable: true,
+            align: 'center',
+        }, {
+            field: 'tname',
+            title: '任课教师',
+            sortable: true,
+            align: 'center',
+            formatter: function(value, row, index) {
+                return value + "<br/>[" + row['tid'] + ']';
             }
-        });
+        }, {
+            field: 'sch_time',
+            title: '上课时间',
+            sortable: true,
+            align: 'center',
+        }, {
+            field: 'sch_year',
+            title: '学年',
+            sortable: true,
+            align: 'center',
+            formatter: function(value, row, index) {
+                return value + '学年<br/>第' + row['sch_term'] + '学期';
+            }
+        }, {
+            field: 'grp_mem_num',
+            title: '组队人数',
+            sortable: true,
+            align: 'center',
+        }, {
+            field: 'action',
+            title: '操作',
+            sortable: true,
+            align: 'center',
+            formatter: actionFormatter_course,
+        }],
+        detailFormatter: function(index, row) {},
+        onExpandRow: function(index, row, $detail) {
+            console.log($detail)
+            var $columns = [{
+                field: 'id',
+                title: '学号',
+                sortable: true,
+                align: 'center',
+            }, {
+                field: 'nam',
+                title: '姓名',
+                sortable: true,
+                align: 'center',
+            }];
+            for (i = row['sch_week_start']; i <= row['sch_week_end']; i++) {
+                $cell = {
+                    field: 'sign_w' + i,
+                    title: '第' + i + '周',
+                    sortable: true,
+                    align: 'center'
+                };
+                $columns.push($cell);
+            }
+            $detail.html('<table></table>').find('table').bootstrapTable({
+                height: 400,
+                striped: true, // 隔行变色
+                search: true, // 启用搜索框
+                method: 'post',
+                showHeader: true,
+                pagination: true, //在表格底部显示分页工具栏
+                onlyInfoPagination: true,
+                pageSize: 1000,
+                showRefresh: true,
+                showColumns: true,
+                url: "{:Url('Table/table_stu_course')}",
+                queryParams: {
+                    'cid': row['cid']
+                },
+                columns: $columns
+            })
+        }
     });
-    $(document).click(function() {
-        tableBox_course.bootstrapTable('resetView');
+});
+$(document).click(function() {
+    tableBox_course.bootstrapTable('resetView');
+})
+function htmlspecialchars(str)
+{
+    str = str.replace(/&/g, '&amp;');
+    str = str.replace(/</g, '&lt;');
+    str = str.replace(/>/g, '&gt;');
+    str = str.replace(/"/g, '&quot;');
+    str = str.replace(/'/g, '&#039;');
+    return str;
+}
+function actionFormatter_course(value, row, index) {
+    var id = row['cid'];
+    var btn_export = "<a href='javascript:;' class='btn btn-primary table-btn' onclick=\"export_course('" + id + "','" + index + "')\" title='导出'><span>导出</span></a>";
+    var btn_delete = "<a href='javascript:;' class='btn btn-danger table-btn' onclick=\"delete_course('" + id + "','" + index + "')\" title='删除'><span>删除</span></a>";
+    var btn_change = "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"change_course_detail(" + id + ',' + htmlspecialchars(JSON.stringify(row)) + ")\" title=\'修改\' data-toggle=\'modal\' data-target=\'#change_course_modal\'><span>修改</span></a>";
+    var result = btn_change + btn_export + btn_delete;
+    return result;
+}
+
+function export_course(id, index) {
+    $.post({
+        url: '{:Url("Excel/export_stu")}',
+        data: {
+            'course_id': id
+        },
+        success: function(data) {
+            $("#info_course").text('导出成功！路径为' + data);
+            console.log(data);
+        },
+        error: function(error) {
+            $("#info_course").text('导出失败！请联系维护处理！');
+            console.log(error);
+        }
     })
+}
 
-    function actionFormatter_course(value, row, index) {
-        var id = row['cid'];
-        var btn_export = "<a href='javascript:;' class='btn btn-primary table-btn' onclick=\"export_course('" + id + "','" + index + "')\" title='导出'><span>导出</span></a>";
-        var btn_delete = "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"delete_course('" + id + "','" + index + "')\" title='删除'><span>删除</span></a>";
-        var result = btn_export + btn_delete;
-        return result;
-    }
-
-    function export_course(id, index) {
+function delete_course(id, index) {
+    if (confirm("确定要清空数据？对应的学生信息也将清空！"))
         $.post({
-            url: '{:Url("Excel/export_stu")}',
+            url: '{:Url("Table/delete_course")}',
             data: {
-                'course_id': id
+                'id': id
             },
             success: function(data) {
-                $("#info_course").text('导出成功！路径为' + data);
+                $("#info_course").text(id + '状态修改成功');
                 console.log(data);
+                tableBox_course.bootstrapTable('refresh', {
+                    slient: true
+                });
             },
-            error: function(error) {
-                $("#info_course").text('导出失败！请联系维护处理！');
-                console.log(error);
+            error: function() {
+                $("#info_course").text(id + '状态修改失败');
             }
         })
-    }
+}
 
-    function delete_course(id, index) {
-        if (confirm("确定要清空数据？对应的学生信息也将清空！"))
-            $.post({
-                url: '{:Url("Table/delete_course")}',
-                data: {
-                    'id': id
-                },
-                success: function(data) {
-                    $("#info_course").text(id + '状态修改成功');
-                    console.log(data);
-                    tableBox_course.bootstrapTable('refresh', {
-                        slient: true
-                    });
-                },
-                error: function() {
-                    $("#info_course").text(id + '状态修改失败');
-                }
-            })
-    }
+function change_course_detail(id, row) {
+    console.log(row);
+    $('#class_name').val(row.cname);
+    $('select[name="cla"]').val(row.cla);
+    $('select[name="sch_year"]').val(row.sch_year);
+    $('select[name="sch_term"]').val(row.sch_term);
+    $('select[name="sch_week_start"]').val(row.sch_week_start);
+    $('select[name="sch_week_end"]').val(row.sch_week_end);
+    $('select[name="sch_day"]').val(row.sch_day);
+    $('select[name="sch_time_start"]').val(row.sch_time_start.substring(0,5));
+    $('select[name="sch_time_end"]').val(row.sch_time_end.substring(0,5));
+    $('select[name="grp_mem_num"]').val(row.grp_mem_num);
+    var detail = new Object();
+    $('#change_course_submit').unbind('click').click(function() {
+        detail.id = row.cid;
+        detail.tea_id = row.tid;
+        detail.nam = $('#class_name').val();
+        detail.cla = $('select[name="cla"]').val();
+        detail.sch_year = $('select[name="sch_year"]').val();
+        detail.sch_term = $('select[name="sch_term"]').val();
+        detail.sch_week_start = $('select[name="sch_week_start"]').val();
+        detail.sch_week_end = $('select[name="sch_week_end"]').val();
+        detail.sch_day = $('select[name="sch_day"]').val();
+        detail.sch_time_start = $('select[name="sch_time_start"]').val();
+        detail.sch_time_end = $('select[name="sch_time_end"]').val();
+        detail.grp_mem_num = $('select[name="grp_mem_num"]').val();
+        $.post({
+            url: '{:Url("Table/change_course")}',
+            data: {
+                'cid': id,
+                detail
+            },
+            success: function(data) {
+                alert('修改成功');
+                $('#change_course_modal').modal('hide');
+                tableBox_course.bootstrapTable('refresh', {
+                    slient: true
+                });
+            },
+            error: function() {
+                alert('修改出现问题，请联系维护');
+            }
+        })
+    })
+}
+
 </script>
