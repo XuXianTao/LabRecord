@@ -53,8 +53,8 @@ class Home extends Controller
 					$ta->update(['cla' => input('param.cla')]);
 					session('user.cla', input('param.cla'));
 					//TA所在课室正在上的课
-					$p_course = $this->present_course->where('cla', input('param.cla'))->find();
 				}
+				$p_course = $this->present_course->where('cla', input('param.cla'))->find();
 			}
 			else if (session('who')=='edu_teacher' || session('who')=='com_teacher') {
 				//任课老师的课
