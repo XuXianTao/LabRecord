@@ -119,8 +119,7 @@ create table excp_submit (
 ) auto_increment=1 engine=InnoDB;
 
 # 总体故障统计表，待定留用
-create table excp_cnt (
-);
+# create table excp_cnt () engine=InnoDB;
 
 # 示波器表
 create table oscp (
