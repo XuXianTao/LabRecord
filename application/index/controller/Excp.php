@@ -15,12 +15,20 @@ class Excp extends Controller
         $result = $db
         ->where('excp_submit.stat = \'未处理\' or excp_submit.stat = \'处理未成功\' ')
         ->join('stu', 'excp_submit.stu_id = stu.id')
-        ->field('excp_submit.id,submit_tim,stu_id,nam,cla,num,delId,delNam,delTim,excp_desc,stat,delWay')
+        ->field([
+            'excp_submit.id' => 'excp_id',
+            'submit_tim',
+            'stu_id',
+            'nam',
+            'cla',
+            'num',
+            'delId',
+            'delNam',
+            'delTim',
+            'excp_desc',
+            'stat',
+            'delWay'])
         ->select();
-        foreach($result as $val){
-            $val['delNam'] = $val['delId'].' '.$val['delNam'];
-            unset($val['delId']);
-        }
 		return json($result);
     }
     public function edit_excp(){

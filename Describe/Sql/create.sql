@@ -124,7 +124,7 @@ create table excp_submit (
 # create table excp_cnt () engine=InnoDB;
 
 # 示波器表
-create table oscp (
+create table dev_oscp (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -138,7 +138,7 @@ create table oscp (
 ) auto_increment=1 engine=InnoDB;
 
 # 直流电源表
-create table DCsource (
+create table dev_dcsource (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -152,7 +152,7 @@ create table DCsource (
 ) auto_increment=1 engine=InnoDB;
 
 # 万用电表表
-create table DMM (
+create table dev_dmm (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -166,7 +166,7 @@ create table DMM (
 ) auto_increment=1 engine=InnoDB;
 
 # 显示器表
-create table display (
+create table dev_display (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -180,7 +180,7 @@ create table display (
 ) auto_increment=1 engine=InnoDB;
 
 # 主机表
-create table PCcase (
+create table dev_pccase (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -194,7 +194,7 @@ create table PCcase (
 ) auto_increment=1 engine=InnoDB;
 
 # 功率因数表表
-create table PM (
+create table dev_pm (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -208,7 +208,7 @@ create table PM (
 ) auto_increment=1 engine=InnoDB;
 
 # 函数发生器表
-create table AWG (
+create table dev_awg (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -222,7 +222,7 @@ create table AWG (
 ) auto_increment=1 engine=InnoDB;
 
 # 交流电路实验箱表
-create table ACcirBox (
+create table dev_accirbox (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -236,7 +236,7 @@ create table ACcirBox (
 ) auto_increment=1 engine=InnoDB;
 
 # 电路基础实验箱表
-create table CirFouBox (
+create table dev_cirfoubox (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
@@ -250,7 +250,7 @@ create table CirFouBox (
 ) auto_increment=1 engine=InnoDB;
 
 # 模拟电路实验箱表
-create table AnaCirBox (
+create table dev_anacirbox (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
