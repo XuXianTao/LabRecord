@@ -105,14 +105,14 @@ class Table extends Controller
 		return 'success';
 	}
 	//修改某个课程
-	public function change_course($cid, $detail) {
+	public function change_course($cid,$detail) {
 		db('course')->where('id',$cid)
 		->update($detail);
 		db('grp')->where('course_id',$cid)->delete();
-		db('sign_stu')->where('course_id',$cid)->where('week <'.$detail['sch_week_start'].'or week >'.$detail['sch_week_end'])->delete();
+		$stu_data = db('stu')->where('course_id')->select();
+		db('sign_stu')->where('course_id',$cid)->where('week <'.$detail['sch_week_start'].' or week >'.$detail['sch_week_end'])->delete();
 		$sign_stu_data = [];
 		$sign_i = 0;
-		$stu_data = db('stu')->where('course_id')->select();
 		for($week = $detail['sch_week_start'];$week <= $detail['sch_week_end'];$week++){
 			$mem = db('sign_stu')->where('week',$week)->where('course_id',$cid)->find();
 			if($mem!=null){
@@ -126,6 +126,14 @@ class Table extends Controller
 		}
 		db('sign_stu')->insertAll($sign_stu_data);
 		unset($sign_stu_data);
+		if($detail['grp_mem_num']==1){
+			foreach ($stu_data as $key=>$val) {
+				$stu_data[$key]['stu1_id'] = $stu_data[$key]['id'];
+				unset($stu_data[$key]['nam']);
+				unset($stu_data[$key]['id']);
+			}
+			db('grp')->insertAll($stu_data);
+		}
 		return json($detail);
 	}
 	//读取某课程对应所有学生
