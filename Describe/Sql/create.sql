@@ -86,8 +86,8 @@ create table sign_stu (
     ip             varchar(20),                       # 登录ip
     week           int not null,                      # 周数
     stat           varchar(10) default '未签到',       # 签到情况
-    sign_in        datetime,                          # 登入时间
-    sign_out       datetime,                          # 登出时间
+    sign_in        time,                          # 登入时间
+    sign_out       time,                          # 登出时间
     info           varchar(20) default ''             # 信息
 ) engine=InnoDB;
 
