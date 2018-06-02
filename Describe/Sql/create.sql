@@ -108,6 +108,8 @@ create table excp_submit (
                                                       # 提交故障的编号
     stu_id        int not null,                       # 学号
     cla           varchar(10) not null,               # 课室号
+    cid           int not null,                       # 课程号
+    week          int not null,                       # 提交周数
     num           varchar(10) not null,               # 台号
     submit_tim    datetime not null,                  # 提交时间
     delId         varchar(10) default null,           # 当前处理人学号/职工号

@@ -32,6 +32,9 @@ foreach($excp_static as $k=>$obj) {
   <div class="stu-excp">
     <div class="container">
       <div class="row">
+          {include file="tables/excp_stu_submit"}
+      </div>
+      <div class="row">
         <div class="stu-excp-content">
           <h4>仪器异常反馈</h4>
           <button class="stu-excp__submit btn btn-lg btn-primary">异常汇报</button>
@@ -41,17 +44,24 @@ foreach($excp_static as $k=>$obj) {
             {foreach $machines as $machine=>$parts}
               <div class="card" id="{$machine}">
                 <div class="card-block">
-                  <h4 class="card-title">
+                  <h5 class="card-title">
                       {$Think.const.MACHINE_NAME[$machine]}
-                  </h4>
+                  </h5>
                 </div>
                 <ul class="list-group list-group-flush">
                 {foreach $parts as $i=>$part}
                   <li class="list-group-item">
-                    {$part}:
+                    <h6 class="stu-excp__part">
+                      {$part}:
+                    </h6>
+                    <div class="stu-excp__color">
                     {foreach $lines[$part] as $color=>$num}
-                    {$color}
+                      <label class="checkbox-inline">
+                        <input type="checkbox" name="excp.{$machine}.{$part}.{$color}">{$color}
+                      </label>
                     {/foreach}
+                    </div>
+                    <div style="clear:both"></div>
                   </li>
                 {/foreach}
                 </ul>
