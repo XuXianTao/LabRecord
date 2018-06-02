@@ -8,31 +8,31 @@
             </div><br>
 
             <!-- 课程名称输入 -->
-            {include file="course_detail/class_name"/}<br><br>
+            {include file="course_detail/class_name"/}<br>
 
             <!-- 上课课室输入 -->
-            {include file="course_detail/cla"/}<br><br>
+            {include file="course_detail/cla"/}<br>
 
             <!-- 学年学期 -->
-            {include file="course_detail/sch_year"/}<br><br>
+            {include file="course_detail/sch_year"/}<br>
 
             <!-- 开课周 -->
-            {include file="course_detail/sch_week_start"/}<br><br>
+            {include file="course_detail/sch_week_start"/}<br>
 
             <!-- 结课周 -->
-            {include file="course_detail/sch_week_end"/}<br><br>
+            {include file="course_detail/sch_week_end"/}<br>
 
             <!-- 上课日 -->
-            {include file="course_detail/sch_day"/}<br><br>
+            {include file="course_detail/sch_day"/}<br>
 
             <!-- 上课时间 -->
-            {include file="course_detail/sch_time_start"/}<br><br>
+            {include file="course_detail/sch_time_start"/}<br>
 
             <!-- 下课时间 -->
-            {include file="course_detail/sch_time_end"/}<br><br>
+            {include file="course_detail/sch_time_end"/}<br>
 
             <!-- 组队人数 -->
-            {include file="course_detail/grp_mem_num"/}<br><br>
+            {include file="course_detail/grp_mem_num"/}<br>
 
             <div class="alert alert-warning">课程所属教师即当前登录用户</div>
         </div>
@@ -74,14 +74,14 @@
             dataType: "json",
             async: false,
             data: {
-                'cla': $("select[name='cla']").val(),
-                'sch_year': $("select[name='sch_year']").val(),
-                'sch_term': $("select[name='sch_term']").val(),
-                'sch_week_start': $("select[name='sch_week_start']").val(),
-                'sch_week_end': $("select[name='sch_week_end']").val(),
-                'sch_day': $("select[name='sch_day']").val(),
-                'sch_time_start': $("select[name='sch_time_start']").val(),
-                'sch_time_end': $("select[name='sch_time_end']").val()
+                'cla': $(".excel select[name='cla']").val(),
+                'sch_year': $(".excel select[name='sch_year']").val(),
+                'sch_term': $(".excel select[name='sch_term']").val(),
+                'sch_week_start': $(".excel select[name='sch_week_start']").val(),
+                'sch_week_end': $(".excel select[name='sch_week_end']").val(),
+                'sch_day': $(".excel select[name='sch_day']").val(),
+                'sch_time_start': $(".excel select[name='sch_time_start']").val(),
+                'sch_time_end': $(".excel select[name='sch_time_end']").val()
             },
             success: function(data) {
                 console.log(data);
@@ -111,28 +111,28 @@
         $('.file .btn').removeClass('btn-primary');
     })
 
-    $("select[name='sch_time_start']").change(function() {
-        var val = $("select[name='sch_time_start']").val();
+    $(".excel select[name='sch_time_start']").change(function() {
+        var val = $(".excel select[name='sch_time_start']").val();
         console.log("value: "+val);
         switch(val) {
-            case "08:00": $("select[name='sch_time_end']").val("09:40"); break;
-            case "08:55": $("select[name='sch_time_end']").val("11:40"); break;
-            case "10:00": $("select[name='sch_time_end']").val("11:40"); break;
-            case "14:20": $("select[name='sch_time_end']").val("16:00"); break;
-            case "15:15": $("select[name='sch_time_end']").val("18:00"); break;
-            case "16:20": $("select[name='sch_time_end']").val("18:00"); break;
-            case "19:00": $("select[name='sch_time_end']").val("20:40"); break;
-            case "19:55": $("select[name='sch_time_end']").val("21:35"); break;
+            case "08:00": $(".excel select[name='sch_time_end']").val("09:40"); break;
+            case "08:55": $(".excel select[name='sch_time_end']").val("11:40"); break;
+            case "10:00": $(".excel select[name='sch_time_end']").val("11:40"); break;
+            case "14:20": $(".excel select[name='sch_time_end']").val("16:00"); break;
+            case "15:15": $(".excel select[name='sch_time_end']").val("18:00"); break;
+            case "16:20": $(".excel select[name='sch_time_end']").val("18:00"); break;
+            case "19:00": $(".excel select[name='sch_time_end']").val("20:40"); break;
+            case "19:55": $(".excel select[name='sch_time_end']").val("21:35"); break;
         }
     });
 
-    $("select[name='sch_time_end']").change(function() {
-        var val_end = $("select[name='sch_time_end']").val();
+    $(".excel select[name='sch_time_end']").change(function() {
+        var val_end = $(".excel select[name='sch_time_end']").val();
         var arr_end = val_end.split(':');
         var hour_end = parseInt(arr_end[0]);
         var min_end = parseInt(arr_end[1]);
 
-        var val_start = $("select[name='sch_time_start']").val();
+        var val_start = $(".excel select[name='sch_time_start']").val();
         var arr_start = val_start.split(':');
         var hour_start = parseInt(arr_start[0]);
         var min_start = parseInt(arr_start[1]);
@@ -140,12 +140,12 @@
         if ((hour_end>hour_start) || (hour_end==hour_start&&min_end>min_start)) {}
         else {
             switch(val_start) {
-                case "10:00": $("select[name='sch_time_end']").val("11:40"); break;
-                case "14:20": $("select[name='sch_time_end']").val("16:00"); break;
-                case "15:15": $("select[name='sch_time_end']").val("18:00"); break;
-                case "16:20": $("select[name='sch_time_end']").val("18:00"); break;
-                case "19:00": $("select[name='sch_time_end']").val("20:40"); break;
-                case "19:55": $("select[name='sch_time_end']").val("21:35"); break;
+                case "10:00": $(".excel select[name='sch_time_end']").val("11:40"); break;
+                case "14:20": $(".excel select[name='sch_time_end']").val("16:00"); break;
+                case "15:15": $(".excel select[name='sch_time_end']").val("18:00"); break;
+                case "16:20": $(".excel select[name='sch_time_end']").val("18:00"); break;
+                case "19:00": $(".excel select[name='sch_time_end']").val("20:40"); break;
+                case "19:55": $(".excel select[name='sch_time_end']").val("21:35"); break;
             }
         }
     });

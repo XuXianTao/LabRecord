@@ -38,7 +38,8 @@ class Home extends Controller
 	{
 		if(session('who')=='stu'){
 			$grp_stat = get_group(session('user.id'), session('user.course_id'), $grp);
-			return view()->assign(['grp_stat'=>$grp_stat]);
+			$excp_static = db('excp_static')->select();
+			return view()->assign(['grp_stat'=>$grp_stat, 'excp_static'=>$excp_static]);
 		} else $this->error('你不是学生');
 	}
 	public function homeAdmin()

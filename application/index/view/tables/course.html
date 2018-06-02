@@ -20,7 +20,7 @@
                 </div>
                 <!-- 主体 -->
                 <div class="modal-body">
-                    <form class="form-inline row">
+                    <form class="course_detail form-inline row">
                         <!-- 课程名称输入 -->
                         {include file="course_detail/class_name"/}
                         <br><br>
@@ -231,32 +231,33 @@
             })
     }
 
+
     function change_course_detail(id, row) {
         console.log(row);
         $('#class_name').val(row.cname);
-        $('select[name="cla"]').val(row.cla);
-        $('select[name="sch_year"]').val(row.sch_year);
-        $('select[name="sch_term"]').val(row.sch_term);
-        $('select[name="sch_week_start"]').val(row.sch_week_start);
-        $('select[name="sch_week_end"]').val(row.sch_week_end);
-        $('select[name="sch_day"]').val(row.sch_day);
-        $('select[name="sch_time_start"]').val(row.sch_time_start.substring(0,5));
-        $('select[name="sch_time_end"]').val(row.sch_time_end.substring(0,5));
-        $('select[name="grp_mem_num"]').val(row.grp_mem_num);
+        $('.course_detail select[name="cla"]').val(row.cla);
+        $('.course_detail select[name="sch_year"]').val(row.sch_year);
+        $('.course_detail select[name="sch_term"]').val(row.sch_term);
+        $('.course_detail select[name="sch_week_start"]').val(row.sch_week_start);
+        $('.course_detail select[name="sch_week_end"]').val(row.sch_week_end);
+        $('.course_detail select[name="sch_day"]').val(row.sch_day);
+        $('.course_detail select[name="sch_time_start"]').val(row.sch_time_start.substring(0,5));
+        $('.course_detail select[name="sch_time_end"]').val(row.sch_time_end.substring(0,5));
+        $('.course_detail select[name="grp_mem_num"]').val(row.grp_mem_num);
         var detail = new Object();
         $('#change_course_submit').unbind('click').click(function() {
             detail.id = row.cid;
             detail.tea_id = row.tid;
             detail.nam = $('#class_name').val();
-            detail.cla = $('select[name="cla"]').val();
-            detail.sch_year = $('select[name="sch_year"]').val();
-            detail.sch_term = $('select[name="sch_term"]').val();
-            detail.sch_week_start = $('select[name="sch_week_start"]').val();
-            detail.sch_week_end = $('select[name="sch_week_end"]').val();
-            detail.sch_day = $('select[name="sch_day"]').val();
-            detail.sch_time_start = $('select[name="sch_time_start"]').val();
-            detail.sch_time_end = $('select[name="sch_time_end"]').val();
-            detail.grp_mem_num = $('select[name="grp_mem_num"]').val();
+            detail.cla = $('.course_detail select[name="cla"]').val();
+            detail.sch_year = $('.course_detail select[name="sch_year"]').val();
+            detail.sch_term = $('.course_detail select[name="sch_term"]').val();
+            detail.sch_week_start = $('.course_detail select[name="sch_week_start"]').val();
+            detail.sch_week_end = $('.course_detail select[name="sch_week_end"]').val();
+            detail.sch_day = $('.course_detail select[name="sch_day"]').val();
+            detail.sch_time_start = $('.course_detail select[name="sch_time_start"]').val();
+            detail.sch_time_end = $('.course_detail select[name="sch_time_end"]').val();
+            detail.grp_mem_num = $('.course_detail select[name="grp_mem_num"]').val();
             $.post({
                 url: '{:Url("Table/change_course")}',
                 data: {
@@ -273,8 +274,9 @@
                 error: function() {
                     alert('修改出现问题，请联系维护');
                 }
-            })
-        })
+            });
+        });
     }
+
 
 </script>

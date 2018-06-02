@@ -17,14 +17,6 @@
 		<div role="tabpanel" class="tab-pane active home-content-sign">
 			{$Think.session.user.nam}
 			<br>
-			{present name="$_GET['success']"}
-				{if ($_GET['success']==1)}签到成功
-				{elseif ($_GET['success']==2)}你已经签到
-				{elseif ($_GET['success']==3)}你已经补签
-				{else /}你的到勤出现问题
-				<h4>请到TA处处理签到</h4>
-				{/if}
-			{/present}
 		<h6>
 			第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
 		</h6>
@@ -40,18 +32,10 @@
 		</h6>
     </div>
 		<div role="tabpanel" class="tab-pane" id="excp">
-		    异常反馈
 		    {include file="feedback/stu_excp"/}
 		</div>
 		<div role="tabpanel" class="tab-pane" id="edu">
-		    问卷填写
 		    {include file="feedback/stu_test"/}
     </div>
 	</div>
 </div>
-
-<script>
-    $(document).ready(function() {
-
-    })
-</script>

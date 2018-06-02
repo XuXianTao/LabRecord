@@ -11,6 +11,24 @@
 
 // 应用公共文件
 define('CN_WEEK',['','一','二','三','四','五','六','日']);
+define('MECHINE_STATIC',[
+    '交流实验箱' => 'box_elec',
+    '直流稳压电源' => 'dcpower',
+    '台式万用表' => 'multimeter',
+    '功率表' => 'powermeter',
+    '数字示波器' => 'digitosci',
+    '函数信号发生器' => 'funsign'
+]);
+define('MECHINE_NAME',[
+    'box_elec' => '交流电路实验箱',
+    'box_mode' => '模拟电路实验箱',
+    'box_cir' => '电路基础实验箱',
+    'dcpower' => '直流稳压电源',
+    'multimeter' => '台式万用表',
+    'powermeter' => '功率表',
+    'digitosci' => '数字示波器',
+    'funsign' => '函数信号发生器'
+    ]);
 //管理角色显示内容修订
 define('TA', [
         'sign_stu'      => TRUE,
@@ -62,7 +80,7 @@ define('COM_TEACHER', [
       ]);
 define('ADMIN',[
         'sign_stu'      => FALSE,
-        'p_mechine'     => TRUE,
+        'p_mechine'     => FALSE,
         's_mechine'     => TRUE,
         'que'           => FALSE,
         'que_publish'   => TRUE,

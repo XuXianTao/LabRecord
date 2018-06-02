@@ -1,1 +1,61 @@
-excp
+<?php
+$lines=[];
+$mechines=[];
+$k=0;
+function arr_push(&$array, $key, $obj) {
+    if (array_key_exists($key,$array)){
+        if (!in_array($obj,$array[$key]))
+            array_push($array[$key], $obj);
+    }
+    else $array[$key] = [$obj];
+}
+foreach($excp_static as $k=>$obj) {
+    switch ($obj['mechine']) {
+        case '实验箱': {
+            arr_push($mechines,'box_elec', $obj['typ']);
+            arr_push($mechines,'box_mode', $obj['typ']);
+            arr_push($mechines,'box_cir',$obj['typ']);
+            break;
+        }
+        default: {
+            arr_push($mechines,MECHINE_STATIC[$obj['mechine']],$obj['typ']);
+            break;
+        }
+    }
+    $lines[$obj['typ']][$obj['color']]=$obj['num'];
+}
+
+//dump($lines);
+//dump($mechines);
+
+?>
+  <div class="stu-excp">
+    <div class="container">
+      <div class="row">
+        <div class="stu-excp-content">
+          <h4>仪器异常反馈</h4>
+          <button class="stu-excp__submit btn btn-lg btn-primary">异常汇报</button>
+          <span class="stu-excp__ta-statu">[助理正在处理{某某位置}仪器]</span>/
+          <span>[助理很闲]</span>
+            <div class="card-columns">
+            {foreach $mechines as $mechine=>$parts}
+              <div class="card" id="{$mechine}">
+                <div class="card-block">
+                  <h4 class="card-title">
+                      {$Think.const.MECHINE_NAME[$mechine]}
+                  </h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                {foreach $parts as $i=>$part}
+                  <li class="list-group-item">
+                    {$part}
+                  </li>
+                {/foreach}
+                </ul>
+              </div>
+            {/foreach}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

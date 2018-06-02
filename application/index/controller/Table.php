@@ -14,7 +14,7 @@ class Table extends Controller
 
 		// 获取当前时间的课程信息
 		get_present_course($present_course_query);
-		if (session('who')=='edu_teacher')
+		if (session('who')=='edu_teacher'||session('who')=='com_teacher')
 			$this->p_course = $present_course_query->where('tea_id',session('user.id'))->find();
 		elseif (session('who')=='ta')
 			$this->p_course = $present_course_query->where('cla',session('user.cla'))->find() ;
