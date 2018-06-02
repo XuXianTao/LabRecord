@@ -262,11 +262,12 @@ create table AnaCirBox (
 ) auto_increment=1 engine=InnoDB;
 
 # 配线表，需要进行默认导入
-create table wire (
-    kind          varchar(20) not null,               # 配线种类
-    appar         varchar(20) not null,               # 配套仪器
-    color         varchar(10) not null,               # 颜色
-    num           int not null default 1              # 数量
+create table excp_static (
+    lid          int not null,                        # 配线ID
+    typ          varchar(80) not null,                # 配线种类
+    machine      varchar(80) not null,                # 配套仪器
+    color        varchar(80) not null,                # 颜色
+    num          int                                  # 数量
 ) engine=InnoDB;
 
 # 问卷or小测
