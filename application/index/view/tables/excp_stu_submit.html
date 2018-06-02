@@ -1,3 +1,54 @@
-<div class="stu-excp-table">
-  <table class="table table-hover" id="table-excp-stu-submit"></table>
+<div class="stu-excp-table container">
+  <table class="table-excp-stu-submit table table-hover" id="table-excp-stu-submit"></table>
 </div>
+<script>
+  $(document).ready(function() {
+    $("#table-excp-stu-submit").bootstrapTable({
+      striped: true,
+      method: 'post',
+      url: "{:Url('Table/table_excp_stu')}",
+      showRefresh: true,
+      search: true,
+      detailView: true,
+      sortName: 'submit_tim',
+      sortOrder: 'desc',
+      columns: [{
+        field: 'submit_tim',
+        title: '提交时间',
+        align: 'center',
+        sortable: true,
+      }, {
+        field: 'num',
+        title: '机器号',
+        align: 'center',
+        sortable: true
+      }, {
+        field: 'excp_desc_info',
+        title: '异常描述',
+        halign: 'center',
+        align: 'left',
+        formatter: function(value, row, index) {
+          return value+'...';
+        }
+      }, {
+        field: 'stat',
+        title: '处理状态',
+        align: 'center',
+        sortable: true
+      }, {
+        field: 'del_nam',
+        title: '处理人',
+        align: 'center',
+        sortable: true
+      }, {
+        field: 'del_way',
+        title: '处理方式',
+        align: 'center'
+      }
+      ],
+      detailFormatter: function(index, row) {
+        return row['excp_desc'];
+      }
+    })
+  })
+</script>

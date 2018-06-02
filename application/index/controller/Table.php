@@ -160,4 +160,14 @@ class Table extends Controller
 	public function table_tea_course($cid) {
 		return json(db('course')->where('tea_id',$cid)->select());
 	}
+
+	//学生查询自己提交的异常情况
+	public function table_excp_stu() {
+		$result = db('excp_submit')
+		->where('cid', session('user.course_id'))
+		->where('week',db('the_date')->find()['week'])
+		->field(['*','LEFT(excp_desc,10)' => 'excp_desc_info'])
+		->select();
+		return json($result);
+	}
 }

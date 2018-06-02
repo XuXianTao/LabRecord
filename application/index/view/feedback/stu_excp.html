@@ -29,46 +29,63 @@ foreach($excp_static as $k=>$obj) {
 //dump($machines);
 
 ?>
-  <div class="stu-excp">
-    <div class="container">
-      <div class="row">
-          {include file="tables/excp_stu_submit"}
-      </div>
-      <div class="row">
-        <div class="stu-excp-content">
-          <h4>仪器异常反馈</h4>
-          <button class="stu-excp__submit btn btn-lg btn-primary">异常汇报</button>
-          <span class="stu-excp__ta-statu">[助理正在处理{某某位置}仪器]</span>/
-          <span>[助理很闲]</span>
-            <div class="card-columns">
-            {foreach $machines as $machine=>$parts}
-              <div class="card" id="{$machine}">
-                <div class="card-block">
-                  <h5 class="card-title">
+  <div class="container stu-excp">
+    <div class="row">
+      <form class="stu-excp-content" method="post" action="{:Url('Excp/excp_stu_submit')}">
+        <h4>仪器异常反馈</h4>
+        <a class="stu-excp__desc btn btn-primary" type="button" data-toggle="modal" data-target="#excp_desc">异常汇报</a>
+        <div class="card-columns">
+          {foreach $machines as $machine=>$parts}
+          <div class="card" id="{$machine}">
+            <div class="card-block">
+              <h5 class="card-title">
                       {$Think.const.MACHINE_NAME[$machine]}
                   </h5>
-                </div>
-                <ul class="list-group list-group-flush">
-                {foreach $parts as $i=>$part}
-                  <li class="list-group-item">
-                    <h6 class="stu-excp__part">
+            </div>
+            <ul class="list-group list-group-flush">
+              {foreach $parts as $i=>$part}
+              <li class="list-group-item">
+                <h6 class="stu-excp__part">
                       {$part}:
                     </h6>
-                    <div class="stu-excp__color">
-                    {foreach $lines[$part] as $color=>$num}
-                      <label class="checkbox-inline">
-                        <input type="checkbox" name="excp.{$machine}.{$part}.{$color}">{$color}
-                      </label>
-                    {/foreach}
-                    </div>
-                    <div style="clear:both"></div>
-                  </li>
-                {/foreach}
-                </ul>
+                <div class="stu-excp__color">
+                  {foreach $lines[$part] as $color=>$num}
+                  <label class="checkbox-inline">
+                    <input type="checkbox" name="machine[{$Think.const.MACHINE_NAME[$machine]}][{$part}][]" value="{$color}">{$color}
+                  </label>
+                  {/foreach}
+                </div>
+                <div style="clear:both"></div>
+              </li>
+              {/foreach}
+            </ul>
+          </div>
+          {/foreach}
+        </div>
+        <div class="modal fade" id="excp_desc" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                异常反馈提交
               </div>
-            {/foreach}
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="excp-desc-msg" class="stu-excp__msg-label control-label">请描述具体损坏情况</label>
+                  <textarea class="form-control" name="excp_desc" id="excp-desc-msg" rows="5">损坏、需更换</textarea>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button class="stu-excp__submit btn btn-primary">提交</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
+  </div>
+  <script>
+  $(".stu-excp__submit").click(function() {
+    $(".stu-excp-content").submit();
+  })
+  </script>

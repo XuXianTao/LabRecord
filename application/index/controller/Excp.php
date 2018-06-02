@@ -7,6 +7,43 @@ use think\facade\Session;
 
 class Excp extends Controller
 {
+    public function excp_stu_submit() {
+        //dump(input(''));
+        $sid = session('user.id');
+        $cid = session('user.course_id');
+        $seat = db('ip')->where('ip',$_SERVER['REMOTE_ADDR'])->find();
+        $cla = $seat['cla'];
+        $num = $seat['num'];
+        $excp_desc = "";
+        foreach(input('')['machine'] as $machine=>$parts) {
+            $excp_desc .= "<b>".$machine.":</b><br/>";
+            foreach($parts as $part=>$color_arr) {
+                $excp_desc .= $part."-";
+                foreach($color_arr as $i=>$color) {
+                    $excp_desc .= "[".$color."] ";
+                }
+                $excp_desc .= "<br/>";
+            }
+        }
+        if (!empty(input('param.excp_desc')))
+        $excp_desc .= "<b>描述：</b>". input('param.excp_desc');
+        $data = [
+            'stu_id'    => $sid,
+            'cla'       => $cla,
+            'cid'       => $cid,
+            'week'      => db('the_date')->find()['week'],
+            'num'       => $num,
+            'submit_tim'=> date('Y-m-d H:i:s'),
+            'excp_desc' => $excp_desc
+        ];
+        //dump($data);
+        //echo $data['excp_desc'];
+        /*
+        * 还需要处理统计数据
+        */
+        if (db('excp_submit')->insert($data)) $this->redirect('/');
+        else $this->error('故障提交失败，请联系维护');
+    }
     public function excp_status(){
         $db = db('excp_submit');
         if (session('?user')&&session('who')=='ta') {

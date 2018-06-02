@@ -112,11 +112,11 @@ create table excp_submit (
     week          int not null,                       # 提交周数
     num           varchar(10) not null,               # 台号
     submit_tim    datetime not null,                  # 提交时间
-    delId         varchar(10) default null,           # 当前处理人学号/职工号
-    delNam        varchar(10) default null,           # 当前处理人名字
-    delTim        datetime default null,              # 处理时间
-    excp_desc     varchar(100) not null,              # 故障描述
-    delWay        varchar(100) default null,          # 处理方式
+    del_id         varchar(10) default null,          # 当前处理人学号/职工号
+    del_nam        varchar(10) default null,          # 当前处理人名字
+    del_tim        datetime default null,             # 处理时间
+    excp_desc     varchar(500) not null,              # 故障描述
+    del_way        varchar(100) default null,         # 处理方式
     stat          varchar(10) not null default '未处理'# 处理状态
 ) auto_increment=1 engine=InnoDB;
 
