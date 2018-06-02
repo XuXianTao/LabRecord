@@ -108,6 +108,24 @@ class Table extends Controller
 	public function change_course($cid, $detail) {
 		db('course')->where('id',$cid)
 		->update($detail);
+		db('grp')->where('course_id',$cid)->delete();
+		db('sign_stu')->where('course_id',$cid)->where('week <'.$detail['sch_week_start'].'or week >'.$detail['sch_week_end'])->delete();
+		$sign_stu_data = [];
+		$sign_i = 0;
+		$stu_data = db('stu')->where('course_id')->select();
+		for($week = $detail['sch_week_start'];$week <= $detail['sch_week_end'];$week++){
+			$mem = db('sign_stu')->where('week',$week)->where('course_id',$cid)->find();
+			if($mem!=null){
+				foreach($stu_data as $key=>$val){
+					$sign_stu_data[$sign_i]['id'] = $val['id'];
+					$sign_stu_data[$sign_i]['course_id'] = $cid;
+					$sign_stu_data[$sign_i]['week'] = $week;
+					$sign_i++;
+				}
+			}
+		}
+		db('sign_stu')->insertAll($sign_stu_data);
+		unset($sign_stu_data);
 		return json($detail);
 	}
 	//读取某课程对应所有学生
