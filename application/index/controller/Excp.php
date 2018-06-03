@@ -80,7 +80,9 @@ class Excp extends Controller
             'del_nam',
             'del_tim',
             'LEFT(excp_desc,10)' => 'excp_desc_info',
+            'excp_desc',
             'stat',
+            'del_way',
             'LEFT(del_way,10)' => 'del_way_info'])
         ->select();
         foreach($result as $key=>$val){
