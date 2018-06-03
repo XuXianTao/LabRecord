@@ -79,7 +79,10 @@
             }, {
                 field: 'excp_desc_info',
                 title: '情况描述',
-                align: 'left'
+                align: 'left'，
+                formatter: function(value, row, index) {
+                    return value+'...';
+                }
             }, {
                 field: 'stat',
                 title: '处理情况',
@@ -92,7 +95,7 @@
                     if (row['del_nam']=="")
                         return "";
                     else
-                        return row['del_nam']+"["+row['del_id']+"] "+row['del_tim']+" "+value;
+                        return value+'...';
                 }
             }, {
                 field: 'action',
@@ -110,7 +113,13 @@
                 }, {
                     field: 'del_way',
                     title: '详细过往描述',
-                    align: 'left'
+                    align: 'left',
+                    formatter: function(value, row, index) {
+                        if (row['del_nam']=="")
+                            return "";
+                        else
+                            return row['del_nam']+"["+row['del_id']+"] "+row['del_tim']+" "+value;
+                    }
                 }];
                 $detail.html('<table></table>').find('table').bootstrapTable({
                     height: 300,
