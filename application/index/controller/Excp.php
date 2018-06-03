@@ -7,6 +7,7 @@ use think\facade\Session;
 
 class Excp extends Controller
 {
+    //学生提交异常反馈进行异常登记
     public function excp_stu_submit() {
         //dump(input(''));
         $sid = session('user.id');
@@ -15,18 +16,21 @@ class Excp extends Controller
         $cla = $seat['cla'];
         $num = $seat['num'];
         $excp_desc = "";
-        foreach(input('')['machine'] as $machine=>$parts) {
-            $excp_desc .= "<b>".$machine.":</b><br/>";
-            foreach($parts as $part=>$color_arr) {
-                $excp_desc .= $part."-";
-                foreach($color_arr as $i=>$color) {
-                    $excp_desc .= "[".$color."] ";
+        if (array_key_exists('machine',input(''))) {
+            foreach(input('')['machine'] as $machine=>$parts) {
+                $excp_desc .= "<b>".$machine.":</b><br/>";
+                foreach($parts as $part=>$color_arr) {
+                    $excp_desc .= $part."-";
+                    foreach($color_arr as $i=>$color) {
+                        $excp_desc .= "[".$color."] ";
+                    }
+                    $excp_desc .= "<br/>";
                 }
-                $excp_desc .= "<br/>";
             }
         }
         if (!empty(input('param.excp_desc')))
         $excp_desc .= "<b>描述：</b>". input('param.excp_desc');
+        if (empty($excp_desc)) $this->error('空的故障反馈，无效');
         $data = [
             'stu_id'    => $sid,
             'cla'       => $cla,
@@ -44,6 +48,19 @@ class Excp extends Controller
         if (db('excp_submit')->insert($data)) $this->redirect('/');
         else $this->error('故障提交失败，请联系维护');
     }
+    //获取当前课程的助理名单
+    public function excp_stu_pta() {
+        $pcla = db('course')->where('id', session('user.course_id'))->find();
+        $pta = db('sign_ta')
+        ->where('week', db('the_date')->find()['week'])
+        ->where('weekday', date('N'))
+        ->where('cla', $pcla['cla'])
+        ->where('sign_out', null)
+        ->join('ta', 'ta.id = sign_ta.id')
+        ->select();
+        return json($pta);
+    }
+
     public function excp_status(){
         $db = db('excp_submit');
         if (session('?user')&&session('who')=='ta') {

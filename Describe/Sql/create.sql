@@ -65,7 +65,9 @@ create table ta (
     sch_year      varchar(20),                        # 学年
     sch_term      int,                                # 学期
     sch_time      varchar(30),                        # 具体时间-仅用作描述
-    duty_time     int default 0
+    duty_time     int default 0,                      # 执勤时间
+    excp_suc      int default 0,                      # 处理异常成功次数
+    excp_fail     int default 0                       # 失败次数
 ) engine=InnoDB;
 
 # 组队表
@@ -99,7 +101,9 @@ create table sign_ta (
     cla           varchar(10),                        # 值班教室
     week          int not null,                       # 签到周数
     weekday       int not null,                       # 签到天数
-    duty_time     int default 0                       # 当天执勤时长
+    duty_time     int default 0,                      # 当天执勤时长
+    excp_suc      int default 0,                      # 处理异常成功次数
+    excp_fail     int default 0                       # 失败次数
 ) engine=InnoDB;
 
 # 故障提交表
@@ -112,11 +116,9 @@ create table excp_submit (
     week          int not null,                       # 提交周数
     num           varchar(10) not null,               # 台号
     submit_tim    datetime not null,                  # 提交时间
-    del_id         varchar(10) default null,          # 当前处理人学号/职工号
-    del_nam        varchar(10) default null,          # 当前处理人名字
     del_tim        datetime default null,             # 处理时间
     excp_desc     varchar(500) not null,              # 故障描述
-    del_way        varchar(100) default null,         # 处理方式
+    del_way        varchar(1000) default null,         # 处理方式
     stat          varchar(10) not null default '未处理'# 处理状态
 ) auto_increment=1 engine=InnoDB;
 
