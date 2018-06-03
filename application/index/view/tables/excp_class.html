@@ -29,7 +29,7 @@
                 <!-- 页脚 -->
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button class="btn btn-primary" id="excp_del_confirm">确认</button>
+                    <button class="btn btn-primary" data-dismiss="" id="excp_del_confirm">确认</button>
                 </div>
             </div>
         </div>
@@ -151,6 +151,7 @@
                     console.log(data);
                     $("#info_excp").html('操作成功！');
                     tableBox_excp.bootstrapTable('refresh',{silent: true});
+                    $("#del_excp_modal").modal('hide');
                 },
                 error: function(data) {
                     console.log(data);
