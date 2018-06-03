@@ -81,7 +81,7 @@ class Excp extends Controller
             'del_tim',
             'LEFT(excp_desc,10)' => 'excp_desc_info',
             'stat',
-            'del_way''LEFT(del_way,10)' => 'del_way_info'])
+            'LEFT(del_way,10)' => 'del_way_info'])
         ->select();
         foreach($result as $key=>$val){
             if($val['del_id']==null){
