@@ -69,7 +69,7 @@ class Excp extends Controller
             $db = $db->where('excp_submit.cla',session('user')['cla']);
         }
         $result = $db
-        ->join('stu', 'excp_submit.stu_id = stu.id')
+        ->join('stu', 'excp_submit.stu_id = stu.id and excp_submit.cid = stu.course_id')
         ->field([
             'excp_submit.id' => 'excp_id',
             'submit_tim',

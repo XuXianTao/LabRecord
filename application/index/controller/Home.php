@@ -62,7 +62,7 @@ class Home extends Controller
 				$p_course = $this->present_course->where('tea_id', session('user.id'))->find();
 			}
 			else if (session('who')=='admin' && $_SERVER['REMOTE_ADDR']!='127.0.0.1' && $_SERVER['REMOTE_ADDR']!='127.0.1.1') {
-				$this->error('涉及最高管理操作，请到服务器上操作');
+				$this->error($_SERVER['REMOTE_ADDR']);
 			}
 			else $p_course = [];
 		}
