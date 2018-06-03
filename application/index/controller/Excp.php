@@ -29,7 +29,8 @@ class Excp extends Controller
         $des = input('param.des');
         switch ($stat) {
 			case 'undeal': $stat = "处理不成功";break;
-			case 'deal': $stat = "处理成功";break;
+            case 'deal': $stat = "处理成功";break;
+            default: {$res = "error";return $res;}
 		}
         $result = db('excp_submit')->where('id',$id)->find();
         $result['delId'] = session('user')['id'];
