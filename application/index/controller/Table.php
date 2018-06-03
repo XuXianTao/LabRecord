@@ -173,7 +173,7 @@ class Table extends Controller
 		->select();
 		return json($result);
 	}
-	//修改处理状态
+	//学生端修改处理状态
 	public function excp_deal() {
 		//记录助理处理历史
 		$pcla = db('course')->where('id', session('user.course_id'))->find();
@@ -210,12 +210,15 @@ class Table extends Controller
 		->where('id',input('param.id'))
 		->find()['del_way'];
 		$del_desc = $row_desc.date('Y-m-d H:i:s')." ".$del_nam."[".input('param.taid')."] ".input('param.statu')." ".input('param.desc')."<br/>";
-		return db('excp_submit')
+		db('excp_submit')
 		->where('id',input('param.id'))
 		->update([
 			'del_tim' => date('Y-m-d H:i:s'),
 			'stat' => input('param.statu'),
 			'del_way' => $del_desc
 		]);
+		//记录更新，让助理界面刷新
+		db('the_date')->update(['update_statu2'=>true,'id'=>1]);
+		return ;
 	}
 }

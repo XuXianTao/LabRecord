@@ -45,7 +45,9 @@ class Excp extends Controller
         /*
         * 还需要处理统计数据
         */
-        if (db('excp_submit')->insert($data)) $this->redirect('/');
+        $result = db('excp_submit')->insert($data);
+        db('the_date')->update(['update_statu2'=>true,'id'=>1]);
+        if ($result) $this->redirect('/');
         else $this->error('故障提交失败，请联系维护');
     }
     //获取当前课程的助理名单
@@ -90,6 +92,34 @@ class Excp extends Controller
 		return json($result);
     }
     public function del_excp(){
+        //记录助理处理历史
+        switch (input('param.oper')) {
+            case '处理成功':
+                db('sign_ta')
+                ->where('id', session('user.id'))
+                ->where('week',db('the_date')->find()['week'])
+                ->where('weekday',date('N'))
+                ->where('cla', session('user.cla'))
+                ->where('sign_out',null)
+                ->setInc('excp_suc');
+                db('ta')
+                ->where('id',session('user.id'))
+                ->setInc('excp_suc');
+                break;
+            case '处理未成功':
+                db('sign_ta')
+                ->where('id',session('user.id'))
+                ->where('week',db('the_date')->find()['week'])
+                ->where('weekday',date('N'))
+                ->where('cla', session('user.cla'))
+                ->where('sign_out',null)
+                ->setInc('excp_fail');
+                db('ta')
+                ->where('id',session('user.id'))
+                ->setInc('excp_fail');
+                break;
+        }
+        //更新故障反馈记录
         $id = input('param.id');
         $oper = input('param.oper');
         $des = input('param.des');
@@ -106,7 +136,7 @@ class Excp extends Controller
 			db('the_date')->update(['update_statu2'=>false,'id'=>1]);
 			return json('changed');
 		}else {
-			return json('unchanged');
+			return json('excp-unchanged');
 		}
     }
 };
