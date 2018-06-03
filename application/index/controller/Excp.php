@@ -67,7 +67,6 @@ class Excp extends Controller
             $db = $db->where('excp_submit.cla',session('user')['cla']);
         }
         $result = $db
-        ->where('excp_submit.stat = \'未处理\' or excp_submit.stat = \'处理不成功\' ')
         ->join('stu', 'excp_submit.stu_id = stu.id')
         ->field([
             'excp_submit.id' => 'excp_id',
@@ -76,8 +75,6 @@ class Excp extends Controller
             'nam',
             'cla',
             'num',
-            'del_id',
-            'del_nam',
             'del_tim',
             'LEFT(excp_desc,10)' => 'excp_desc_info',
             'excp_desc',
@@ -86,12 +83,6 @@ class Excp extends Controller
             'LEFT(del_way,10)' => 'del_way_info'])
         ->select();
         foreach($result as $key=>$val){
-            if($val['del_id']==null){
-                $result[$key]['del_id']='';
-            }
-            if($val['del_nam']==null){
-                $result[$key]['del_nam']='';
-            }
             if($val['del_way']==null){
                 $result[$key]['del_way']='';
             }
@@ -103,11 +94,9 @@ class Excp extends Controller
         $oper = input('param.oper');
         $des = input('param.des');
         $result = db('excp_submit')->where('id',$id)->find();
-        $result['del_id'] = session('user')['id'];
-        $result['del_nam'] = session('user')['nam'];
         $result['stat']=$oper;
         $result['del_tim'] = date('Y-m-d H:i:s');
-        $result['del_way'] = $result['del_tim'].' '.' '.session('user')['nam'].'['.session('user')['id'].']:'.$oper.' 描述:'.$des.'<br>'.$result['del_way'];
+        $result['del_way'] = $result['del_way'].$result['del_tim'].' '.' '.session('user')['nam'].'['.session('user')['id'].']:'.$oper.' 描述:'.$des.'<br>';
         $res = db('excp_submit')->where('id',$id)->update($result);
 
         return $res;

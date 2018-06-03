@@ -1,124 +1,135 @@
 <div class="container">
-    <h2 style="margin-top: -25px;">{$course['nam']} 第{$GLOBALS['week']}周</h2>
-    <table class="table table-hover" id="table-excp"></table>
-    <div id="info_excp"></div>
-    <!-- 模态框 -->
-    <!-- tabindex="-1"使得该元素在使用tab键时被忽略 -->
-    <div class="modal fade" id="del_excp_modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <!-- 页眉 -->
-                <div class="modal-header">
-                    <!-- 右上角关闭按钮 -->
-                    <button class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <!-- 标题 -->
-                    <h4 class="modal-title" id="excp-modal__title">故障处理</h4>
-                </div>
-                <!-- 主体 -->
-                <div class="modal-body">
-                    <form class="form-inline row">
-                        <!-- 故障处理方式输入 -->
-                        <div class="form-group">
-                            <label class="form-control-label" for="">请描述处理方式：</label>
-                            <input class="form-control" id="excp_delWay" placeholder="请描述处理方式..." required="required">
-                        </div>
-                    </form>
-                </div>
-                <!-- 页脚 -->
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button class="btn btn-primary" data-dismiss="" id="excp_del_confirm">确认</button>
-                </div>
-            </div>
+  <h2 style="margin-top: -25px;">{$course['nam']} 第{$GLOBALS['week']}周</h2>
+  <table class="table table-hover" id="table-excp"></table>
+  <div id="info_excp"></div>
+  <!-- 模态框 -->
+  <!-- tabindex="-1"使得该元素在使用tab键时被忽略 -->
+  <div class="modal fade" id="del_excp_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- 页眉 -->
+        <div class="modal-header">
+          <!-- 右上角关闭按钮 -->
+          <button class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <!-- 标题 -->
+          <h4 class="modal-title" id="excp-modal__title">故障处理</h4>
         </div>
+        <!-- 主体 -->
+        <div class="modal-body">
+          <form class="form-inline row">
+            <!-- 故障处理方式输入 -->
+            <div class="form-group">
+              <label class="form-control-label" for="">请描述处理方式：</label>
+              <input class="form-control" id="excp_delWay" placeholder="请描述处理方式..." required="required">
+            </div>
+          </form>
+        </div>
+        <!-- 页脚 -->
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+          <button class="btn btn-primary" data-dismiss="" id="excp_del_confirm">确认</button>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
-
 <script>
-    var tableBox_excp = $('#table-excp');
-    $(document).ready(function() {
-        tableBox_excp.bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'post',
-            url: "{:Url('Excp/excp_status')}",
-            dataType: 'json',
-            showHeader: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            pageSize: 10,
-            showRefresh: true,
-            showColumns: true,
-            sortName: 'submit_tim',
-            sortOrder: 'desc',
-            sortable: true,
-            detailView: true,
-            columns: [{
-                field: 'excp_id',
-                visible: false
-            }, {
-                field: 'submit_tim',
-                title: '提交时间',
-                align: 'center'
-            }, {
-                field: 'nam',
-                title: '学生',
-                align: 'center',
-                formatter: function(value, row, index) {
-                    return value+"["+row['stu_id']+"]";
-                }
-            }, {
-                field: 'cla',
-                title: '位置',
-                align: 'center',
-                formatter: function(value, row, index) {
-                    return value+' '+row['num'];
-                }
-            }, {
-                field: 'excp_desc_info',
-                title: '情况描述',
-                align: 'left',
-                formatter: function(value, row, index) {
-                    return value+'...';
-                }
-            }, {
-                field: 'stat',
-                title: '处理情况',
-                align: 'center'
-            }, {
-                field: 'del_way_info',
-                title: '过往处理',
-                align: 'left',
-                formatter: function(value, row, index) {
-                    if (row['del_nam']=="")
-                        return "";
-                    else
-                        return value+'...';
-                }
-            }, {
-                field: 'action',
-                title: '操作',
-                align: 'center',
-                formatter: actionFormatter_excp
-            }],
-            detailFormatter: function(index, row) {},
-            onExpandRow: function(index, row, $detail) {
-                var excp_desc = row['excp_desc'];
-                var del_way = row['del_way'];
-                var str = '<table border="1" bordercolor="gainsboro" style="text-align: left;">'+
-                    '<tr><th>详细情况描述<th><th>详细过往描述<th></tr>'+
-                    '<tr><td>'+excp_desc+'</td><td>'+del_way+'</td></tr>'+
-                    '</table>';
-                $detail.html(str);
-            }
-        });
-    });
+var tableBox_excp = $('#table-excp');
+$(document).ready(function() {
+  tableBox_excp.bootstrapTable({
+    height: 600,
+    method: 'post',
+    url: "{:Url('Excp/excp_status')}",
+    dataType: 'json',
+    showHeader: true,
+    pagination: true,
+    onlyInfoPagination: true,
+    pageSize: 10,
+    showRefresh: true,
+    showColumns: true,
+    sortName: 'submit_tim',
+    sortOrder: 'desc',
+    sortable: true,
+    detailView: true,
+    columns: [{
+      field: 'excp_id',
+      visible: false
+    }, {
+      field: 'submit_tim',
+      title: '提交时间',
+      align: 'center',
+      sortable: true
+    }, {
+      field: 'nam',
+      title: '学生',
+      align: 'center',
+      formatter: function(value, row, index) {
+        return value + "[" + row['stu_id'] + "]";
+      }
+    }, {
+      field: 'cla',
+      title: '位置',
+      align: 'center',
+      formatter: function(value, row, index) {
+        return value + ' ' + row['num'];
+      }
+    }, {
+      field: 'excp_desc_info',
+      title: '情况描述',
+      align: 'left',
+      formatter: function(value, row, index) {
+        return value + '...';
+      }
+    }, {
+      field: 'stat',
+      title: '处理情况',
+      align: 'center',
+      sortable: true
+    }, {
+      field: 'del_way_info',
+      title: '过往处理',
+      align: 'left',
+      formatter: function(value, row, index) {
+        if (row['del_way'] == "")
+          return "";
+        else
+          return value + '...';
+      }
+    }, {
+      field: 'action',
+      title: '操作',
+      align: 'center',
+      formatter: actionFormatter_excp
+    }],
+    rowStyle: function(row, index) {
+      switch (row['stat']) {
+        case '处理成功':
+          return { classes: 'alert-success' };
+        case '处理未成功':
+          return { classes: 'alert-warning' };
+        case '未处理':
+          return { classes: 'alert-info' };
+      }
+      return {};
+    },
+    detailFormatter: function(index, row) {},
+    onExpandRow: function(index, row, $detail) {
+      var excp_desc = row['excp_desc'];
+      var del_way = row['del_way'];
+      var str = '<table border="1" bordercolor="gainsboro" style="text-align: left;">' +
+        '<tr><th>详细情况描述</th><th>详细过往描述</th></tr>' +
+        '<tr><td>' + excp_desc + '</td><td>' + del_way + '</td></tr>' +
+        '</table>';
+      $detail.html(str);
+    }
+  });
+});
 
-    $(document).click(function() {
-        tableBox_excp.bootstrapTable('resetView');
-    })
+$(document).click(function() {
+  tableBox_excp.bootstrapTable('resetView');
+})
 
     function actionFormatter_excp(value, row, index) {
         var stat = row['stat'];
@@ -133,45 +144,45 @@
         return result;
     }
 
-    // 按钮点击事件
-    function del_excp(id, oper) {
-        $("#excp_del_confirm").unbind('click').click(function() {
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "{:Url('Excp/del_excp')}",
-                data: {
-                    'id': id,
-                    'oper': oper,
-                    'des': $("#excp_delWay").val()
-                },
-                success: function(data) {
-                    console.log(data);
-                    $("#info_excp").html('操作成功！');
-                    tableBox_excp.bootstrapTable('refresh',{silent: true});
-                    $("#del_excp_modal").modal('hide');
-                },
-                error: function(data) {
-                    console.log(data);
-                    alert('错误！错误信息：'+data+'！请联系维护处理！');
-                }
-            })
-        })
-    }
+// 按钮点击事件
+function del_excp(id, oper) {
+  $("#excp_del_confirm").unbind('click').click(function() {
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: "{:Url('Excp/del_excp')}",
+      data: {
+        'id': id,
+        'oper': oper,
+        'des': $("#excp_delWay").val()
+      },
+      success: function(data) {
+        console.log(data);
+        $("#info_excp").html('操作成功！');
+        tableBox_excp.bootstrapTable('refresh', { silent: true });
+        $("#del_excp_modal").modal('hide');
+      },
+      error: function(data) {
+        console.log(data);
+        alert('错误！错误信息：' + data + '！请联系维护处理！');
+      }
+    })
+  })
+}
 
-    // 持续更新页面
-    function check_excp_update() {
-        $.get({
-            url:'{:Url("Excp/check_excp_update")}',
-            success: function(data) {
-                console.log(data);
-                if (data=='changed') tableBox_excp.bootstrapTable('refresh', {silent:true});
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        })
-        setTimeout(check_excp_update,1000);
+// 持续更新页面
+function check_excp_update() {
+  $.get({
+    url: '{:Url("Excp/check_excp_update")}',
+    success: function(data) {
+      console.log(data);
+      if (data == 'changed') tableBox_excp.bootstrapTable('refresh', { silent: true });
+    },
+    error: function(error) {
+      console.log(error);
     }
-    check_excp_update();
+  })
+  setTimeout(check_excp_update, 1000);
+}
+check_excp_update();
 </script>
