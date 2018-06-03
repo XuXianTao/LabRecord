@@ -54,6 +54,7 @@
             sortName: 'submit_tim',
             sortOrder: 'desc',
             sortable: true,
+            detailView: true,
             columns: [{
                 field: 'excp_id',
                 visible: false
@@ -76,34 +77,52 @@
                     return value+' '+row['num'];
                 }
             }, {
-                field: 'excp_desc',
+                field: 'excp_desc_info',
                 title: '情况描述',
                 align: 'left'
             }, {
                 field: 'stat',
                 title: '处理情况',
-                align: 'left'
-            }, {
-                field: 'del_nam',
-                title: '处理人',
-                align: 'center',
-                formatter: function(value, row, index) {
-                    return value+"["+row['del_id']+"]";
-                }
-            }, {
-                field: 'del_tim',
-                title: '处理时间',
                 align: 'center'
             }, {
-                field: 'del_way',
-                title: '处理方式',
-                align: 'left'
+                field: 'del_way_info',
+                title: '过往处理',
+                align: 'left',
+                formatter: function(value, row, index) {
+                    if (row['del_nam']=="")
+                        return "";
+                    else
+                        return row['del_nam']+"["+row['del_id']+"] "+row['del_tim']+" "+value;
+                }
             }, {
                 field: 'action',
                 title: '操作',
                 align: 'center',
                 formatter: actionFormatter_excp
-            }]
+            }],
+            detailFormatter: function(index, row) {},
+            onExpandRow: function(index, row, $detail) {
+                console.log("$detail: "+$detail);
+                var col = [{
+                    field: 'excp_desc',
+                    title: '详细情况描述',
+                    align: 'left'
+                }, {
+                    field: 'del_way',
+                    title: '详细过往描述',
+                    align: 'left'
+                }];
+                $detail.html('<table></table>').find('table').bootstrapTable({
+                    height: 300,
+                    striped: true,
+                    search: true,
+                    method: 'POST',
+                    showHeader: true,
+                    showRefresh: true,
+                    showColumns: true,
+                    columns: col
+                })
+            }
         });
     });
 
@@ -117,11 +136,11 @@
         // 处理不成功按钮
         var btn_not_suc = "<a href='javascript:;' class='btn btn-warning table-btn' onclick='del_excp(" + id + ", \"处理不成功\")' title='处理未成功' data-toggle='modal' data-target='del_excp_modal'><span>处理未成功</span></a>";
         // 处理成功按钮
-        var btn_suc = "<a href='javascript:;' class='btn btn-warning table-btn' onclick='del_excp(" + id + ", \"处理成功\")' title='处理成功' data-toggle='modal' data-target='del_excp_modal'><span>处理未成功</span></a>"
+        var btn_suc = "<a href='javascript:;' class='btn btn-success table-btn' onclick='del_excp(" + id + ", \"处理成功\")' title='处理成功' data-toggle='modal' data-target='del_excp_modal'><span>处理未成功</span></a>"
         var result = "";
         if (stat == "未处理")
             result += btn_not_suc;
-        if (stat != "已处理")
+        if (stat != "处理成功")
             result += btn_suc;
         return result;
     }
@@ -151,7 +170,7 @@
         })
     }
 
-    //持续更新页面
+    // 持续更新页面
     function check_excp_update() {
         $.get({
             url:'{:Url("Excp/check_excp_update")}',
@@ -166,5 +185,4 @@
         setTimeout(check_excp_update,1000);
     }
     check_excp_update();
-
 </script>

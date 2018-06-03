@@ -53,6 +53,18 @@ $(document).ready(function() {
           return hour + '小时' + min + '分钟' + sec + '秒';
         }
       },
+      {
+        field: 'excp_suc',
+        title: '故障修复成功次数',
+        sortable: true,
+        align: 'center',
+      },
+      {
+        field: 'excp_fail',
+        title: '故障修复失败次数',
+        sortable: true,
+        align: 'center',
+      },
     ],
     onExpandRow: function(index, row, $detail) {
       console.log($detail)
@@ -108,6 +120,18 @@ $(document).ready(function() {
             var sec = value % 60;
             return hour + '小时' + min + '分钟' + sec + '秒';
           }
+        },
+        {
+          field: 'excp_suc',
+          title: '故障修复成功次数',
+          sortable: true,
+          align: 'center',
+        },
+        {
+          field: 'excp_fail',
+          title: '故障修复失败次数',
+          sortable: true,
+          align: 'center',
         },
       ];
       $detail.html('<table></table>').find('table').bootstrapTable({

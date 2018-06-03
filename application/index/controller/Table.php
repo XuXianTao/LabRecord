@@ -166,18 +166,56 @@ class Table extends Controller
 		$result = db('excp_submit')
 		->where('cid', session('user.course_id'))
 		->where('week',db('the_date')->find()['week'])
-		->field(['*','LEFT(excp_desc,10)' => 'excp_desc_info'])
+		->field(['*',
+			'LEFT(excp_desc,10)' => 'excp_desc_info',
+			'LEFT(del_way,10)' => 'del_way_info'
+		])
 		->select();
 		return json($result);
 	}
 	//修改处理状态
 	public function excp_deal() {
+		//记录助理处理历史
+		$pcla = db('course')->where('id', session('user.course_id'))->find();
+		switch (input('param.statu')) {
+			case '处理成功':
+				db('sign_ta')
+				->where('id',input('param.taid'))
+				->where('week',db('the_date')->find()['week'])
+				->where('weekday',date('N'))
+				->where('cla', $pcla['cla'])
+				->where('sign_out',null)
+				->setInc('excp_suc');
+				db('ta')
+				->where('id',input('param.taid'))
+				->setInc('excp_suc');
+				break;
+			case '处理未成功':
+				db('sign_ta')
+				->where('id',input('param.taid'))
+				->where('week',db('the_date')->find()['week'])
+				->where('weekday',date('N'))
+				->where('cla', $pcla['cla'])
+				->where('sign_out',null)
+				->setInc('excp_fail');
+				db('ta')
+				->where('id',input('param.taid'))
+				->setInc('excp_fail');
+				break;
+		}
+
+		//修改处理状态
+		$del_nam = db('ta')->where('id',input('param.taid'))->find()['nam'];
+		$row_desc = db('excp_submit')
+		->where('id',input('param.id'))
+		->find()['del_way'];
+		$del_desc = $row_desc.date('Y-m-d H:i:s')." ".$del_nam."[".input('param.taid')."] ".input('param.statu')." ".input('param.desc')."<br/>";
 		return db('excp_submit')
 		->where('id',input('param.id'))
 		->update([
 			'del_tim' => date('Y-m-d H:i:s'),
 			'stat' => input('param.statu'),
-			'del_way' => input('param.desc')
+			'del_way' => $del_desc
 		]);
 	}
 }

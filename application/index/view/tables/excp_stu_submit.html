@@ -1,5 +1,30 @@
 <div class="stu-excp-table container">
   <table class="table-excp-stu-submit table table-hover" id="table-excp-stu-submit"></table>
+  <div class="modal fade" id="excp_detail">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">处理信息</h4>
+        </div>
+        <div class="modal-body">
+          <div class="excp-stu__tas form-group">
+            <label class="control-label" for="excp-stu__ta">请选择负责处理的助理</label>
+            <select class="form-control" name="ta" id="excp-stu__ta">
+
+            </select>
+          </div>
+          <div class="excp-stu__desc-input form-group">
+            <label for="excp-stu__desc" class="control-label">请描述处理方式</label>
+            <textarea class="form-control" name="desc" id="excp-stu__desc" cols="30" rows="10"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="excp-stu-detail__submit btn btn-primary">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
 $(document).ready(function() {
@@ -12,17 +37,12 @@ $(document).ready(function() {
     sortName: 'submit_tim',
     sortOrder: 'desc',
     columns: [{
-      field: 'submit_tim',
-      title: '提交时间',
-      align: 'center',
-      sortable: true,
-    }, {
       field: 'stu_id',
       title: '提交者',
       align: 'center',
     }, {
       field: 'num',
-      title: '机器号',
+      title: '位置',
       align: 'center',
       sortable: true
     }, {
@@ -34,8 +54,8 @@ $(document).ready(function() {
         return value + '...';
       }
     }, {
-      field: 'stat',
-      title: '处理状态',
+      field: 'submit_tim',
+      title: '提交时间',
       align: 'center',
       sortable: true,
     }, {
@@ -43,9 +63,18 @@ $(document).ready(function() {
       title: '最后处理时间',
       align: 'center'
     }, {
-      field: 'del_way',
+      field: 'stat',
+      title: '处理状态',
+      align: 'center',
+      sortable: true,
+    }, {
+      field: 'del_way_info',
       title: '处理方式',
       align: 'center',
+      formatter: function(value, row, index) {
+        if (value == null) return;
+        return value + '...';
+      }
     }, {
       title: '操作',
       align: 'center',
@@ -53,49 +82,87 @@ $(document).ready(function() {
     }],
     rowStyle: function(row, index) {
       switch (row['stat']) {
-        case '处理成功':return{classes:'alert-success'};
-        case '处理未成功':return{classes:'alert-warning'};
-        case '未处理':return{classes:'alert-info'};
+        case '处理成功':
+          return { classes: 'alert-success' };
+        case '处理未成功':
+          return { classes: 'alert-warning' };
+        case '未处理':
+          return { classes: 'alert-info' };
       }
       return {};
     },
-    detailFormatter: function(index, row) {
-      return row['excp_desc'];
+    onExpandRow: function(index, row, $detail) {
+      var excp_desc = row['excp_desc'];
+      var del_way = row['del_way'];
+      if (del_way == null) del_way = "未处理";
+      var str = '<table border="1" bordercolor="gainsboro" style="text-align: left;">' +
+        '<tr>' +
+        '<th>异常描述</th>' +
+        '<th>处理方式</th>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>' + excp_desc + '</td>' +
+        '<td>' + del_way + '</td>' +
+        '</tr>'
+      '</table>';
+      $detail.html(str);
     }
   });
 
   function actionFormatter_excp_stu(value, row, index) {
-    if (row['stu_id'] != {$Think.session.user['id']}) return ;
-    var result = "<a href='javascript:;' class='btn btn-success table-btn' onclick='excp_deal(" + row['id'] + ",\"处理成功\")'><span>处理成功</span>";
-    result += "<a href='javascript:;' class='btn btn-warning table-btn' onclick='excp_deal(" + row['id'] + ",\"处理未成功\")'><span>处理未成功</span>";
+    if (row['stu_id'] != {$Think.session.user['id']}) return;
+    if (row['stat'] == '处理成功') return;
+    var result = "<a href='javascript:;' class='btn btn-success table-btn' onclick='excp_detail(" + row['id'] + ",\"处理成功\")' data-toggle='modal' data-target='#excp_detail'><span>处理成功</span>";
+    result += "<a href='javascript:;' class='btn btn-warning table-btn' onclick='excp_detail(" + row['id'] + ",\"处理未成功\")' data-toggle='modal' data-target='#excp_detail'><span>处理未成功</span>";
     return result;
   }
 
 });
 
-function excp_deal(id, statu) {
-  console.log(id + statu);
+function excp_detail(id, statu) {
   var desc_default = "";
   switch (statu) {
     case '处理成功':
       desc_deafult = "更换配件";
       break;
     case '处理未成功':
-      desc_deafult = "等待老师处理";
+      desc_deafult = "仪器内部损坏";
       break;
   }
-  var desc = prompt("请描述具体解决方式", desc_deafult);
-  if (desc==null) return;
+  $("#excp-stu__desc").val(desc_deafult);
+  $.get({
+    url: "{:Url('Excp/excp_stu_pta')}",
+    success: function(data) {
+      console.log(data);
+      $('#excp-stu__ta>option').remove();
+      for (var i in data) {
+        $('#excp-stu__ta').append("<option value='"+data[i]['id']+"'>["+data[i]['id']+"]"+data[i]['nam']+"</option>");
+      }
+    },
+    error: function() {
+      alert('当前时段该教室助理名单获取出错');
+    }
+  });
+  $(".excp-stu-detail__submit").unbind('click').click(function() {
+    var desc = $("#excp-stu__desc").val();
+    var taid = $('#excp-stu__ta').val();
+    excp_deal(id, statu, taid, desc);
+  })
+}
+
+function excp_deal(id, statu, taid, desc) {
   $.post({
     url: "{:Url('Table/excp_deal')}",
     data: {
       'id': id,
-      'statu' : statu,
-      'desc' : desc
+      'statu': statu,
+      'taid': taid,
+      'desc': desc
     },
     success: function(data) {
       console.log(data);
       $("#table-excp-stu-submit").bootstrapTable('refresh', { silent: true });
+      $('#excp_detail').modal('hide');
     },
     error: function() {
       alert('状态修改出现问题，请联系维护');
