@@ -168,4 +168,6 @@ insert into ip(ip,cla,num) values('172.18.203.208','C104','78号机');
 insert into ip(ip,cla,num) values('172.18.203.209','C104','79号机');
 insert into ip(ip,cla,num) values('172.18.203.210','C104','80号机');
 
+insert into ip(ip,cla,num) values('127.0.0.1','本地','装甲');
+
 /*select * from ip;*/
