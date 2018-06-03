@@ -68,14 +68,10 @@ class Excp extends Controller
         ->select();
 		return json($result);
     }
-    public function edit_excp(){
+    public function del_excp(){
         $id = input('param.id');
-        $stat = input('param.opera');
+        $oper = input('param.oper');
         $des = input('param.des');
-        switch ($stat) {
-			case 'undeal': $stat = "处理不成功";break;
-			case 'deal': $stat = "处理成功";break;
-		}
         $result = db('excp_submit')->where('id',$id)->find();
         $result['delId'] = session('user')['id'];
         $result['delNam'] = session('user')['nam'];

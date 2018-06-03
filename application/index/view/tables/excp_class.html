@@ -4,7 +4,7 @@
     <div id="info_excp"></div>
     <!-- 模态框 -->
     <!-- tabindex="-1"使得该元素在使用tab键时被忽略 -->
-    <div class="modal fade" id="change_excp_modal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="del_excp_modal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <!-- 页眉 -->
@@ -22,7 +22,7 @@
                         <!-- 故障处理方式输入 -->
                         <div class="form-group">
                             <label class="form-control-label" for="">请描述处理方式：</label>
-                            <input class="form-control" id="excp_delWay" placeholder="请描述处理方式...">
+                            <input class="form-control" id="excp_delWay" placeholder="请描述处理方式..." required="required">
                         </div>
                     </form>
                 </div>
@@ -56,8 +56,8 @@
             sortable: true,
             columns: [{
                 field: 'excp_id',
-                visible: false,
-            }， {
+                visible: false
+            }, {
                 field: 'submit_tim',
                 title: '提交时间',
                 align: 'center'
@@ -113,46 +113,47 @@
 
     function actionFormatter_excp(value, row, index) {
         var stat = row['stat'];
-        var id = row['id'];
-        var res = "";
-        if (stat != "处理未成功")
-            res += "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"edit_excp('" + id + "','undeal','"+index+"')\" title='处理未成功'><span>处理未成功</span></a>";
+        var id = row['excp_id'];
+        // 处理不成功按钮
+        var btn_not_suc = "<a href='javascript:;' class='btn btn-warning table-btn' onclick='del_excp(" + id + ", \"处理不成功\")' title='处理未成功' data-toggle='modal' data-target='del_excp_modal'><span>处理未成功</span></a>";
+        // 处理成功按钮
+        var btn_suc = "<a href='javascript:;' class='btn btn-warning table-btn' onclick='del_excp(" + id + ", \"处理成功\")' title='处理成功' data-toggle='modal' data-target='del_excp_modal'><span>处理未成功</span></a>"
+        var result = "";
+        if (stat == "未处理")
+            result += btn_not_suc;
         if (stat != "已处理")
-            res += "<a href='javascript:;' class='btn btn-success table-btn' onclick=\"edit_excp('" + id + "','deal','"+index+"')\" title='处理成功'><span>处理成功</span></a>";
-        return res;
+            result += btn_suc;
+        return result;
     }
 
     // 按钮点击事件
-    function edit_excp(id, opera, index) {
-        var val;
-        switch (opera) {
-            case 'deal': val = "已处理"; break;
-            case 'undeal': val = "处理不成功"; break;
-            default: val = 'error'; break;
-        }
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url:'{:Url("Excp/edit_excp")}',
-            data: {
-                'id':id,
-                'opera':opera
-            },
-            success: function(data) {
-                $("#info_excp").html(id+'状态修改成功');
-                console.log(data);
-                tableBox_excp.bootstrapTable(
-                    'updateCell',
-                    {
-                        index,
-                        field: 'stat',
-                        value: opera_value
+    function del_excp(id, oper) {
+        $("#excp_del_confirm").unbind('click').click(function() {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "{:Url('Excp/del_excp')}",
+                data: {
+                    'id': id,
+                    'oper': oper,
+                    'des': $("#excp_delWay").val()
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data == 1) {
+                        $("#info_excp").html('操作成功！');
+                        tableBox_excp.bootstrapTable('refresh',{silent: true});
                     }
-                );
-            },
-            error: function() {
-                $("#info_excp").html(id+'状态修改失败');
-            }
+                    else {
+                        $("#info_excp").html('操作失败！失败信息：'+data+'！')
+                        alert('操作失败！失败信息：'+data+'！请联系维护处理！');
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                    alert('错误！错误信息：'+data+'！请联系维护处理！');
+                }
+            })
         })
     }
 
