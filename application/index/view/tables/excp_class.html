@@ -92,7 +92,7 @@
                 title: '过往处理',
                 align: 'left',
                 formatter: function(value, row, index) {
-                    if (row['del_nam']==null)
+                    if (row['del_nam']=="")
                         return "";
                     else
                         return value+'...';
@@ -105,32 +105,13 @@
             }],
             detailFormatter: function(index, row) {},
             onExpandRow: function(index, row, $detail) {
-                console.log("$detail: "+$detail);
-                var col = [{
-                    field: 'excp_desc',
-                    title: '详细情况描述',
-                    align: 'left'
-                }, {
-                    field: 'del_way',
-                    title: '详细过往描述',
-                    align: 'left',
-                    formatter: function(value, row, index) {
-                        if (row['del_nam']=="")
-                            return "";
-                        else
-                            return row['del_nam']+"["+row['del_id']+"] "+row['del_tim']+" "+value;
-                    }
-                }];
-                $detail.html('<table></table>').find('table').bootstrapTable({
-                    height: 300,
-                    striped: true,
-                    search: true,
-                    method: 'POST',
-                    showHeader: true,
-                    showRefresh: true,
-                    showColumns: true,
-                    columns: col
-                })
+                var excp_desc = row['excp_desc'];
+                var del_way = row['del_way'];
+                var str = '<table border="1" bordercolor="gainsboro" style="text-align: left;">'+
+                    '<tr><th>详细情况描述<th><th>详细过往描述<th></tr>'+
+                    '<tr><td>'+excp_desc+'</td><td>'+del_way+'</td></tr>'+
+                    '</table>';
+                $detail.html(str);
             }
         });
     });

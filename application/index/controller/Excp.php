@@ -90,6 +90,9 @@ class Excp extends Controller
             if($val['del_nam']==null){
                 $result[$key]['del_nam']='';
             }
+            if($val['del_way']==null){
+                $result[$key]['del_way']='';
+            }
         }
 		return json($result);
     }
