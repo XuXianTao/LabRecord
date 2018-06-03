@@ -59,12 +59,12 @@ class Excp extends Controller
             'nam',
             'cla',
             'num',
-            'delId',
-            'delNam',
-            'delTim',
+            'del_id',
+            'del_nam',
+            'del_tim',
             'excp_desc',
             'stat',
-            'delWay'])
+            'del_way'])
         ->select();
 		return json($result);
     }
@@ -73,18 +73,18 @@ class Excp extends Controller
         $oper = input('param.oper');
         $des = input('param.des');
         $result = db('excp_submit')->where('id',$id)->find();
-        $result['delId'] = session('user')['id'];
-        $result['delNam'] = session('user')['nam'];
-        $result['delTim'] = 'now()';
-        $result['delWay'] .= $result['deltim'].' '.session('user')['id'].' '.session('user')['nam'].':'.$stat.' 描述:'.$des.'\n';
+        $result['del_id'] = session('user')['id'];
+        $result['del_nam'] = session('user')['nam'];
+        $result['del_tim'] = 'now()';
+        $result['del_way'] .= $result['del_tim'].' '.session('user')['id'].' '.session('user')['nam'].':'.$stat.' 描述:'.$des.'\n';
 
         $res = db('excp_submit')->where('id',$id)->update($result);
 
         return $res;
     }
     public function check_excp_update(){
-        if (db('the_date')->find()['update_statu'] == true) {
-			db('the_date')->update(['update_statu'=>false,'id'=>1]);
+        if (db('the_date')->find()['update_statu2'] == true) {
+			db('the_date')->update(['update_statu2'=>false,'id'=>1]);
 			return json('changed');
 		}else {
 			return json('unchanged');

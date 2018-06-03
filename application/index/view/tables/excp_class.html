@@ -84,18 +84,18 @@
                 title: '处理情况',
                 align: 'left'
             }, {
-                field: 'delNam',
+                field: 'del_nam',
                 title: '处理人',
                 align: 'center',
                 formatter: function(value, row, index) {
-                    return value+"["+row['delId']+"]";
+                    return value+"["+row['del_id']+"]";
                 }
             }, {
-                field: 'delTim',
+                field: 'del_tim',
                 title: '处理时间',
                 align: 'center'
             }, {
-                field: 'delWay',
+                field: 'del_way',
                 title: '处理方式',
                 align: 'left'
             }, {
@@ -140,14 +140,8 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    if (data == 1) {
-                        $("#info_excp").html('操作成功！');
-                        tableBox_excp.bootstrapTable('refresh',{silent: true});
-                    }
-                    else {
-                        $("#info_excp").html('操作失败！失败信息：'+data+'！')
-                        alert('操作失败！失败信息：'+data+'！请联系维护处理！');
-                    }
+                    $("#info_excp").html('操作成功！');
+                    tableBox_excp.bootstrapTable('refresh',{silent: true});
                 },
                 error: function(data) {
                     console.log(data);
