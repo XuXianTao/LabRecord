@@ -62,10 +62,18 @@ class Excp extends Controller
             'del_id',
             'del_nam',
             'del_tim',
-            'excp_desc',
+            'LEFT(excp_desc,10)' => 'excp_desc_info',
             'stat',
-            'del_way'])
+            'del_way''LEFT(del_way,10)' => 'del_way_info'])
         ->select();
+        foreach($result as $key=>$val){
+            if($val['del_id']==null){
+                $result[$key]['del_id']='';
+            }
+            if($val['del_nam']==null){
+                $result[$key]['del_nam']='';
+            }
+        }
 		return json($result);
     }
     public function del_excp(){
@@ -76,7 +84,7 @@ class Excp extends Controller
         $result['del_id'] = session('user')['id'];
         $result['del_nam'] = session('user')['nam'];
         $result['del_tim'] = 'now()';
-        $result['del_way'] .= $result['del_tim'].' '.session('user')['id'].' '.session('user')['nam'].':'.$stat.' 描述:'.$des.'\n';
+        $result['del_way'] = $result['del_tim'].' '.session('user')['id'].' '.session('user')['nam'].':'.$stat.' 描述:'.$des.'\n'.$result['del_way'];
 
         $res = db('excp_submit')->where('id',$id)->update($result);
 
