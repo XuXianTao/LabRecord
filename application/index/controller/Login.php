@@ -30,22 +30,16 @@ class Login extends Controller
 	{
 		//当前时间所有课程
 		get_present_course($present_course_query);
-		$this->present_course = $present_course_query->select();
-		$counts = count($this->present_course);
+		$seat = db('ip')->where('ip',$_SERVER['REMOTE_ADDR'])->find();
+		$this->present_course = $present_course_query->where('cla',$seat['cla'])->find();
 		//整理成选择条件
-		if($counts>0){
-			$condition = [];
-		}else{
+		if($this->present_course==null){
 			return json('学号不存在');
 		}
-		for ($i=0;$i<$counts;$i++) {
-			array_push($condition,['course_id','=',$this->present_course[$i]['id']]);
-		}
-		if ($counts>1) array_push($condition,'or');
 		//判断这个学生在当前时间是否有课程
 		$stu = db('stu')
 		  ->where('id',$stu_id)
-		  ->where($condition)
+		  ->where('course_id',$this->present_course['id'])
 		  ->find();
 		if (!$stu) return json('学号不存在');
 		session('user',$stu);
