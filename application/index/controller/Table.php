@@ -170,4 +170,14 @@ class Table extends Controller
 		->select();
 		return json($result);
 	}
+	//修改处理状态
+	public function excp_deal() {
+		return db('excp_submit')
+		->where('id',input('param.id'))
+		->update([
+			'del_tim' => date('Y-m-d H:i:s'),
+			'stat' => input('param.statu'),
+			'del_way' => input('param.desc')
+		]);
+	}
 }
