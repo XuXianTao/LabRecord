@@ -92,7 +92,7 @@
                 title: '过往处理',
                 align: 'left',
                 formatter: function(value, row, index) {
-                    if (row['del_nam']=="")
+                    if (row['del_nam']==null)
                         return "";
                     else
                         return value+'...';
