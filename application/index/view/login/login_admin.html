@@ -69,6 +69,7 @@
 	    			  switch (data) {
 	    			  	case 'Ta':
 	    			  	var str=prompt("请输入值班课室","比如A201");
+	    			  	if (str==null) return;
 	    			  	window.location.href="{:Url('Home/homeAdmin')}"+'?cla='+str;
 	    			  	break;
 	    			  	default:

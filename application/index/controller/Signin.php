@@ -119,9 +119,9 @@ class Signin extends Controller
             $success = "已签到";
         } else if ($stat=='已补签') {
             $success = "已补签";
-        }else if ($stat=='已请假') {
+        } else if ($stat=='已请假') {
             $success = "已补签";
-        }else if ($stat=='缺勤') {
+        } else if ($stat=='缺勤') {
             $success = "缺勤";
         }
         return $success;

@@ -1,129 +1,176 @@
 <div class="container">
     <h2 style="margin-top: -25px;">{$course['nam']} 第{$GLOBALS['week']}周</h2>
-    <h6>{$course['sch_time_start']}-{$course['sch_time_end']}</h6>
-    <table class="table table-hover" id="table-excp">
-    </table>
-    <div id="info_stu"></div>
+    <table class="table table-hover" id="table-excp"></table>
+    <div id="info_excp"></div>
+    <!-- 模态框 -->
+    <!-- tabindex="-1"使得该元素在使用tab键时被忽略 -->
+    <div class="modal fade" id="del_excp_modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- 页眉 -->
+                <div class="modal-header">
+                    <!-- 右上角关闭按钮 -->
+                    <button class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <!-- 标题 -->
+                    <h4 class="modal-title" id="excp-modal__title">故障处理</h4>
+                </div>
+                <!-- 主体 -->
+                <div class="modal-body">
+                    <form class="form-inline row">
+                        <!-- 故障处理方式输入 -->
+                        <div class="form-group">
+                            <label class="form-control-label" for="">请描述处理方式：</label>
+                            <input class="form-control" id="excp_delWay" placeholder="请描述处理方式..." required="required">
+                        </div>
+                    </form>
+                </div>
+                <!-- 页脚 -->
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary" id="excp_del_confirm">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <script>
-var tableBox_excp = $('#table-excp');
-var render_time = 0;
-$(document).ready(function() {
-    tableBox_excp.bootstrapTable({
-        height: 600,
-        striped: true, // 隔行变色
-        method: 'post',
-        url: "{:Url('Excp/excp_status')}",
-        dataType: 'json',
-        showHeader: true,
-        pagination: true, //在表格底部显示分页工具栏
-        onlyInfoPagination: true,
-        pageSize: 1000,
-        search: true,
-        showRefresh: true,
-        showColumns: true,
-        sortName: 'id',
-        columns: [
-            {
+    var tableBox_excp = $('#table-excp');
+    $(document).ready(function() {
+        tableBox_excp.bootstrapTable({
+            height: 600,
+            striped: true,
+            method: 'post',
+            url: "{:Url('Excp/excp_status')}",
+            dataType: 'json',
+            showHeader: true,
+            pagination: true,
+            onlyInfoPagination: true,
+            pageSize: 10,
+            showRefresh: true,
+            showColumns: true,
+            sortName: 'submit_tim',
+            sortOrder: 'desc',
+            sortable: true,
+            columns: [{
+                field: 'excp_id',
+                visible: false
+            }, {
                 field: 'submit_tim',
-                title: '报障时间',
-                sortable: true,
-                align: 'center',
-            },
-            {
-                field: 'stu_id',
-                title: '学号',
-                sortable: true,
-                align: 'center',
-            },
-            {
+                title: '提交时间',
+                align: 'center'
+            }, {
                 field: 'nam',
-                title: '姓名',
-                sortable: true,
+                title: '学生',
                 align: 'center',
-            },
-            {
-                field: 'num',
-                title: '桌号',
-                sortable: true,
+                formatter: function(value, row, index) {
+                    return value+"["+row['stu_id']+"]";
+                }
+            }, {
+                field: 'cla',
+                title: '位置',
                 align: 'center',
-            },
-            {
-                field: 'delNam',
-                title: '处理人',
-                sortable: true,
-                align: 'center',
-            },
-            {
-                field: 'delTim',
-                title: '处理时间',
-                sortable: true,
-                align: 'center',
-            },
-            {
+                formatter: function(value, row, index) {
+                    return value+' '+row['num'];
+                }
+            }, {
                 field: 'excp_desc',
                 title: '情况描述',
-                sortable: true,
-                align: 'center',
-            },
-            {
+                align: 'left'
+            }, {
                 field: 'stat',
                 title: '处理情况',
-                sortable: true,
-                align: 'right',
-                formatter: actionFormatter_excp,
-            }
-        ],
+                align: 'left'
+            }, {
+                field: 'delNam',
+                title: '处理人',
+                align: 'center',
+                formatter: function(value, row, index) {
+                    return value+"["+row['delId']+"]";
+                }
+            }, {
+                field: 'delTim',
+                title: '处理时间',
+                align: 'center'
+            }, {
+                field: 'delWay',
+                title: '处理方式',
+                align: 'left'
+            }, {
+                field: 'action',
+                title: '操作',
+                align: 'center',
+                formatter: actionFormatter_excp
+            }]
+        });
     });
-});
-$(document).click(function() {
-    tableBox_excp.bootstrapTable('resetView');
-})
 
-function actionFormatter_excp(value, row, index) {
-    var statu = value;
-    var id = row['id'];
-    var result = value + " ";
-    if (statu != "已处理")
-        result += "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"edit_excp('" + id + "','deal','"+index+"')\" title='处理成功'><span>处理成功</span></a>";
-    if (statu != "处理未成功")
-        result += "<a href='javascript:;' class='btn btn-warning table-btn' onclick=\"edit_excp('" + id + "','undeal','"+index+"')\" title='处理未成功'><span>处理未成功</span></a>";
-    return result;
-}
-function edit_excp(id, opera, index) {
-    var opera_value;
-    switch (opera) {
-        case 'deal': opera_value = "已处理";break;
-        case 'undeal': opera_value = "处理不成功";break;
-        default: opera_value = 'error';break;
+    $(document).click(function() {
+        tableBox_excp.bootstrapTable('resetView');
+    })
+
+    function actionFormatter_excp(value, row, index) {
+        var stat = row['stat'];
+        var id = row['excp_id'];
+        // 处理不成功按钮
+        var btn_not_suc = "<a href='javascript:;' class='btn btn-warning table-btn' onclick='del_excp(" + id + ", \"处理不成功\")' title='处理未成功' data-toggle='modal' data-target='del_excp_modal'><span>处理未成功</span></a>";
+        // 处理成功按钮
+        var btn_suc = "<a href='javascript:;' class='btn btn-warning table-btn' onclick='del_excp(" + id + ", \"处理成功\")' title='处理成功' data-toggle='modal' data-target='del_excp_modal'><span>处理未成功</span></a>"
+        var result = "";
+        if (stat == "未处理")
+            result += btn_not_suc;
+        if (stat != "已处理")
+            result += btn_suc;
+        return result;
     }
-    $.post({
-        url:'{:Url("Table/edit_excp")}',
-        data: {'id':id, 'opera':opera},
-        success: function(data) {
-            $("#info_stu").html(id+'状态修改成功');
-            console.log(data);
-            tableBox_excp.bootstrapTable('updateCell',{index,field:'stat',value:opera_value});
-        },
-        error: function() {
-            $("#info_stu").html(id+'状态修改失败');
-        }
-    })
-}
 
-//持续更新页面
-function check_excp_update() {
-    $.get({
-        url:'{:Url("Excp/check_excp_update")}',
-        success: function(data) {
-            console.log(data);
-            if (data=='changed') tableBox_excp.bootstrapTable('refresh', {silent:true});
-        },
-        error: function(error) {
-            console.log(error);
-        }
-    })
-    setTimeout(check_excp_update,1000);
-}
-check_excp_update();
+    // 按钮点击事件
+    function del_excp(id, oper) {
+        $("#excp_del_confirm").unbind('click').click(function() {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "{:Url('Excp/del_excp')}",
+                data: {
+                    'id': id,
+                    'oper': oper,
+                    'des': $("#excp_delWay").val()
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data == 1) {
+                        $("#info_excp").html('操作成功！');
+                        tableBox_excp.bootstrapTable('refresh',{silent: true});
+                    }
+                    else {
+                        $("#info_excp").html('操作失败！失败信息：'+data+'！')
+                        alert('操作失败！失败信息：'+data+'！请联系维护处理！');
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                    alert('错误！错误信息：'+data+'！请联系维护处理！');
+                }
+            })
+        })
+    }
+
+    //持续更新页面
+    function check_excp_update() {
+        $.get({
+            url:'{:Url("Excp/check_excp_update")}',
+            success: function(data) {
+                console.log(data);
+                if (data=='changed') tableBox_excp.bootstrapTable('refresh', {silent:true});
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        })
+        setTimeout(check_excp_update,1000);
+    }
+    check_excp_update();
+
 </script>
