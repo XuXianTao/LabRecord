@@ -128,10 +128,8 @@
         // 处理成功按钮
         var btn_suc = "<a href='javascript:;' class='btn btn-success table-btn' onclick='del_excp(" + id + ", \"处理成功\")' title='处理成功' data-toggle='modal' data-target='#del_excp_modal'><span>处理成功</span></a>"
         var result = "";
-        if (stat == "未处理")
-            result += btn_not_suc;
         if (stat != "处理成功")
-            result += btn_suc;
+            result += btn_not_suc + btn_suc;
         return result;
     }
 
