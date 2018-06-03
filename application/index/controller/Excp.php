@@ -67,7 +67,7 @@ class Excp extends Controller
             $db = $db->where('excp_submit.cla',session('user')['cla']);
         }
         $result = $db
-        ->where('excp_submit.stat = \'未处理\' or excp_submit.stat = \'处理未成功\' ')
+        ->where('excp_submit.stat = \'未处理\' or excp_submit.stat = \'处理不成功\' ')
         ->join('stu', 'excp_submit.stu_id = stu.id')
         ->field([
             'excp_submit.id' => 'excp_id',
@@ -105,9 +105,9 @@ class Excp extends Controller
         $result = db('excp_submit')->where('id',$id)->find();
         $result['del_id'] = session('user')['id'];
         $result['del_nam'] = session('user')['nam'];
-        $result['del_tim'] = 'now()';
-        $result['del_way'] = $result['del_tim'].' '.session('user')['id'].' '.session('user')['nam'].':'.$stat.' 描述:'.$des.'\n'.$result['del_way'];
-
+        $result['stat']=$oper;
+        $result['del_tim'] = date('Y-m-d H:i:s');
+        $result['del_way'] = $result['del_tim'].' '.' '.session('user')['nam'].'['.session('user')['id'].']:'.$oper.' 描述:'.$des.'<br>'.$result['del_way'];
         $res = db('excp_submit')->where('id',$id)->update($result);
 
         return $res;
