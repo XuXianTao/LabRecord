@@ -9,4 +9,5 @@ NEXT:
 故障统计模块
 	- 仪器序列号excel导入(admin/lab_teacher)
 	- 新仪器的添加[已知仪器类型，序列号，台号](admin/lab_teacher)
+	- 查看所有的故障提交历史(admin/lab_teacher)[不同于助理看到的当前课程故障]
 	- 学生故障提交的时候同时进行某个仪器的故障统计
