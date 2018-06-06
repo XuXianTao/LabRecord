@@ -56,7 +56,7 @@ define('EDU_TEACHER', [
       ]);
 define('LAB_TEACHER', [
         'sign_stu'      => FALSE,
-        'p_mechine'     => TRUE,
+        'p_mechine'     => FALSE,
         's_mechine'     => TRUE,
         'que'           => FALSE,
         'que_publish'   => FALSE,
