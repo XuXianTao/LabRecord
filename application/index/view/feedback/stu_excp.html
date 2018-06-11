@@ -12,7 +12,7 @@ function arr_push(&$array, $key, $obj) {
 foreach($excp_static as $k=>$obj) {
     switch ($obj['machine']) {
         case '实验箱': {
-            arr_push($machines,'box_elec', $obj['typ']);
+            arr_push($machines,'box_ac', $obj['typ']);
             arr_push($machines,'box_mode', $obj['typ']);
             arr_push($machines,'box_cir',$obj['typ']);
             break;

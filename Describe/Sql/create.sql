@@ -116,9 +116,9 @@ create table excp_submit (
     week          int not null,                       # 提交周数
     num           varchar(10) not null,               # 台号
     submit_tim    datetime not null,                  # 提交时间
-    del_tim        datetime default null,             # 处理时间
+    del_tim       datetime default null,              # 处理时间
     excp_desc     varchar(500) not null,              # 故障描述
-    del_way        varchar(1000) default null,         # 处理方式
+    del_way       varchar(1000) default null,         # 处理方式
     stat          varchar(10) not null default '未处理'# 处理状态
 ) auto_increment=1 engine=InnoDB;
 
@@ -130,7 +130,7 @@ create table dev_oscp (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -140,11 +140,11 @@ create table dev_oscp (
 ) auto_increment=1 engine=InnoDB;
 
 # 直流电源表
-create table dev_dcsource (
+create table dev_dcpower (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -158,7 +158,7 @@ create table dev_dmm (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -172,7 +172,7 @@ create table dev_display (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -182,11 +182,11 @@ create table dev_display (
 ) auto_increment=1 engine=InnoDB;
 
 # 主机表
-create table dev_pccase (
+create table dev_pc (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -200,7 +200,7 @@ create table dev_pm (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -210,11 +210,11 @@ create table dev_pm (
 ) auto_increment=1 engine=InnoDB;
 
 # 函数发生器表
-create table dev_awg (
+create table dev_fsg (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -224,11 +224,11 @@ create table dev_awg (
 ) auto_increment=1 engine=InnoDB;
 
 # 交流电路实验箱表
-create table dev_accirbox (
+create table dev_box_ac (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -238,11 +238,11 @@ create table dev_accirbox (
 ) auto_increment=1 engine=InnoDB;
 
 # 电路基础实验箱表
-create table dev_cirfoubox (
+create table dev_box_cir (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -252,11 +252,11 @@ create table dev_cirfoubox (
 ) auto_increment=1 engine=InnoDB;
 
 # 模拟电路实验箱表
-create table dev_anacirbox (
+create table dev_box_mode (
     id            int not null primary key auto_increment,
                                                       # 登记用编号
     sch_id        varchar(10),                        # 校编号
-    SN            varchar(30),                        # 序列号
+    sn            varchar(30),                        # 序列号
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
@@ -334,4 +334,3 @@ alter table grp add foreign key fk_grp_course(course_id) references course(id);
 alter table sign_stu add foreign key fb_sign_stu_stu(id,course_id) references stu(id,course_id);
 alter table sign_stu add foreign key fb_sign_stu_ip(ip) references ip(ip);
 alter table sign_ta add foreign key fb_sign_ta_ta(id) references ta(id);
-alter table excp_submit add foreign key fb_excp_submit_stu(stu_id) references stu(id);
