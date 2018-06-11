@@ -1,0 +1,78 @@
+<div class="container">
+    <form action="{:Url('')}" enctype="multipart/form-data" class="device_import form-inline row" method="post" onsubmit="return check_device_import()">
+        <!-- 8列居中 -->
+        <div class="col-md-8 col-md-offset-2">
+            <!-- 提示 -->
+            <div class="alert alert-warning">请按照仪器所在实验室进行导入</div><br><br>
+            <!-- 实验室选择 -->
+            <div class="form-group">
+                仪器所在实验室: 
+                <select class="form-control" name="device_import_cla">
+                    <option value="C102">C102</option>
+                    <option value="C103">C103</option>
+                    <option value="C105">C105</option>
+                </select>
+            </div>
+            <!-- Excel文件上传 -->
+            <label class="file" id="device_import_file">
+                <input type="file" name="device_import_excel" id="device_import_excel">
+                <span class="btn btn-primary">
+                    <i class="fa fa-file-excel-o fa-5x"></i><br><br>
+                    <div id="device_import_file_info">选择要新增的仪器Excel文件</div>
+                </span>
+            </label>
+            <div class="alert alert-danger">导入的Excel文件请严格按照标准</div><br><br>
+            <!-- 提交按钮 -->
+            <button class="btn btn-primary" type="submit"><h4>提交</h4></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function check_device_import() {
+        if ($('#device_import_excel').val() == '') {
+            alert('尚未选择Excel文件');
+            return false;
+        }
+        if (window.confirm('确认实验室信息与Excel文件无误并提交？')) {
+            return false;
+        }
+        var stat = true;
+        $.ajax({
+            type: "POST",
+            url: "{:Url('')}",
+            dataType: "json",
+            async: false,
+            data: {
+                'cla': $("device_import select[name='device_import_cla']")
+            },
+            success: function(data) {
+                console.log(data);
+                if (data != 0) {
+                    console.log('错误！错误信息：'+data);
+                    alert('错误！请联系管理员！');
+                    stat = false;
+                    return false;
+                }
+                else {
+                    alert('导入成功！');
+                }
+            },
+            error: function(data) {
+                console.log('错误！错误信息: '+data);
+                alert('错误！请联系管理员！');
+                stat = false;
+                return false;
+            }
+        });
+        return stat;
+    }
+
+    $("#device_import_excel").change(function() {
+        var arr = this.value.split('\\');
+        var file_name = arr[arr.length - 1];
+        $('#device_import_file_info').html(file_name);
+        $('#device_import_file .btn').addClass('btn-success');
+        $('#device_import_file .btn').removeClass('btn-primary');
+    })
+</script>

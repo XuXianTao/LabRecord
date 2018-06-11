@@ -18,30 +18,30 @@
   </nav>
   <div class="tab-content home-content">
     <div role="tabpanel" class="tab-pane active home-content-sign">
-      {$Think.session.user.nam}
-      <br>
-      <h6>
+        {$Think.session.user.nam}
+        <br>
+        <h6>
             第{$GLOBALS['week']}周　星期{$Think.const.CN_WEEK[$GLOBALS['day']]}
         </h6>
-      <h6>
-        {if ($grp_stat==0)}
-            {include file="group/group_build"/}
-        {else}
-            {include file="group/group_information"/}
-        {/if}
-    </h6>
-      <h6>
+        <h6>
+            {if ($grp_stat==0)}
+                {include file="group/group_build"/}
+            {else}
+                {include file="group/group_information"/}
+            {/if}
+        </h6>
+        <h6>
             上节课你出现的问题：{}
         </h6>
     </div>
     <div role="tabpanel" class="tab-pane" id="excp">
-      {include file="feedback/stu_excp"}
+        {include file="feedback/stu_excp"}
     </div>
     <div role="tabpanel" class="tab-pane" id="excp-result">
-      {include file="tables/excp_stu_submit"}
+        {include file="tables/excp_stu_submit"}
     </div>
     <div role="tabpanel" class="tab-pane" id="edu">
-      {include file="feedback/stu_test"}
+        {include file="feedback/stu_test"}
     </div>
   </div>
 </div>
