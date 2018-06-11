@@ -32,8 +32,8 @@ define('MACHINE_NAME',[
 //管理角色显示内容修订
 define('TA', [
         'sign_stu'      => TRUE,
-        'p_mechine'     => TRUE,
-        's_mechine'     => TRUE,
+        'p_machine'     => TRUE,
+        's_machine'     => TRUE,
         'que'           => FALSE,
         'que_publish'   => FALSE,
         'course'        => FALSE,
@@ -44,8 +44,8 @@ define('TA', [
       ]);
 define('EDU_TEACHER', [
         'sign_stu'      => TRUE,
-        'p_mechine'     => FALSE,
-        's_mechine'     => FALSE,
+        'p_machine'     => FALSE,
+        's_machine'     => FALSE,
         'que'           => TRUE,
         'que_publish'   => TRUE,
         'course'        => TRUE,
@@ -56,8 +56,8 @@ define('EDU_TEACHER', [
       ]);
 define('LAB_TEACHER', [
         'sign_stu'      => FALSE,
-        'p_mechine'     => FALSE,
-        's_mechine'     => TRUE,
+        'p_machine'     => FALSE,
+        's_machine'     => TRUE,
         'que'           => FALSE,
         'que_publish'   => FALSE,
         'course'        => FALSE,
@@ -68,8 +68,8 @@ define('LAB_TEACHER', [
       ]);
 define('COM_TEACHER', [
         'sign_stu'      => TRUE,
-        'p_mechine'     => TRUE,
-        's_mechine'     => TRUE,
+        'p_machine'     => TRUE,
+        's_machine'     => TRUE,
         'que'           => TRUE,
         'que_publish'   => TRUE,
         'course'        => TRUE,
@@ -80,8 +80,8 @@ define('COM_TEACHER', [
       ]);
 define('ADMIN',[
         'sign_stu'      => FALSE,
-        'p_mechine'     => FALSE,
-        's_mechine'     => TRUE,
+        'p_machine'     => FALSE,
+        's_machine'     => TRUE,
         'que'           => FALSE,
         'que_publish'   => TRUE,
         'course'        => TRUE,

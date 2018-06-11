@@ -17,12 +17,12 @@ switch (session('who')) {
           <a class="nav-link" href="#stu" role="tab" data-toggle="tab">当堂学生信息</a>
         </li>
         {/if}
-        {if WHO['p_mechine']}
+        {if WHO['p_machine']}
         <li class="nav-item">
           <a class="nav-link" href="#excp" role="tab" data-toggle="tab">故障处理</a>
         </li>
         {/if}
-        {if WHO['s_mechine']}
+        {if WHO['s_machine']}
         <li class="nav-item">
           <a class="nav-link" href="#edu" role="tab" data-toggle="tab">故障统计</a>
         </li>
@@ -159,12 +159,12 @@ switch (session('who')) {
       {include file="tables/student_list"/}
     </div>
     {/if}
-    {if WHO['p_mechine']}
+    {if WHO['p_machine']}
     <div role="tabpanel" class="tab-pane" id="excp">
       {include file="tables/excp_class"/}
     </div>
     {/if}
-    {if WHO['s_mechine']}
+    {if WHO['s_machine']}
     <div role="tabpanel" class="tab-pane" id="edu">
       {include file="tables/excp_statistics"}
     </div>
