@@ -109,13 +109,21 @@ class Table extends Controller
 		db('course')->where('id',$cid)
 		->update($detail);
 		db('grp')->where('course_id',$cid)->delete();
-		$stu_data = db('stu')->where('course_id')->select();
+
+		// $cid = 1;
+
+		// $detail = [
+		// 	'sch_week_start' => 11,
+		// 	'sch_week_end' =>19
+		// ];
+
+		$stu_data = db('stu')->where('course_id',$cid)->select();
 		db('sign_stu')->where('course_id',$cid)->where('week <'.$detail['sch_week_start'].' or week >'.$detail['sch_week_end'])->delete();
 		$sign_stu_data = [];
 		$sign_i = 0;
 		for($week = $detail['sch_week_start'];$week <= $detail['sch_week_end'];$week++){
 			$mem = db('sign_stu')->where('week',$week)->where('course_id',$cid)->find();
-			if($mem!=null){
+			if($mem==null){
 				foreach($stu_data as $key=>$val){
 					$sign_stu_data[$sign_i]['id'] = $val['id'];
 					$sign_stu_data[$sign_i]['course_id'] = $cid;
@@ -124,6 +132,8 @@ class Table extends Controller
 				}
 			}
 		}
+		//dump($stu_data);
+		//dump($sign_stu_data);
 		db('sign_stu')->insertAll($sign_stu_data);
 		unset($sign_stu_data);
 		if($detail['grp_mem_num']==1){
@@ -162,7 +172,7 @@ class Table extends Controller
 	}
 
 	//学生查询自己提交的异常情况
-	public function table_excp_stu() {
+	public function table_excp_stu(){
 		$result = db('excp_submit')
 		->where('cid', session('user.course_id'))
 		->where('week',db('the_date')->find()['week'])
