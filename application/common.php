@@ -12,22 +12,24 @@
 // 应用公共文件
 define('CN_WEEK',['','一','二','三','四','五','六','日']);
 define('MACHINE_STATIC',[
-    '交流实验箱' => 'box_elec',
+    '交流实验箱' => 'box_ac',
     '直流稳压电源' => 'dcpower',
-    '台式万用表' => 'multimeter',
-    '功率表' => 'powermeter',
-    '数字示波器' => 'digitosci',
-    '函数信号发生器' => 'funsign'
+    '台式万用表' => 'dmm',
+    '功率表' => 'pm',
+    '数字示波器' => 'oscp',
+    '函数信号发生器' => 'fsg'
 ]);
 define('MACHINE_NAME',[
-    'box_elec' => '交流电路实验箱',
+    'box_ac' => '交流电路实验箱',
     'box_mode' => '模拟电路实验箱',
     'box_cir' => '电路基础实验箱',
     'dcpower' => '直流稳压电源',
-    'multimeter' => '台式万用表',
-    'powermeter' => '功率表',
-    'digitosci' => '数字示波器',
-    'funsign' => '函数信号发生器'
+    'dmm' => '台式万用表',
+    'pm' => '功率表',
+    'oscp' => '数字示波器',
+    'fsg' => '函数信号发生器',
+    'pc' => '电脑',
+    'display' => '显示器'
     ]);
 //管理角色显示内容修订
 define('TA', [

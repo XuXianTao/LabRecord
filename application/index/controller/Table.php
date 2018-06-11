@@ -173,7 +173,7 @@ class Table extends Controller
 		->select();
 		return json($result);
 	}
-	//学生端修改处理状态
+	//学生端异常处理-修改处理状态
 	public function excp_deal() {
 		//记录助理处理历史
 		$pcla = db('course')->where('id', session('user.course_id'))->find();
@@ -220,5 +220,9 @@ class Table extends Controller
 		//记录更新，让助理界面刷新
 		db('the_date')->update(['update_statu2'=>true,'id'=>1]);
 		return ;
+	}
+	//管理员异常处理-示波器
+	public function table_oscp() {
+		return json(db('dev_osc')->select());
 	}
 }
