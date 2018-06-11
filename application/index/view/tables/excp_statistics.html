@@ -18,7 +18,7 @@
         </li>
         <!-- 主机 -->
         <li class="nav-item">
-            <a class="nav-link" href="#dev_pccase" role="tab" data-toggle="tab"></a>
+            <a class="nav-link" href="#dev_pc" role="tab" data-toggle="tab"></a>
         </li>
         <!-- 功率因数表 -->
         <li class="nav-item">
@@ -60,8 +60,8 @@
         <table class="table table-hover" id="table_dev_display"></table>
     </div>
     <!-- 主机 -->
-    <div role="tabpanel" class="tab-pane" id="dev_pccase">
-        <table class="table table-hover" id="table_dev_pccase"></table>
+    <div role="tabpanel" class="tab-pane" id="dev_pc">
+        <table class="table table-hover" id="table_dev_pc"></table>
     </div>
     <!-- 功率因数表 -->
     <div role="tabpanel" class="tab-pane" id="dev_pm">
@@ -104,11 +104,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -145,10 +140,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 直流源
@@ -168,11 +175,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -209,10 +211,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 万用电表
@@ -232,11 +246,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -273,10 +282,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 显示器
@@ -295,33 +316,6 @@
             pagination: true,
             onlyInfoPagination: true,
             columns: [
-                {}
-            ],
-            onExpandRow: function(index, row, $detail) {
-                
-            }
-        });
-        // 主机
-        $("#table_dev_pccase").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: "{:Url('')}",
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
                 {
                     field: 'sch_id',
                     title: '校编号',
@@ -359,10 +353,93 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
+            }
+        });
+        // 主机
+        $("#table_dev_pc").bootstrapTable({
+            height: 600,
+            striped: true,
+            method: 'POST',
+            url: "{:Url('')}",
+            showRefresh: true,
+            showColumns: true,
+            search: true,
+            detailView: true,
+            sortName: 'cnt',
+            sortOrder: 'desc',
+            sortable: true,
+            pagination: true,
+            onlyInfoPagination: true,
+            columns: [
+                {
+                    field: 'sch_id',
+                    title: '校编号',
+                    align: 'center'
+                },
+                {
+                    fidle: 'sn',
+                    title: '序列号',
+                    align: 'center'
+                },
+                {
+                    field: 'cla',
+                    title: '当前位置',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return value + ' ' + row['num'] + '桌';
+                    }
+                },
+                {
+                    field: 'cnt',
+                    title: '故障次数',
+                    align: 'center'
+                },
+                {
+                    field: 'use_time',
+                    title: '使用时长',
+                    align: 'center'
+                },
+                {
+                    field: 'stat',
+                    title: '使用状态',
+                    align: 'center'
+                },
+                {
+                    field: 'model',
+                    title: '型号',
+                    align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
+                }
+            ],
+            onExpandRow: function(index, row, $detail) {
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 功率因数表
@@ -382,11 +459,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -423,10 +495,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 函数发生器
@@ -446,11 +530,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -487,10 +566,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 交流电路实验箱
@@ -510,11 +601,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -551,10 +637,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 电路基础实验箱
@@ -574,11 +672,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -615,10 +708,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
         // 模拟电路实验箱
@@ -638,11 +743,6 @@
             onlyInfoPagination: true,
             columns: [
                 {
-                    field: 'id',
-                    title: 'ID',
-                    align: 'center'
-                },
-                {
                     field: 'sch_id',
                     title: '校编号',
                     align: 'center'
@@ -679,10 +779,22 @@
                     field: 'model',
                     title: '型号',
                     align: 'center'
+                },
+                {
+                    field: 'excp_info',
+                    title: '过往故障描述',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        return '请展开查看';
+                    }
                 }
             ],
             onExpandRow: function(index, row, $detail) {
-                
+                var excp_info = row['excp_info'];
+                var table = '<table border="1" bordercolor="gainsboro">' +
+                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
+                    '<tr><td>' + excp_info + '</td></tr></table>';
+                $detail.html(table);
             }
         });
     })
