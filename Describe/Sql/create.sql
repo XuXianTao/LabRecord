@@ -112,158 +112,179 @@ create table excp_submit (
                                                       # 提交故障的编号
     stu_id        int not null,                       # 学号
     cla           varchar(10) not null,               # 课室号
+    num           varchar(10) not null,               # 台号
     cid           int not null,                       # 课程号
     week          int not null,                       # 提交周数
-    num           varchar(10) not null,               # 台号
     submit_tim    datetime not null,                  # 提交时间
     del_tim       datetime default null,              # 处理时间
-    excp_desc     varchar(500) not null,              # 故障描述
-    del_way       varchar(1000) default null,         # 处理方式
+    excp_desc     text,                               # 故障描述
+    del_way       text,                               # 处理方式
     stat          varchar(10) not null default '未处理'# 处理状态
 ) auto_increment=1 engine=InnoDB;
 
 # 总体故障统计表，待定留用
 # create table excp_cnt () engine=InnoDB;
 
-# 示波器表
-create table dev_oscp (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
+# 设备表
+create table dev (
+    sn            varchar(30) primary key,            # 序列号
     sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
+    typ           varchar(10),                        # 类型, oscp示波器, dcpower直流电源, dmm万用电表, display显示器, pc主机, pm功率因数表, fsg函数发生器, box_ac交流电路箱, box_cir电路基础实验箱, box_mode模拟电路实验箱
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
     model         varchar(30) not null,               # 型号
     cnt           int not null default 0,             # 故障次数
     use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+    stat          int not null default 1,             # 使用状态，1使用中，0未使用
+    excp_info     mediumtext                          # 过往故障描述
+) engine=InnoDB;
+
+# 设备配件表
+create table dev_detail (
+    sn            varchar(30),                        # 序列号
+    nam           varchar(20),                        # 配件名
+    cnt           int not null default 0              # 故障数
+);
+
+# 示波器表
+-- create table dev_oscp (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 直流电源表
-create table dev_dcpower (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_dcpower (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 万用电表表
-create table dev_dmm (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_dmm (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 显示器表
-create table dev_display (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_display (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 主机表
-create table dev_pc (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_pc (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 功率因数表表
-create table dev_pm (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_pm (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 函数发生器表
-create table dev_fsg (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_fsg (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 交流电路实验箱表
-create table dev_box_ac (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_box_ac (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 电路基础实验箱表
-create table dev_box_cir (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_box_cir (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 模拟电路实验箱表
-create table dev_box_mode (
-    id            int not null primary key auto_increment,
-                                                      # 登记用编号
-    sch_id        varchar(10),                        # 校编号
-    sn            varchar(30),                        # 序列号
-    cla           varchar(10) not null,               # 当前课室号
-    num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
-    cnt           int not null default 0,             # 故障次数
-    use_time      int not null default 0,             # 使用时长
-    stat          int not null default 1              # 使用状态，1使用中，0未使用
-) auto_increment=1 engine=InnoDB;
+-- create table dev_box_mode (
+--     id            int not null primary key auto_increment,
+--                                                       # 登记用编号
+--     sch_id        varchar(10),                        # 校编号
+--     sn            varchar(30),                        # 序列号
+--     cla           varchar(10) not null,               # 当前课室号
+--     num           varchar(10) not null,               # 当前台号
+--     model         varchar(30) not null,               # 型号
+--     cnt           int not null default 0,             # 故障次数
+--     use_time      int not null default 0,             # 使用时长
+--     stat          int not null default 1              # 使用状态，1使用中，0未使用
+-- ) auto_increment=1 engine=InnoDB;
 
 # 配线表，需要进行默认导入
 create table excp_static (
@@ -331,6 +352,7 @@ create table msg (
 alter table course add foreign key fk_course_tea(tea_id) references tea(id);
 alter table stu add foreign key fk_stu_course(course_id) references course(id);
 alter table grp add foreign key fk_grp_course(course_id) references course(id);
-alter table sign_stu add foreign key fb_sign_stu_stu(id,course_id) references stu(id,course_id);
-alter table sign_stu add foreign key fb_sign_stu_ip(ip) references ip(ip);
-alter table sign_ta add foreign key fb_sign_ta_ta(id) references ta(id);
+alter table sign_stu add foreign key fk_sign_stu_stu(id,course_id) references stu(id,course_id);
+alter table sign_stu add foreign key fk_sign_stu_ip(ip) references ip(ip);
+alter table sign_ta add foreign key fk_sign_ta_ta(id) references ta(id);
+alter table dev_detail add foreign key fk_dev_detail_dev(sn) references dev(sn);
