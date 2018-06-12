@@ -63,14 +63,14 @@ class Excel extends Controller
 		$hightest_row = $worksheet->getHighestRow();
 		$higntest_col = $worksheet->getHighestColumn();
 		$highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($higntest_col);
-		dump($higntest_col);
+		//dump($higntest_col);
 		$row_t=0;
 		$col_t=0;
 		for ($row = 1; $row <= $hightest_row; ++$row) {
 			for($col = 1; $col <= $highestColumnIndex; ++$col) {
 				$col_t = $col;
 				if( $worksheet->getCellByColumnAndRow($col, $row)->getValue()=='学号'){
-					dump('in');
+					//dump('in');
 					while($worksheet->getCellByColumnAndRow($col, $row+1)->getValue()==NULL){
 						++$row;
 					}
@@ -269,5 +269,141 @@ class Excel extends Controller
 		unset($spreadsheet);
 
 		return $path;
+	}
+
+	public function excp_import($cid){
+		//新建课程
+		
+
+		//读取学生excel
+		$file = request()->file('excel_stu');
+		$info = $file->move($this->uploads);
+		$file_name = $info->getSaveName();
+		for($i=0;$i<strlen($file_name);$i++){
+			if($file_name[$i]=='.'){
+				break;
+			}
+		}
+		$file_type = substr($file_name,$i+1);
+		$file_type = strtolower($file_type);
+		if($file_type!='xlsx'){
+			return $this->error('excel文件格式不对');
+		}
+		dump($file_type);
+		$file_path = $this->uploads.'/'.$file_name;
+
+
+		//$file_path = $this->uploads.'/'.'80_39583.xlsx';
+		$file_path=str_replace('\\','/',$file_path);
+		//dump($file_path);
+		$new_namespace = '\\PhpOffice\\PhpSpreadsheet\\Reader\\Xlsx';
+		$reader = new $new_namespace;
+		$reader->setReadDataOnly(true);
+		$spreadsheet = $reader->load($file_path);
+		$worksheet = $spreadsheet->getActiveSheet();
+		$hightest_row = $worksheet->getHighestRow();
+		$higntest_col = $worksheet->getHighestColumn();
+		
+		$dev_data=[];
+		$dev_data_i = 0;
+		$dev_detail_data=[];
+		$dev_detail_data_i=0;
+		$num = 0;
+		for($row=1;$row<=$hightest_row;$row++){
+			$value = $worksheet->getCellByColumnAndRow(1,$row)->getValue();
+			if(is_numeric($value)){
+				$num = $value;
+			}else{
+				if($value!=NULL){
+					continue;
+				}
+			}
+			$value = $worksheet->getCellByColumnAndRow(6,$row)->getValue();
+			if($value==NULL){
+				continue;
+			}
+			$dev_data[$dev_data_i]['num'] = $num;
+			$dev_data[$dev_data_i]['sn'] = $worksheet->getCellByColumnAndRow(4,$row)->getValue();
+			$dev_data[$dev_data_i]['sch_id'] = $worksheet->getCellByColumnAndRow(3,$row)->getValue();
+			$dev_data[$dev_data_i]['cla'] = $cid;
+
+			$value = $worksheet->getCellByColumnAndRow(4,$row)->getValue();
+			if($value==NULL){
+				return $this->error('excel文件格式不对');
+			}
+			
+			$dev_data[$dev_data_i]['model'] = $worksheet->getCellByColumnAndRow(4,$row)->getValue();
+
+			$value = $worksheet->getCellByColumnAndRow(2,$row)->getValue();
+			if(MACHINE_ENGLISH_NAME[$value]!=NULL){
+				$dev_data[$dev_data_i]['typ']=$value;
+			}else{
+				return $this->error('excel文件格式不对');
+			}
+			$dev_data_i++;
+		}
+		//dump($dev_data);
+		db('dev')->insertAll($dev_data);
+
+
+
+///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
+		dump($file_path);
+		dump($perms = fileperms($file_path));
+		if (($perms & 0xC000) == 0xC000) {
+		    // Socket
+		    $info = 's';
+		} elseif (($perms & 0xA000) == 0xA000) {
+		    // Symbolic Link
+		    $info = 'l';
+		} elseif (($perms & 0x8000) == 0x8000) {
+		    // Regular
+		    $info = '-';
+		} elseif (($perms & 0x6000) == 0x6000) {
+		    // Block special
+		    $info = 'b';
+		} elseif (($perms & 0x4000) == 0x4000) {
+		    // Directory
+		    $info = 'd';
+		} elseif (($perms & 0x2000) == 0x2000) {
+		    // Character special
+		    $info = 'c';
+		} elseif (($perms & 0x1000) == 0x1000) {
+		    // FIFO pipe
+		    $info = 'p';
+		} else {
+		    // Unknown
+		    $info = 'u';
+		}
+
+		// Owner
+		$info .= (($perms & 0x0100) ? 'r' : '-');
+		$info .= (($perms & 0x0080) ? 'w' : '-');
+		$info .= (($perms & 0x0040) ?
+		            (($perms & 0x0800) ? 's' : 'x' ) :
+		            (($perms & 0x0800) ? 'S' : '-'));
+
+		// Group
+		$info .= (($perms & 0x0020) ? 'r' : '-');
+		$info .= (($perms & 0x0010) ? 'w' : '-');
+		$info .= (($perms & 0x0008) ?
+		            (($perms & 0x0400) ? 's' : 'x' ) :
+		            (($perms & 0x0400) ? 'S' : '-'));
+
+		// World
+		$info .= (($perms & 0x0004) ? 'r' : '-');
+		$info .= (($perms & 0x0002) ? 'w' : '-');
+		$info .= (($perms & 0x0001) ?
+		            (($perms & 0x0200) ? 't' : 'x' ) :
+		            (($perms & 0x0200) ? 'T' : '-'));
+		echo $info;
+///////////////////////////////////////////
+
+		unlink(realpath($file_path));
+		$this->redirect('Home/homeAdmin');
+
+		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+		// if (!is_dir($this->output)) mkdir($this->output);
+		// $writer->save($this->output.'/hellp.xlsx');
 	}
 }

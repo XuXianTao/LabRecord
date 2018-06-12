@@ -31,6 +31,18 @@ define('MACHINE_NAME',[
     'pc' => '电脑',
     'display' => '显示器'
     ]);
+define('MACHINE_ENGLISH_NAME',[
+    '交流电路实验箱' => 'box_ac',
+    '模拟电路实验箱' => 'box_mode',
+    '电路基础实验箱' => 'box_cir',
+    '直流电源' => 'dcpower',
+    '万用电表' => 'dmm',
+    '功率因数表' => 'pm',
+    '示波器' => 'oscp',
+    '函数发生器' => 'fsg',
+    '主机' => 'pc',
+    '显示器' => 'display' 
+    ]);
 //管理角色显示内容修订
 define('TA', [
         'sign_stu'      => TRUE,
