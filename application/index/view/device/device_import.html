@@ -3,7 +3,7 @@
         <!-- 8列居中 -->
         <div class="col-md-8 col-md-offset-2">
             <!-- 提示 -->
-            <div class="alert alert-warning">请按照仪器所在实验室进行导入</div><br><br>
+            <div class="alert alert-warning">请按照仪器所在实验室进行导入</div>
             <!-- 实验室选择 -->
             <div class="form-group">
                 仪器所在实验室: 
@@ -14,16 +14,19 @@
                 </select>
             </div>
             <!-- Excel文件上传 -->
-            <label class="file" id="device_import_file">
-                <input type="file" name="device_import_excel" id="device_import_excel">
-                <span class="btn btn-primary">
-                    <i class="fa fa-file-excel-o fa-5x"></i><br><br>
-                    <div id="device_import_file_info">选择要新增的仪器Excel文件</div>
-                </span>
-            </label>
-            <div class="alert alert-danger">导入的Excel文件请严格按照标准</div><br><br>
-            <!-- 提交按钮 -->
-            <button class="btn btn-primary" type="submit"><h4>提交</h4></button>
+            <div>
+                <label class="file" id="device_import_file">
+                    <input type="file" name="device_import_excel" id="device_import_excel">
+                    <span class="btn btn-primary">
+                        <i class="fa fa-file-excel-o fa-5x"></i><br><br>
+                        <div id="device_import_file_info">选择要新增的仪器Excel文件</div>
+                    </span>
+                </label>
+                
+                <div class="alert alert-danger">导入的Excel文件请严格按照标准</div><br><br>
+                <!-- 提交按钮 -->
+                <button class="btn btn-primary" type="submit"><h4>提交</h4></button>
+            </div>
         </div>
     </form>
 </div>
