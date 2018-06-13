@@ -62,6 +62,11 @@ switch (session('who')) {
           <a class="nav-link" href="#teachers" role="tab" data-toggle="tab">教师信息</a>
         </li>
         {/if}
+        {if WHO['device_import']}
+        <li class="nav-item">
+          <a class="nav-link" href="#device_import" role="tab" data-toggle="tab">仪器导入</a>
+        </li>
+        {/if}
       </ul>
       <a type="button" class="btn btn-danger logout" href="{:Url('logout_admin')}">登出</a>
     </div>
@@ -203,6 +208,11 @@ switch (session('who')) {
     <div role="tabpanel" class="tab-pane" id="teachers">
       {include file="tables/tea_list"/}
     </div>
+    {/if}
+    {if WHO['device_import']}
+        <div role="tabpanel" class="tab-pane" id="device_import">
+            {include file="device/device_import"/}
+        </div>
     {/if}
   </div>
 </div>

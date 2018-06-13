@@ -54,7 +54,9 @@ define('TA', [
         'course_import' => FALSE,
         'ta_msg'        => TRUE,
         'sign_ta'       => FALSE,
-        'teachers'      => FALSE
+        'teachers'      => FALSE,
+        'device_import' => FALSE,
+        'excp_stats'    => FALSE
       ]);
 define('EDU_TEACHER', [
         'sign_stu'      => TRUE,
@@ -66,7 +68,9 @@ define('EDU_TEACHER', [
         'course_import' => TRUE,
         'ta_msg'        => TRUE,
         'sign_ta'       => FALSE,
-        'teachers'      => FALSE
+        'teachers'      => FALSE,
+        'device_import' => FALSE,
+        'excp_stats'    => FALSE
       ]);
 define('LAB_TEACHER', [
         'sign_stu'      => FALSE,
@@ -78,7 +82,9 @@ define('LAB_TEACHER', [
         'course_import' => FALSE,
         'ta_msg'        => FALSE,
         'sign_ta'       => TRUE,
-        'teachers'      => FALSE
+        'teachers'      => FALSE,
+        'device_import' => TRUE,
+        'excp_stats'    => TRUE
       ]);
 define('COM_TEACHER', [
         'sign_stu'      => TRUE,
@@ -90,7 +96,9 @@ define('COM_TEACHER', [
         'course_import' => TRUE,
         'ta_msg'        => TRUE,
         'sign_ta'       => TRUE,
-        'teachers'      => FALSE
+        'teachers'      => FALSE,
+        'device_import' => TRUE,
+        'excp_stats'    => TRUE
       ]);
 define('ADMIN',[
         'sign_stu'      => FALSE,
@@ -102,7 +110,9 @@ define('ADMIN',[
         'course_import' => FALSE,
         'ta_msg'        => TRUE,
         'sign_ta'       => TRUE,
-        'teachers'      => TRUE
+        'teachers'      => TRUE,
+        'device_import' => TRUE,
+        'excp_stats'    => TRUE
       ]);
 define('ADMIN_ACCOUNT', [
         'id'            => 'admin',
