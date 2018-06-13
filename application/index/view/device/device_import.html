@@ -6,7 +6,7 @@
             <div class="alert alert-warning">请按照仪器所在实验室进行导入</div>
             <!-- 实验室选择 -->
             <div class="form-group">
-                仪器所在实验室: 
+                仪器所在实验室:
                 <select class="form-control" name="device_import_cla">
                     <option value="C102">C102</option>
                     <option value="C103">C103</option>
@@ -14,16 +14,16 @@
                 </select>
             </div>
             <!-- Excel文件上传 -->
-            <div>
+            <div class="">
                 <label class="file" id="device_import_file">
-                    <input type="file" name="device_import_excel" id="device_import_excel">
+                    <input type="file" name="device_import_excel" id="device_import_excel" style="width: 100%;">
                     <span class="btn btn-primary">
                         <i class="fa fa-file-excel-o fa-5x"></i><br><br>
                         <div id="device_import_file_info">选择要新增的仪器Excel文件</div>
                     </span>
                 </label>
-                
-                <div class="alert alert-danger">导入的Excel文件请严格按照标准</div><br><br>
+
+                <div class="alert alert-danger" style="margin-top: 100px;">导入的Excel文件请严格按照标准</div><br><br>
                 <!-- 提交按钮 -->
                 <button class="btn btn-primary" type="submit"><h4>提交</h4></button>
             </div>

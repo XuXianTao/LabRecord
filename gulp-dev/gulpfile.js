@@ -31,7 +31,7 @@ gulp.task('lessTask', function() {
 gulp.task('server', function() {
   browserSync.init({
     proxy: "lab.local",  //指定代理url
-    // notify: false, //刷新不弹出提示
+    notify: true, //刷新不弹出提示
   });
 });
 
