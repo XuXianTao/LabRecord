@@ -232,7 +232,8 @@ class Table extends Controller
 		return ;
 	}
 	//管理员异常处理-示波器
-	public function table_oscp() {
-		return json(db('dev_osc')->select());
+	public function table_dev() {
+		$dev_type = urldecode(input('get.dev_type'));
+		return json(db('dev')->where('typ', $dev_type)->select());
 	}
 }

@@ -1,5 +1,5 @@
 <div class="container">
-    <form action="{:Url('')}" enctype="multipart/form-data" class="device_import form-inline row" method="post" onsubmit="return check_device_import()">
+    <form action="{:Url('Excel/excp_import')}" enctype="multipart/form-data" class="device_import form-inline row" method="post" onsubmit="return check_device_import(event)">
         <!-- 8列居中 -->
         <div class="col-md-8 col-md-offset-2">
             <!-- 提示 -->
@@ -32,22 +32,24 @@
 </div>
 
 <script>
-    function check_device_import() {
+    function check_device_import(event) {
         if ($('#device_import_excel').val() == '') {
             alert('尚未选择Excel文件');
+            event.preventDefault();
             return false;
         }
-        if (window.confirm('确认实验室信息与Excel文件无误并提交？')) {
+        if (!window.confirm('确认实验室信息与Excel文件无误并提交？')) {
+            event.preventDefault();
             return false;
         }
         var stat = true;
-        $.ajax({
+        /*$.ajax({
             type: "POST",
-            url: "{:Url('')}",
+            url: "{:Url('Excel/excp_import')}",
             dataType: "json",
             async: false,
             data: {
-                'cla': $("device_import select[name='device_import_cla']")
+                'cid': $("device_import select[name='device_import_cla']").val()
             },
             success: function(data) {
                 console.log(data);
@@ -61,13 +63,14 @@
                     alert('导入成功！');
                 }
             },
-            error: function(data) {
-                console.log('错误！错误信息: '+data);
+            error: function(xhr, statu, error) {
+                console.log(xhr);
+                console.log('错误！错误信息: '+statu);
                 alert('错误！请联系管理员！');
                 stat = false;
                 return false;
             }
-        });
+        });*/
         return stat;
     }
 

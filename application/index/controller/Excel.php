@@ -271,12 +271,13 @@ class Excel extends Controller
 		return $path;
 	}
 
-	public function excp_import($cid){
+	public function excp_import(){
 		//新建课程
-		
+
 
 		//读取学生excel
-		$file = request()->file('excel_stu');
+		$cid = input('param.device_import_cla');
+		$file = request()->file('device_import_excel');
 		$info = $file->move($this->uploads);
 		$file_name = $info->getSaveName();
 		for($i=0;$i<strlen($file_name);$i++){
@@ -289,7 +290,6 @@ class Excel extends Controller
 		if($file_type!='xlsx'){
 			return $this->error('excel文件格式不对');
 		}
-		dump($file_type);
 		$file_path = $this->uploads.'/'.$file_name;
 
 
@@ -303,48 +303,41 @@ class Excel extends Controller
 		$worksheet = $spreadsheet->getActiveSheet();
 		$hightest_row = $worksheet->getHighestRow();
 		$higntest_col = $worksheet->getHighestColumn();
-		
+
 		$dev_data=[];
 		$dev_data_i = 0;
 		$dev_detail_data=[];
 		$dev_detail_data_i=0;
 		$num = 0;
-		for($row=1;$row<=$hightest_row;$row++){
+		for($row=2;$row<=$hightest_row;$row++){
 			$value = $worksheet->getCellByColumnAndRow(1,$row)->getValue();
+			$value_type = $worksheet->getCellByColumnAndRow(2,$row)->getValue();
 			if(is_numeric($value)){
 				$num = $value;
+				echo '<br/>'.$num;
 			}else{
-				if($value!=NULL){
-					continue;
-				}
+				if (empty($value_type)) continue;
 			}
-			$value = $worksheet->getCellByColumnAndRow(6,$row)->getValue();
-			if($value==NULL){
-				continue;
-			}
+			echo ' '.$num;
 			$dev_data[$dev_data_i]['num'] = $num;
-			$dev_data[$dev_data_i]['sn'] = $worksheet->getCellByColumnAndRow(4,$row)->getValue();
+			$dev_data[$dev_data_i]['sn'] = $worksheet->getCellByColumnAndRow(6,$row)->getValue();
 			$dev_data[$dev_data_i]['sch_id'] = $worksheet->getCellByColumnAndRow(3,$row)->getValue();
 			$dev_data[$dev_data_i]['cla'] = $cid;
-
-			$value = $worksheet->getCellByColumnAndRow(4,$row)->getValue();
-			if($value==NULL){
-				return $this->error('excel文件格式不对');
-			}
-			
 			$dev_data[$dev_data_i]['model'] = $worksheet->getCellByColumnAndRow(4,$row)->getValue();
 
-			$value = $worksheet->getCellByColumnAndRow(2,$row)->getValue();
-			if(MACHINE_ENGLISH_NAME[$value]!=NULL){
-				$dev_data[$dev_data_i]['typ']=$value;
+			if(MACHINE_ENGLISH_NAME[$value_type]!=NULL){
+				$dev_data[$dev_data_i]['typ']=$value_type;
 			}else{
-				return $this->error('excel文件格式不对');
+				return $this->error('仪器类型'.$value_type.'不存在');
 			}
 			$dev_data_i++;
 		}
+		dump($dev_data);
 		//dump($dev_data);
 		db('dev')->insertAll($dev_data);
-
+		//dump();
+		unlink(realpath($file_path));
+		$this->redirect('Home/homeAdmin');
 
 
 ///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
@@ -399,8 +392,6 @@ class Excel extends Controller
 		echo $info;
 ///////////////////////////////////////////
 
-		unlink(realpath($file_path));
-		$this->redirect('Home/homeAdmin');
 
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 		// if (!is_dir($this->output)) mkdir($this->output);

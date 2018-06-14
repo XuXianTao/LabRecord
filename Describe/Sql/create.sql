@@ -127,20 +127,22 @@ create table excp_submit (
 
 # 设备表
 create table dev (
-    sn            varchar(30) primary key,            # 序列号
+    id            int not null primary key auto_increment,
+    sn            varchar(30),                        # 序列号
     sch_id        varchar(10),                        # 校编号
     typ           varchar(10),                        # 类型, oscp示波器, dcpower直流电源, dmm万用电表, display显示器, pc主机, pm功率因数表, fsg函数发生器, box_ac交流电路箱, box_cir电路基础实验箱, box_mode模拟电路实验箱
     cla           varchar(10) not null,               # 当前课室号
     num           varchar(10) not null,               # 当前台号
-    model         varchar(30) not null,               # 型号
+    model         varchar(30),                        # 型号
     cnt           int not null default 0,             # 故障次数
     use_time      int not null default 0,             # 使用时长
     stat          int not null default 1,             # 使用状态，1使用中，0未使用
     excp_info     mediumtext                          # 过往故障描述
-) engine=InnoDB;
+) auto_increment=1 engine=InnoDB;
 
 # 设备配件表
 create table dev_detail (
+    dev_id        int not null,
     sn            varchar(30),                        # 序列号
     nam           varchar(20),                        # 配件名
     cnt           int not null default 0              # 故障数
@@ -355,4 +357,4 @@ alter table grp add foreign key fk_grp_course(course_id) references course(id);
 alter table sign_stu add foreign key fk_sign_stu_stu(id,course_id) references stu(id,course_id);
 alter table sign_stu add foreign key fk_sign_stu_ip(ip) references ip(ip);
 alter table sign_ta add foreign key fk_sign_ta_ta(id) references ta(id);
-alter table dev_detail add foreign key fk_dev_detail_dev(sn) references dev(sn);
+alter table dev_detail add foreign key fk_dev_detail_dev(dev_id) references dev(id);

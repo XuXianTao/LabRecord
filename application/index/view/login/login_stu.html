@@ -20,7 +20,7 @@
 <script>
   $(document).ready(function() {
   	 //回车提交事件
-    $('input').keydown(function() {
+    $('input').keydown(function(event) {
       if (event.keyCode == "13") //keyCode=13是回车键
         $('#login_stu').click();
     });
