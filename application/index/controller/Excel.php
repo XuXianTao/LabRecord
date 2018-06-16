@@ -319,7 +319,7 @@ class Excel extends Controller
 				if (empty($value_type)) continue;
 			}
 			echo ' '.$num;
-			$dev_data[$dev_data_i]['num'] = $num;
+			$dev_data[$dev_data_i]['num'] = str_pad($num,2,'0',STR_PAD_LEFT).'号机';
 			$dev_data[$dev_data_i]['sn'] = $worksheet->getCellByColumnAndRow(6,$row)->getValue();
 			$dev_data[$dev_data_i]['sch_id'] = $worksheet->getCellByColumnAndRow(3,$row)->getValue();
 			$dev_data[$dev_data_i]['cla'] = $cid;

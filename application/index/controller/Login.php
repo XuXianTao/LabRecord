@@ -44,6 +44,9 @@ class Login extends Controller
 		if (!$stu) return json('学号不存在');
 		session('user',$stu);
 		session('who','stu');
+		session('user.cla', $seat['cla']);
+		session('user.num', $seat['num']);
+		session('user.sign_in', date('Y-m-d H:i:s'));
 		//获取登陆学生的签到状态
 		$success= '签到没问题';
 		return json($success);

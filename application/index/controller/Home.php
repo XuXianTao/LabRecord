@@ -75,6 +75,15 @@ class Home extends Controller
 		//记录登出时间
 		if(Session::has('user')){
 			if(session('who')=='stu'){
+				//只统计登录的同学使用的仪器
+				//使用本次登录时长更新仪器使用时长
+				$duty_time = strtotime(date('Y-m-d H:i:s'))-strtotime(session('user.sign_in'));
+				db('dev')
+				->where('cla', session('user.cla'))
+				->where('num', session('user.num'))
+				->setInc('use_time', $duty_time);
+
+				//group统一登出
 				$grp_stat = get_group(session('user.id'), session('user.course_id'), $grp);
 				if($grp_stat){
 					foreach($grp as $key=>$val){
