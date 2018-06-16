@@ -16,15 +16,31 @@ class Excp extends Controller
         $cla = $seat['cla'];
         $num = $seat['num'];
         $excp_desc = "";
+        /*
+        * 更新故障提交表
+        * 同时更新处理仪器统计数据
+        */
         if (array_key_exists('machine',input(''))) {
             foreach(input('')['machine'] as $machine=>$parts) {
                 $excp_desc .= "<b>".$machine.":</b><br/>";
+                $excp_desc4dev = date('Y-m-d H:i:s'). ' '. session('user.nam').'['.session('user.id').'] '.  '  ';
                 foreach($parts as $part=>$color_arr) {
                     $excp_desc .= $part."-";
+                    $excp_desc4dev .='<b>'.$part.'</b>-';
                     foreach($color_arr as $i=>$color) {
                         $excp_desc .= "[".$color."] ";
+                        $excp_desc4dev .= "[".$color."] ";
                     }
                     $excp_desc .= "<br/>";
+                }
+                if ($machine!='交流电路实验箱'&&$machine!='模拟电路实验箱'&&$machine!='电路基础实验箱') {
+                    $tmp = db('dev')
+                    ->where('cla', $cla)                  //哪个教室
+                    ->where('num', $num)                  //哪个桌位(机号)
+                    ->where('typ', $machine);             //哪种仪器坏
+                    $tmp2 = clone $tmp;
+                    $src_info = $tmp->find()['excp_info'];
+                    $des_info = $tmp2->update(['excp_info' => $src_info.$excp_desc4dev.': '.input('param.excp_desc'). '<br/>']);
                 }
             }
         }
@@ -40,13 +56,9 @@ class Excp extends Controller
             'submit_tim'=> date('Y-m-d H:i:s'),
             'excp_desc' => $excp_desc
         ];
-        //dump($data);
-        //echo $data['excp_desc'];
-        /*
-        * 还需要处理统计数据
-        */
         $result = db('excp_submit')->insert($data);
         db('the_date')->update(['update_statu2'=>true,'id'=>1]);
+
         if ($result) $this->redirect('/');
         else $this->error('故障提交失败，请联系维护');
     }

@@ -23,12 +23,12 @@ define('MACHINE_NAME',[
     'box_ac' => '交流电路实验箱',
     'box_mode' => '模拟电路实验箱',
     'box_cir' => '电路基础实验箱',
-    'dcpower' => '直流稳压电源',
-    'dmm' => '台式万用表',
-    'pm' => '功率表',
-    'oscp' => '数字示波器',
-    'fsg' => '函数信号发生器',
-    'pc' => '电脑',
+    'dcpower' => '直流电源',
+    'dmm' => '万用电表',
+    'pm' => '功率因数表',
+    'oscp' => '示波器',
+    'fsg' => '函数发生器',
+    'pc' => '主机',
     'display' => '显示器'
     ]);
 define('MACHINE_ENGLISH_NAME',[
@@ -41,7 +41,7 @@ define('MACHINE_ENGLISH_NAME',[
     '示波器' => 'oscp',
     '函数发生器' => 'fsg',
     '主机' => 'pc',
-    '显示器' => 'display' 
+    '显示器' => 'display'
     ]);
 //管理角色显示内容修订
 define('TA', [
