@@ -336,8 +336,6 @@ class Excel extends Controller
 		//dump($dev_data);
 		db('dev')->insertAll($dev_data);
 		//dump();
-		unlink(realpath($file_path));
-		$this->redirect('Home/homeAdmin');
 
 
 ///////////////////////////////////////////这一段不加就会unlink出错，我也不知道为什么
@@ -391,6 +389,8 @@ class Excel extends Controller
 		            (($perms & 0x0200) ? 'T' : '-'));
 		echo $info;
 ///////////////////////////////////////////
+		unlink(realpath($file_path));
+		$this->redirect('Home/homeAdmin');
 
 
 		// $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);

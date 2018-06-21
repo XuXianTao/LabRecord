@@ -40,7 +40,7 @@ class Excp extends Controller
                     ->where('typ', $machine);             //哪种仪器坏
                     $tmp2 = clone $tmp;
                     $src_info = $tmp->find()['excp_info'];
-                    $des_info = $tmp2->update(['excp_info' => $src_info.$excp_desc4dev.': '.input('param.excp_desc'). '<br/>']);
+                    $des_info = $tmp2->data(['excp_info' => $src_info.$excp_desc4dev.': '.input('param.excp_desc'). '<br/>'])->inc('cnt')->update();
                 }
             }
         }

@@ -41,3 +41,5 @@ insert into excp_static(lid, typ, machine, color, num) values(10, '2号信号线
 insert into excp_static(lid, typ, machine, color, num) values(10, '2号信号线', '实验箱', '绿', 8);
 insert into excp_static(lid, typ, machine, color, num) values(10, '2号信号线', '实验箱', '黄', 8);
 
+insert into excp_static(lid, typ, machine, color, num) values(11, '主机', '主机', '主机', 8);
+insert into excp_static(lid, typ, machine, color, num) values(12, '显示器', '显示器', '显示器', 8);

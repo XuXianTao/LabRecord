@@ -17,7 +17,9 @@ define('MACHINE_STATIC',[
     '台式万用表' => 'dmm',
     '功率表' => 'pm',
     '数字示波器' => 'oscp',
-    '函数信号发生器' => 'fsg'
+    '函数信号发生器' => 'fsg',
+    '显示器' => 'display',
+    '主机' => 'pc'
 ]);
 define('MACHINE_NAME',[
     'box_ac' => '交流电路实验箱',

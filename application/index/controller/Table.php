@@ -231,7 +231,7 @@ class Table extends Controller
 		db('the_date')->update(['update_statu2'=>true,'id'=>1]);
 		return ;
 	}
-	//管理员异常处理-示波器
+	//管理员异常处理
 	public function table_dev() {
 		$dev_type = urldecode(input('get.dev_type'));
 		return json(db('dev')->where('typ', $dev_type)->select());
