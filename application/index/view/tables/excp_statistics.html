@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
     $DEV = array(
         array("dev_oscp", "示波器"),
         array("dev_dcsource","直流电源"),
@@ -18,11 +18,11 @@
     $str2 = '';
     for ($row=0; $row<$row_len; $row++) {
         $str1 += '<li class="nav-item"><a class="nav-link active" href="#'+$DEV[$row][0]+'" role="tab" data-toggle="tab">'+$DEV[$row][1]+'</a></li>'
-        $str2 += '<!-- $DEV[$row][1] --><div role="tabpanel" class="tab-pane active" id="'+$DEV[$row][0]+'"><table class="table table-hover" id="table_'+$DEV[$row][0]+'"></table></div>';
+        $str2 += '<div role="tabpanel" class="tab-pane active" id="'+$DEV[$row][0]+'"><table class="table table-hover" id="table_'+$DEV[$row][0]+'"></table></div>';
     }
     $str += $str1 + '</ul><div class="tab-content">' + $str2 + '</div></div>';
     echo $str;
-?>
+?> -->
 <div class="container">
     <ul class="nav nav-tabs justify-content-center" id="excpstats-tab" role="tablist">
         <!-- 示波器 -->
