@@ -1,112 +1,33 @@
-<!-- <?php
-    $DEV = array(
-        array("dev_oscp", "示波器"),
-        array("dev_dcsource","直流电源"),
-        array("dev_dmm","万用电表"),
-        array("dev_display","显示器"),
-        array("dev_pc","主机"),
-        array("dev_pm","功率因数表"),
-        array("dev_fsg","函数发生器"),
-        array("dev_box_ac","交流电路实验箱"),
-        array("dev_box_cir","电路基础实验箱"),
-        array("dev_box_mode","模拟电路实验箱")
-    );
-    $row_len = 10;
-    $col_len = 2;
-    $str = '<div class="container"><ul class="nav nav-tabs justify-content-center" id="excpstats-tab" role="tablist">';
-    $str1 = '';
-    $str2 = '';
-    for ($row=0; $row<$row_len; $row++) {
-        $str1 += '<li class="nav-item"><a class="nav-link active" href="#'+$DEV[$row][0]+'" role="tab" data-toggle="tab">'+$DEV[$row][1]+'</a></li>'
-        $str2 += '<div role="tabpanel" class="tab-pane active" id="'+$DEV[$row][0]+'"><table class="table table-hover" id="table_'+$DEV[$row][0]+'"></table></div>';
-    }
-    $str += $str1 + '</ul><div class="tab-content">' + $str2 + '</div></div>';
-    echo $str;
-?> -->
+<?php
+    $dev = [
+        'dev_oscp' => '示波器',
+        'dev_dcsource' => '直流电源',
+        'dev_dmm' => '万用电表',
+        'dev_display' => '显示器',
+        'dev_pc' => '主机',
+        'dev_pm' => '功率因数表',
+        'dev_fsg' => '函数发生器',
+        'dev_box_ac' => '交流电路实验箱',
+        'dev_box_cir' => '电路基础实验箱',
+        'dev_box_mode' => '模拟电路实验箱'
+    ];
+?>
 <div class="container">
     <ul class="nav nav-tabs justify-content-center" id="excpstats-tab" role="tablist">
-        <!-- 示波器 -->
+        {foreach $dev as $k => $v}
+        <!-- {$v} -->
         <li class="nav-item">
-            <a class="nav-link active" href="#dev_oscp" role="tab" data-toggle="tab">示波器</a>
+            <a class="nav-link {if $k == 'dev_oscp'}active {/if}" href="#{$k}" role="tab" data-toggle="tab">{$v}</a>
         </li>
-        <!-- 直流源 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_dcsource" role="tab" data-toggle="tab">直流电源</a>
-        </li>
-        <!-- 万用电表 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_dmm" role="tab" data-toggle="tab">万用电表</a>
-        </li>
-        <!-- 显示器 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_display" role="tab" data-toggle="tab">显示器</a>
-        </li>
-        <!-- 主机 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_pc" role="tab" data-toggle="tab">主机</a>
-        </li>
-        <!-- 功率因数表 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_pm" role="tab" data-toggle="tab">功率因数表</a>
-        </li>
-        <!-- 函数发生器 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_fsg" role="tab" data-toggle="tab">函数发生器</a>
-        </li>
-        <!-- 交流电路实验箱 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_box_ac" role="tab" data-toggle="tab">交流电路实验箱</a>
-        </li>
-        <!-- 电路基础实验箱 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_box_cir" role="tab" data-toggle="tab">电路基础实验箱</a>
-        </li>
-        <!-- 模拟电路实验箱 -->
-        <li class="nav-item">
-            <a class="nav-link" href="#dev_box_mode" role="tab" data-toggle="tab">模拟电路实验箱</a>
-        </li>
+        {/foreach}
     </ul>
     <div class="tab-content">
-        <!-- 示波器 -->
-        <div role="tabpanel" class="tab-pane active" id="dev_oscp">
-            <table class="table table-hover" id="table_dev_oscp"></table>
+        {foreach $dev as $k => $v}
+        <!-- {$v} -->
+        <div role="tabpanel" class="tab-pane{if $k == 'dev_oscp'} active{/if}" id="{$k}">
+            <table class="table table-hover" id="table_{$k}"></table>
         </div>
-        <!-- 直流源 -->
-        <div role="tabpanel" class="tab-pane" id="dev_dcsource">
-            <table class="table table-hover" id="table_dev_dcsource"></table>
-        </div>
-        <!-- 万用电表 -->
-        <div role="tabpanel" class="tab-pane" id="dev_dmm">
-            <table class="table table-hover" id="table_dev_dmm"></table>
-        </div>
-        <!-- 显示器 -->
-        <div role="tabpanel" class="tab-pane" id="dev_display">
-            <table class="table table-hover" id="table_dev_display"></table>
-        </div>
-        <!-- 主机 -->
-        <div role="tabpanel" class="tab-pane" id="dev_pc">
-            <table class="table table-hover" id="table_dev_pc"></table>
-        </div>
-        <!-- 功率因数表 -->
-        <div role="tabpanel" class="tab-pane" id="dev_pm">
-            <table class="table table-hover" id="table_dev_pm"></table>
-        </div>
-        <!-- 函数发生器 -->
-        <div role="tabpanel" class="tab-pane" id="dev_fsg">
-            <table class="table table-hover" id="table_dev_fsg"></table>
-        </div>
-        <!-- 交流电路实验箱 -->
-        <div role="tabpanel" class="tab-pane" id="dev_box_ac">
-            <table class="table table-hover" id="table_dev_box_ac"></table>
-        </div>
-        <!-- 电路基础实验箱 -->
-        <div role="tabpanel" class="tab-pane" id="dev_box_cir">
-            <table class="table table-hover" id="table_dev_box_cir"></table>
-        </div>
-        <!-- 模拟电路实验箱 -->
-        <div role="tabpanel" class="tab-pane" id="dev_box_mode">
-            <table class="table table-hover" id="table_dev_box_mode"></table>
-        </div>
+        {/foreach}
     </div>
 </div>
 
@@ -119,88 +40,13 @@
           return hour + '小时' + min + '分钟' + sec + '秒';
         }
         var dev_url = "{:Url('Table/table_dev')}" + "?dev_type=";
-        /*
-        var id_arr = ["#table_dev_oscp", "#table_dev_dcsource", "#table_dev_dmm", "#table_dev_display", "#table_dev_pc", "#table_dev_pm", "#table_dev_fsg", "#table_dev_box_ac", "#table_dev_box_cir", "#table_dev_box_mode"];
-        for (let i=0; i<id_arr.length; i++) {
-            $(id_arr[i]).bootstrapTable({
-               height: 600,
-                striped: true,
-                method: 'POST',
-                url: dev_url + '示波器',
-                showRefresh: true,
-                showColumns: true,
-                search: true,
-                detailView: true,
-                sortName: 'cnt',
-                sortOrder: 'desc',
-                sortable: true,
-                pagination: true,
-                onlyInfoPagination: true,
-                columns: [
-                    {
-                        field: 'sch_id',
-                        title: '校编号',
-                        align: 'center'
-                    },
-                    {
-                        field: 'sn',
-                        title: '序列号',
-                        align: 'center'
-                    },
-                    {
-                        field: 'cla',
-                        title: '当前位置',
-                        align: 'center',
-                        formatter: function(value, row, index) {
-                            return value + ' ' + row['num'] + '桌';
-                        }
-                    },
-                    {
-                        field: 'cnt',
-                        title: '故障次数',
-                        align: 'center'
-                    },
-                    {
-                        field: 'use_time',
-                        title: '使用时长',
-                        align: 'center',
-                        formatter: get_use_time
-                    },
-                    {
-                        field: 'stat',
-                        title: '使用状态',
-                        align: 'center'
-                    },
-                    {
-                        field: 'model',
-                        title: '型号',
-                        align: 'center'
-                    },
-                    {
-                        field: 'excp_info',
-                        title: '过往故障描述',
-                        align: 'center',
-                        formatter: function(value, row, index) {
-                            return '请展开查看';
-                        }
-                    }
-                ],
-                onExpandRow: function(index, row, $detail) {
-                    var excp_info = row['excp_info'];
-                    var table = '<table border="1" bordercolor="gainsboro">' +
-                        '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                        '<tr><td>' + excp_info + '</td></tr></table>';
-                    $detail.html(table);
-                }
-            })
-        }
-        */
-        // 示波器
-        $("#table_dev_oscp").bootstrapTable({
-            height: 600,
+        {foreach $dev as $k=>$v}
+        // {$v}
+
+        $("#table_{$k}").bootstrapTable({
             striped: true,
             method: 'POST',
-            url: dev_url + '示波器',
+            url: dev_url + '{$v}',
             showRefresh: true,
             showColumns: true,
             search: true,
@@ -209,46 +55,52 @@
             sortOrder: 'desc',
             sortable: true,
             pagination: true,
-            onlyInfoPagination: true,
             columns: [
                 {
                     field: 'sch_id',
                     title: '校编号',
-                    align: 'center'
+                    align: 'center',
+                    sortable: true
                 },
                 {
                     field: 'sn',
                     title: '序列号',
-                    align: 'center'
+                    align: 'center',
+                    sortable: true
                 },
                 {
-                    field: 'cla',
+                    field: 'num',
                     title: '当前位置',
                     align: 'center',
+                    sortable: true,
                     formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
+                        return row['cla'] + ' ' + value + '桌';
                     }
                 },
                 {
                     field: 'cnt',
                     title: '故障次数',
-                    align: 'center'
+                    align: 'center',
+                    sortable: true
                 },
                 {
                     field: 'use_time',
                     title: '使用时长',
                     align: 'center',
+                    sortable: true,
                     formatter: get_use_time
                 },
                 {
                     field: 'stat',
                     title: '使用状态',
-                    align: 'center'
+                    align: 'center',
+                    sortable: true
                 },
                 {
                     field: 'model',
                     title: '型号',
-                    align: 'center'
+                    align: 'center',
+                    sortable: true
                 },
                 {
                     field: 'excp_info',
@@ -267,653 +119,6 @@
                 $detail.html(table);
             }
         });
-        // 直流源
-        $("#table_dev_dcsource").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '直流电源',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 万用电表
-        $("#table_dev_dmm").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '万用电表',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 显示器
-        $("#table_dev_display").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '显示器',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 主机
-        $("#table_dev_pc").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '主机',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 功率因数表
-        $("#table_dev_pm").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '功率因数表',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 函数发生器
-        $("#table_dev_fsg").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '函数发生器',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 交流电路实验箱
-        $("#table_dev_box_ac").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '交流电路实验箱',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 电路基础实验箱
-        $("#table_dev_box_cir").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '电路基础实验箱',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
-        // 模拟电路实验箱
-        $("#table_dev_box_mode").bootstrapTable({
-            height: 600,
-            striped: true,
-            method: 'POST',
-            url: dev_url + '模拟电路实验箱',
-            showRefresh: true,
-            showColumns: true,
-            search: true,
-            detailView: true,
-            sortName: 'cnt',
-            sortOrder: 'desc',
-            sortable: true,
-            pagination: true,
-            onlyInfoPagination: true,
-            columns: [
-                {
-                    field: 'sch_id',
-                    title: '校编号',
-                    align: 'center'
-                },
-                {
-                    field: 'sn',
-                    title: '序列号',
-                    align: 'center'
-                },
-                {
-                    field: 'cla',
-                    title: '当前位置',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return value + ' ' + row['num'] + '桌';
-                    }
-                },
-                {
-                    field: 'cnt',
-                    title: '故障次数',
-                    align: 'center'
-                },
-                {
-                    field: 'use_time',
-                    title: '使用时长',
-                    align: 'center',
-                    formatter: get_use_time
-                },
-                {
-                    field: 'stat',
-                    title: '使用状态',
-                    align: 'center'
-                },
-                {
-                    field: 'model',
-                    title: '型号',
-                    align: 'center'
-                },
-                {
-                    field: 'excp_info',
-                    title: '过往故障描述',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return '请展开查看';
-                    }
-                }
-            ],
-            onExpandRow: function(index, row, $detail) {
-                var excp_info = row['excp_info'];
-                var table = '<table border="1" bordercolor="gainsboro">' +
-                    '<tr style="text-align: center;"><th>过往故障描述</th></tr>' +
-                    '<tr><td>' + excp_info + '</td></tr></table>';
-                $detail.html(table);
-            }
-        });
+        {/foreach}
     })
 </script>
