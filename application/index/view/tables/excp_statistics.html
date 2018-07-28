@@ -94,7 +94,10 @@
                     field: 'stat',
                     title: '使用状态',
                     align: 'center',
-                    sortable: true
+                    sortable: true,
+                    formatter: function(value, row, index) {
+                        return value?'已投入使用':'未投入使用';
+                    }
                 },
                 {
                     field: 'model',
